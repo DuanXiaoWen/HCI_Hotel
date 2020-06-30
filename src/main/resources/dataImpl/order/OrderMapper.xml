@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hotel.data.order.OrderMapper">
+
+    <select id="getAllOrders" resultMap="Order">
+        select * from OrderList
+    </select>
+    <select id="getUserOrders" resultMap="Order">
+        select * from OrderList where userId=#{userid}
+    </select>
+    <insert id="addOrder" parameterType="com.example.hotel.po.Order" useGeneratedKeys="true" keyProperty="id">
+        insert into OrderList(userId,hotelId,hotelName,checkInDate,checkOutDate,roomType,roomNum,peopleNum,haveChild,createDate,price,clientName,phoneNumber,orderState)
+        values(#{userId},#{hotelId},#{hotelName},#{checkInDate},#{checkOutDate},#{roomType},#{roomNum},#{peopleNum},#{haveChild},#{createDate},#{price},#{clientName},#{phoneNumber},#{orderState})
+    </insert>
+    <select id="getOrderById" resultMap="Order">
+        select * from OrderList where id=#{orderid}
+    </select>
+   <!--取消订单的数据库操作-->
+
+
+
+    <resultMap id="Order" type="com.example.hotel.po.Order">
+    </resultMap>
+</mapper>
