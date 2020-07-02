@@ -59,7 +59,6 @@
                                     <!--{{index+1}}- : {{line.commentScore}}分-->
                                 </a-list-item>
                             </a-list>
-                            <!--todo 有空把这里写得漂亮点-->
                         </div>
                     </a-tab-pane>
                     <a-tab-pane tab="酒店详情" key="3">

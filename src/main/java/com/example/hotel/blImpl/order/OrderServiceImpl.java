@@ -10,8 +10,6 @@ import com.example.hotel.po.User;
 import com.example.hotel.vo.CommentVO;
 import com.example.hotel.vo.OrderVO;
 import com.example.hotel.vo.ResponseVO;
-import org.junit.Assert;
-import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,9 +59,13 @@ public class OrderServiceImpl implements OrderService {
         int reserveRoomNum = orderVO.getRoomNum();
         //需要的数量
 
-        int totalNum = hotelService.getRoomTotalNum(orderVO.getHotelId(),orderVO.getRoomType());//该酒店，这种房间的总数量
+        int totalNum = hotelService.getRoomTotalNum(orderVO.getHotelId(),orderVO.getRoomType());
+        //该酒店，这种房间的总数量
+
         int usedNum = this.getUsedNum(orderVO);
         int validNum = totalNum - usedNum;
+        //算出酒店房间剩余量
+
         if(reserveRoomNum > validNum){
             return ResponseVO.buildFailure(ROOM_NUMBER_LACK);
         }
@@ -120,7 +122,6 @@ public class OrderServiceImpl implements OrderService {
                 user.setCredit(user.getCredit()-order.getPrice()/2);
                 accountService.updateCredit(order.getUserId(),user.getCredit()-order.getPrice()/2);
             }
-            //hotelService.updateRoomInfo(order.getHotelId(),order.getRoomType(),-order.getRoomNum());
         }catch(Exception e){
             System.out.println(e.getMessage());
             return ResponseVO.buildFailure(ANNUL_ERROR);
@@ -129,55 +130,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    /**
-     * @param order
-     * @return 不可撤销，指要扣分的意思。
-     */
-    private boolean notRevocable(Order order){
 
-        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date curTime = new Date(System.currentTimeMillis());
-
-        String latestAnnulTime=order.getCheckInDate()+" 08:00:00";
-        //14:00为订单最晚执行时间
-        try{
-            int result=curTime.compareTo(sf.parse(latestAnnulTime));
-            return result>0;
-        }catch(ParseException e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private int getUsedNum(OrderVO orderVO){
-        List<Order> orderList = this.getAllOrders().stream()
-                .filter(o -> o.getHotelId().equals(orderVO.getHotelId()))
-                .filter(o -> o.getRoomType().equals(orderVO.getRoomType()))
-                .filter(o -> o.getOrderState().equals(WAITING) || o.getOrderState().equals(CHECK_IN)|| o.getOrderState().equals(ERROR))
-                .collect(Collectors.toList());
-
-        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
-        final long oneDay = 1000 * 60 * 60 * 24L;
-        try {
-            long checkInDate = sf.parse(orderVO.getCheckInDate()).getTime();
-            long checkOutDate = sf.parse(orderVO.getCheckOutDate()).getTime();
-            int result = 0;
-            for(long date = checkInDate; date < checkOutDate; date += oneDay ){
-                int tmp = 0;
-                for(Order o : orderList){
-                    if(sf.parse(o.getCheckInDate()).getTime() <= date && date < sf.parse(o.getCheckOutDate()).getTime()){
-                        tmp += o.getRoomNum();
-                    }
-                }
-                result = Math.max(result, tmp);
-            }
-            return result;
-        }
-        catch (ParseException e){
-            e.printStackTrace();
-            return Integer.MAX_VALUE;
-        }
-    }
 
     @Override
     public ResponseVO addComment(OrderVO orderVO) {
@@ -256,20 +209,66 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    @Test
-    public void testNotRevocable01(){
-        //这个在{2020-06-28 08:00 beijing}之后测试才能成功
-        Order order = new Order();
-        order.setCheckInDate("2020-06-28");
-        Assert.assertTrue(OrderServiceImpl.this.notRevocable(order));
+    /**
+     * @param order 订单
+     * @return 不可撤销，指要扣分的意思。
+     */
+    private boolean notRevocable(Order order){
+
+        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date curTime = new Date(System.currentTimeMillis());
+
+        String latestAnnulTime=order.getCheckInDate()+" 08:00:00";
+        //14:00为订单最晚执行时间
+        try{
+            int result=curTime.compareTo(sf.parse(latestAnnulTime));
+            return result>0;
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    @Test
-    public void testNotRevocable02(){
-        Order order = new Order();
-        order.setCheckInDate("2020-06-30");
-        Assert.assertFalse(OrderServiceImpl.this.notRevocable(order));
+    /**
+     * 从数据库搞到指定日期内，指定房间的订单信息，统计它们每一天的使用量
+     * @param orderVO 尝试新增的订单的所有信息
+     * @return 房间使用量，已经数学证明，其等于每一天的使用量的最大值
+     */
+    private int getUsedNum(OrderVO orderVO){
+        List<Order> orderList = this.getAllOrders().stream()
+                .filter(o -> o.getHotelId().equals(orderVO.getHotelId()))
+                .filter(o -> o.getRoomType().equals(orderVO.getRoomType()))
+                .filter(o -> o.getOrderState().equals(WAITING) || o.getOrderState().equals(CHECK_IN)|| o.getOrderState().equals(ERROR))
+                .collect(Collectors.toList());
+
+        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+        final long oneDay = 1000 * 60 * 60 * 24L;
+        try {
+            long checkInDate = sf.parse(orderVO.getCheckInDate()).getTime();
+            long checkOutDate = sf.parse(orderVO.getCheckOutDate()).getTime();
+            int result = 0;
+            for(long date = checkInDate; date < checkOutDate; date += oneDay ){
+                //对于要订的每一天
+
+                int tmpResultOfOneDay = 0;
+                for(Order eachOrder : orderList){
+                    //从所有符合条件历史订单找到与之时间存在重合的
+                    if(sf.parse(eachOrder.getCheckInDate()).getTime() <= date &&
+                            date < sf.parse(eachOrder.getCheckOutDate()).getTime())
+                    {
+                        tmpResultOfOneDay += eachOrder.getRoomNum();
+                    }
+                }
+                result = Math.max(result, tmpResultOfOneDay);
+            }
+            return result;
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+            return Integer.MAX_VALUE;
+        }
     }
+
 
 
 }

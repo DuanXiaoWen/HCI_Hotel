@@ -1,9 +1,14 @@
 package com.example.hotel.vo;
 
+import lombok.*;
+
 /**
  * @author fjj
  * @date 2019/3/12 5:14 PM
  */
+
+
+@Data
 public class ResponseVO {
 
     /**
@@ -42,27 +47,4 @@ public class ResponseVO {
         return response;
     }
 
-    public boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getContent() {
-        return content;
-    }
-
-    public void setContent(Object content) {
-        this.content = content;
-    }
 }

@@ -4,8 +4,7 @@ import com.example.hotel.bl.coupon.CouponMatchStrategy;
 import com.example.hotel.po.Coupon;
 import com.example.hotel.util.CouponMatchStrategyService;
 import com.example.hotel.vo.OrderVO;
-import org.junit.Assert;
-import org.junit.Test;
+
 
 @CouponMatchStrategyService(CouponMatchStrategyService.TARGET_MONEY_COUPON_STRATEGY)
 public class TargetMoneyCouponStrategyImpl implements CouponMatchStrategy {
@@ -24,30 +23,5 @@ public class TargetMoneyCouponStrategyImpl implements CouponMatchStrategy {
 
     }
 
-    @Test
-    public void testTargetMoney01(){
-        OrderVO orderVO = new OrderVO();
-        Coupon coupon = new Coupon();
-        orderVO.setPrice(6.66);
-        coupon.setTargetMoney(6.67);
-        Assert.assertFalse(this.isMatch(orderVO,coupon));
-    }
 
-    @Test
-    public void testTargetMoney02(){
-        OrderVO orderVO = new OrderVO();
-        Coupon coupon = new Coupon();
-        orderVO.setPrice(6.67);
-        coupon.setTargetMoney(6.67);
-        Assert.assertTrue(this.isMatch(orderVO,coupon));
-    }
-
-    @Test
-    public void testTargetMoney03(){
-        OrderVO orderVO = new OrderVO();
-        Coupon coupon = new Coupon();
-        orderVO.setPrice(6.67);
-        coupon.setTargetMoney(6.66);
-        Assert.assertTrue(this.isMatch(orderVO,coupon));
-    }
 }

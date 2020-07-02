@@ -10,16 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author lz
+ */
 @CouponMatchStrategyService(CouponMatchStrategyService.BIRTHDAY_COUPON_STRATEGY)
 public class BirthdayCouponStrategyImpl implements CouponMatchStrategy {
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     /**
      * 判断某个订单是否满足某种生日优惠策略
-     * @param orderVO,coupon
-     * @return
+     * @param orderVO,coupon oc
+     * @return boolean
      */
 
     @Override

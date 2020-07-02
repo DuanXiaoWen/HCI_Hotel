@@ -159,7 +159,7 @@ const hotelManager = {
             }
         },
         addHotelCoupon: async({ commit, dispatch }, data) => {
-            //todo
+
             console.log("enterAddCouponAPI");
             console.log("data",data);
             let res = await addCouponAPI(data);

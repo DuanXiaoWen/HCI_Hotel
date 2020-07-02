@@ -36,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
         user.setEmail(userForm.getEmail());
         user.setPassword(userForm.getPassword());
         user.setUserType(userForm.getUserType());
-        user.setCredit(67);
+        user.setCredit(67.0);
         try {
             adminMapper.addManager(user);
         } catch (Exception e) {
