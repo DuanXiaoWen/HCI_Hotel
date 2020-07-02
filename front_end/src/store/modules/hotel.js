@@ -2,14 +2,16 @@ import { message } from 'ant-design-vue'
 import store from '@/store'
 import {
     getHotelsAPI,
-    getHotelByIdAPI
-} from '@/api/hotel'
+    getHotelByIdAPI,
+    getAllRoomListAPI
+} from '../../api/hotel'
 import {
-    reserveHotelAPI
-} from '@/api/order'
+    reserveHotelAPI,
+    getHotelCommentAPI
+} from '../../api/order'
 import {
     orderMatchCouponsAPI,
-} from '@/api/coupon'
+} from '../../api/coupon'
 
 const hotel = {
     state: {
@@ -30,6 +32,12 @@ const hotel = {
 
         },
         orderMatchCouponList: [
+
+        ],
+        hotelCommentsList:[
+
+        ],
+        allRoomList:[
 
         ]
     },
@@ -66,6 +74,12 @@ const hotel = {
         },
         set_orderMatchCouponList: function(state, data) {
             state.orderMatchCouponList = data
+        },
+        set_hotelCommentsList:function (state, data) {
+            state.hotelCommentsList = data
+        },
+        set_allRoomList:function (state,data) {
+            state.allRoomList = data
         }
     },
 
@@ -76,8 +90,10 @@ const hotel = {
                 commit('set_hotelList', res)
                 commit('set_hotelListLoading', false)
             }
+            return res;
         },
         getHotelById: async({commit, state}) => {
+            console.log(state.currentHotelId)
             const res = await getHotelByIdAPI({
                 hotelId: state.currentHotelId
             })
@@ -87,7 +103,6 @@ const hotel = {
         },
         addOrder: async({ state, commit }, data) => {
             const res = await reserveHotelAPI(data)
-            console.log(res)
             if(res){
                 message.success('预定成功')
                 commit('set_orderModalVisible', false)
@@ -98,8 +113,20 @@ const hotel = {
             if(res){
                 commit('set_orderMatchCouponList', res)
             }
+        },
+        getHotelCommentsList: async ({state, commit}) => {
+            const res = await getHotelCommentAPI(state.currentHotelId);
+            if(res){
+                commit('set_hotelCommentsList',res);
+            }
+        },
+        getAllRoomList: async ({commit})=>{
+            const res = await getAllRoomListAPI();
+            if(res){
+                commit('set_allRoomList',res);
+            }
         }
     }
-}
+};
 
 export default hotel

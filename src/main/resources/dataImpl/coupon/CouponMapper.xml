@@ -14,8 +14,8 @@
 
 
     <resultMap id="Coupon" type="com.example.hotel.po.Coupon">
+        <id column="id" property="id"></id>
         <result column="description" property="description"></result>
-        <result column="id" property="id"></result>
         <result column="couponName" property="couponName"></result>
         <result column="hotelId" property="hotelId"></result>
         <result column="couponType" property="couponType"></result>

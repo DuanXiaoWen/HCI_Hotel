@@ -8,11 +8,23 @@
         @ok="handleSubmit"
     >
     <a-Form :form="form">
-        <a-form-item v-bind="formItemLayout" label="用户邮箱">
+        <a-form-item>
+                <a-select
+                        size="large"
+                        placeholder="请选择员工类型"
+                        v-decorator="[
+                            'userType',
+                    { rules: [{ required: true, message: '宁还没选择员工类型喔' }] }]"
+                >
+                    <a-select-option value='HotelManager' >酒店管理人员</a-select-option>
+                    <a-select-option value='WebMarketer' >网站营销人员</a-select-option>
+                </a-select>
+        </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="用户邮箱">
                 <a-input
                     v-decorator="[
                         'email',
-                        { rules: [{required: true, message: '请输入用户邮箱', }] }
+                        { rules: [{ required: true, type: 'email', message: '请输入邮箱' }] }
                     ]"
                 />
             </a-form-item>
@@ -74,6 +86,7 @@ export default {
             this.form.validateFieldsAndScroll((err, values) => {
                 if (!err) {
                     const data = {
+                        userType:this.form.getFieldValue('userType'),
                         email: this.form.getFieldValue('email'),
                         password: this.form.getFieldValue('password')
                     }

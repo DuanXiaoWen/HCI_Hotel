@@ -15,10 +15,15 @@ public class Hotel {
     private Double rate;
     private String description;
     private String phoneNum;
+
+    private Integer hotelState;
     /**
      * 酒店管理员id
      */
     private Integer managerId;
+
+    private Integer commentNumber;
+    private Integer totalCommentScore;
 
     public Integer getId() {
         return id;
@@ -90,6 +95,30 @@ public class Hotel {
 
     public void setManagerId(Integer managerId) {
         this.managerId = managerId;
+    }
+
+    public Integer getCommentNumber() {
+        return commentNumber;
+    }
+
+    public void setCommentNumber(Integer commentNumber) {
+        this.commentNumber = commentNumber;
+    }
+
+    public Integer getTotalCommentScore() {
+        return totalCommentScore;
+    }
+
+    public void setTotalCommentScore(Integer totalCommentScore) {
+        this.totalCommentScore = totalCommentScore;
+    }
+
+    public Integer getHotelState() {
+        return hotelState;
+    }
+
+    public void setHotelState(Integer hotelState) {
+        this.hotelState = hotelState;
     }
 }
 

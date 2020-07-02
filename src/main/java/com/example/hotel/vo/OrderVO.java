@@ -1,6 +1,5 @@
 package com.example.hotel.vo;
 
-import java.util.Date;
 
 /**
  * @Author: chenyizong
@@ -19,9 +18,11 @@ public class OrderVO {
     private boolean haveChild;
     private String createDate;
     private Double price;
-    private String clientName;
+    private String tenantName;
     private String phoneNumber;
     private String orderState;
+    private String comment;
+    private Integer commentScore;
 
     public Integer getId() {
         return id;
@@ -119,12 +120,12 @@ public class OrderVO {
         this.hotelName = hotelName;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getTenantName() {
+        return tenantName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 
     public String getPhoneNumber() {
@@ -141,5 +142,21 @@ public class OrderVO {
 
     public void setOrderState(String orderState) {
         this.orderState = orderState;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Integer getCommentScore() {
+        return commentScore;
+    }
+
+    public void setCommentScore(Integer commentScore) {
+        this.commentScore = commentScore;
     }
 }

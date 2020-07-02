@@ -1,9 +1,9 @@
 <template>
     <div class="manageUser-wrapper">
         <a-tabs>
-            <a-tab-pane tab="账户管理" key="1">
+            <a-tab-pane tab="员工管理" key="1">
                 <div style="width: 100%; text-align: right; margin:20px 0">
-                    <a-button type="primary" @click="addManager"><a-icon type="plus" />添加用户</a-button>
+                    <a-button type="primary" @click="addManager"><a-icon type="plus" />添加员工</a-button>
                 </div>
                 <a-table
                     :columns="columns"
@@ -14,17 +14,32 @@
                         <span>￥{{ text }}</span>
                     </span>
                     <span slot="action" slot-scope="text, record">
-                        <a-button type="danger" @click="order(record)">删除用户</a-button>
+                        <a-button type="primary"  @click="changeUserType(record)">变更职位</a-button>
+                        <a-divider type="vertical"></a-divider>
+                        <a-popconfirm
+                                title="确定想删除该员工吗？"
+                                @confirm="delUser(record)"
+                                okText="确定"
+                                cancelText="取消"
+                        >
+                            <a-button type="danger" >删除员工</a-button>
+                        </a-popconfirm>
                     </span>
+
                 </a-table>
+            </a-tab-pane>
+            <a-tab-pane tab="客户管理" key="2">
+
             </a-tab-pane>
         </a-tabs>
         <AddManagerModal></AddManagerModal>
+        <ChangeUserTypeModal></ChangeUserTypeModal>
     </div>
 </template>
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import AddManagerModal from './components/addManagerModal'
+import ChangeUserTypeModal from './components/changeUserTypeModal'
 const columns = [
     {  
         title: '用户邮箱',
@@ -47,13 +62,17 @@ const columns = [
         dataIndex: 'credit',
     },
     {
+      title:'员工类型',
+      dataIndex:'userType',
+    },
+    {
       title: '操作',
       key: 'action',
       scopedSlots: { customRender: 'action' },
     },
   ];
 export default {
-    name: 'manageHotel',
+    name: 'manageUser',
     data(){
         return {
             formLayout: 'horizontal',
@@ -64,7 +83,8 @@ export default {
         }
     },
     components: {
-        AddManagerModal
+        AddManagerModal,
+        ChangeUserTypeModal
     },
     computed: {
         ...mapGetters([
@@ -77,13 +97,24 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getManagerList'
+            'getManagerList',
+            'deleteUser'
         ]),
         ...mapMutations([
-            'set_addManagerModalVisible'
+            'set_addManagerModalVisible',
+            'set_changeUserTypeModalVisible',
+            'set_changeUserTypeParams',
         ]),
         addManager(){
             this.set_addManagerModalVisible(true)
+        },
+        changeUserType(user){
+            //alert(user.id);
+            this.set_changeUserTypeParams({id : user.id})
+            this.set_changeUserTypeModalVisible(true)
+        },
+        delUser(record){
+            this.deleteUser(record);
         }
     }
 }

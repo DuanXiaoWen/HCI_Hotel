@@ -3,8 +3,8 @@
 <mapper namespace="com.example.hotel.data.hotel.HotelMapper">
     <insert id="insertHotel" parameterType="com.example.hotel.po.Hotel"
     useGeneratedKeys="true" keyProperty="id">
-        insert into Hotel(address,bizRegion,hotelDescription,hotelStar,hotelName,phoneNum,rate,manager_id)
-        values (#{address},#{bizRegion},#{description},#{hotelStar},#{hotelName},#{phoneNum},#{rate},#{managerId})
+        insert into Hotel(address,bizRegion,hotelDescription,hotelStar,hotelName,phoneNum,rate,hotelState,manager_id,commentNumber,totalCommentScore)
+        values (#{address},#{bizRegion},#{description},#{hotelStar},#{hotelName},#{phoneNum},#{rate},#{hotelState},#{managerId},#{commentNumber},#{totalCommentScore})
     </insert>
 
     <select id="selectAllHotel" resultMap="Hotel">
@@ -14,19 +14,47 @@
         select * from Hotel where id=#{id}
     </select>
 
+    <select id="selectMgrHotel" resultMap="Hotel">
+        select * from Hotel where manager_id=#{id}
+    </select>
 
+
+    <update id="updateInfo">
+        update Hotel set hotelName=#{name},address=#{address},bizRegion=#{bizRegion},hotelDescription=#{hotelDescription},hotelStar=#{hotelStar},phoneNum=#{phoneNum}
+        where id=#{id}
+    </update>
+
+    <update id="updateHotel">
+        update Hotel set
+          hotelName=#{hotelName},
+          address=#{address},
+          bizRegion=#{bizRegion},
+          hotelDescription=#{description},
+          hotelStar=#{hotelStar},
+          phoneNum=#{phoneNum},
+          rate=#{rate},
+          hotelState=#{hotelState},
+          manager_id=#{managerId},
+          commentNumber=#{commentNumber},
+          totalCommentScore=#{totalCommentScore}
+        where id = #{id}
+    </update>
     <resultMap id="Hotel" type="com.example.hotel.vo.HotelVO">
-        <id column="id" property="id"></id>
-        <result column="address" property="address"></result>
-        <result column="bizRegion" property="bizRegion"></result>
-        <result column="hotelDescription" property="description"></result>
-        <result column="hotelStar" property="hotelStar"></result>
-        <result column="hotelName" property="name"></result>
-        <result column="phoneNum" property="phoneNum"></result>
-        <result column="rate" property="rate"></result>
-        <result column="manager_id" property="managerId"></result>
+        <id column="id" property="id"/>
+        <result column="address" property="address"/>
+        <result column="bizRegion" property="bizRegion"/>
+        <result column="hotelDescription" property="description"/>
+        <result column="hotelStar" property="hotelStar"/>
+        <result column="hotelName" property="name"/>
+        <result column="phoneNum" property="phoneNum"/>
+        <result column="rate" property="rate"/>
+        <result column="hotelState" property="hotelState"/>
+        <result column="manager_id" property="managerId"/>
+        <result column="commentNumber" property="commentNumber"/>
+        <result column="totalCommentScore" property="totalCommentScore"/>
 
     </resultMap>
+
 
 
 </mapper>

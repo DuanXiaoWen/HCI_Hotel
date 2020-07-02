@@ -1,9 +1,9 @@
 package com.example.hotel.bl.hotel;
 
 import com.example.hotel.po.HotelRoom;
-import com.example.hotel.po.Order;
 import com.example.hotel.util.ServiceException;
-import com.example.hotel.vo.CouponVO;
+import com.example.hotel.vo.ResponseVO;
+import com.example.hotel.vo.RoomVO;
 import com.example.hotel.vo.HotelVO;
 
 import java.util.List;
@@ -19,14 +19,6 @@ public interface HotelService {
 
 
     /**
-     * 预订酒店修改剩余客房信息
-     * @param hotelId
-     * @param roomType
-     * @param rooms
-     */
-    void updateRoomInfo(Integer hotelId, String roomType,Integer rooms);
-
-    /**
      * 列表获取酒店信息
      * @return
      */
@@ -40,19 +32,25 @@ public interface HotelService {
     HotelVO retrieveHotelDetails(Integer hotelId);
 
     /**
-     * 查看酒店剩余某种房间数量
+     * 查看酒店某种房间的总数量
      * @param hotelId
      * @param roomType
      * @return
      */
-    int getRoomCurNum(Integer hotelId,String roomType);
+    int getRoomTotalNum(Integer hotelId, String roomType);
 
+
+    void addComment(Integer hotelId, Integer score);
     /**
-     * 查看酒店的所有订单
-     * @param hotelId
+     * 查看酒店管理人员的所有酒店
+     * @param id
      * @return
      */
-    List<Order> getHotelOrders(Integer hotelId);
+    List<HotelVO> retrieveMgrHotels(int id);
 
+    ResponseVO updateHotelInfo(Integer hotelId, String name, String address, String bizRegion, String description, String hotelStar, String phoneNum);
 
+    ResponseVO giveUpHotel(Integer hotelId, String email);
+
+    ResponseVO acceptOrRefuseHotel(Integer hotelId, boolean accept);
 }

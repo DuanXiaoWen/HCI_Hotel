@@ -18,7 +18,8 @@ public class Coupon {
     private Integer hotelId;
 
     /**
-     * 优惠券类型 1生日特惠 2多间特惠 3满减优惠 4限时优惠
+     * 优惠券类型 1生日特惠 2多间特惠 3满减优惠 4限时优惠 ？
+     * 规则好多，前后端很难协调哎
      */
     private Integer couponType;
     /**
@@ -33,11 +34,11 @@ public class Coupon {
     /**
      * 折扣
      */
-    private double discount;
+    private double discount;//如果采用折扣，这个一定是正数；否则我是0
     /**
-     * 优惠券优惠金额
+     * 优惠券优惠金额==立减
      */
-    private double discountMoney;
+    private double discountMoney;//上面那个是0的时候用我
     /**
      * 可用时间
      */
@@ -94,6 +95,10 @@ public class Coupon {
 
     public double getTargetMoney() {
         return targetMoney;
+    }
+
+    public double getTargetRoom(){
+        return getTargetMoney();
     }
 
     public void setTargetMoney(double targetMoney) {

@@ -1,23 +1,26 @@
 import Vue from 'vue'
-import router from '@/router'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
+import router from '../../router'
+import { getToken, setToken, removeToken } from '../../utils/auth'
+import { resetRouter } from '../../router'
 import { message } from 'ant-design-vue'
 import {
     loginAPI,
     registerAPI,
     getUserInfoAPI,
     updateUserInfoAPI,
-} from '@/api/user'
+} from '../../api/user'
 
 import {
     getUserOrdersAPI,
     cancelOrderAPI,
-} from '@/api/order'
+    commentAPI,
+} from '../../api/order'
 
 const getDefaultState = () => {
     return {
         userId: '',
+        commentVisible:false,
+        orderActive:{},
         userInfo: {
 
         },
@@ -35,7 +38,7 @@ const user = {
             state.token = '',
             state.userId = '',
             state.userInfo = {
-                
+
             },
             state.userOrderList = []
         },
@@ -56,24 +59,31 @@ const user = {
         },
         set_userOrderList: (state, data) => {
             state.userOrderList = data
-        }
+        },
+        set_CommentVisible:(state, data) => {
+            state.commentVisible = data;
+        },
+        set_OrderActive:(state, data) => {
+            state.orderActive = data;
+        },
     },
 
     actions: {
         login: async ({ dispatch, commit }, userData) => {
-            const res = await loginAPI(userData)
+            const res = await loginAPI(userData);
             if(res){
-                setToken(res.id)
-                commit('set_userId', res.id)
-                dispatch('getUserInfo')
+                setToken(res.id);
+                commit('set_userId', res.id);
+                dispatch('getUserInfo');
                 router.push('/hotel/hotelList')
             }
         },
         register: async({ commit }, data) => {
             const res = await registerAPI(data)
-            if(res){
+            if(res===null){
                 message.success('注册成功')
             }
+            return res;
         },
         getUserInfo({ state, commit }) {
             return new Promise((resolve, reject) => {
@@ -108,7 +118,6 @@ const user = {
             const res = await getUserOrdersAPI(data)
             if(res){
                 commit('set_userOrderList', res)
-                console.log(state.userOrderList)
             }
         },
         cancelOrder: async({ state, dispatch }, orderId) => {
@@ -132,6 +141,14 @@ const user = {
                 commit('reset_state')
                 resolve()
             })
+        },
+
+        commentAction:  async({ commit ,dispatch }, data) => {
+            const res = await commentAPI(data);
+            if(res===true){
+                dispatch('getUserOrders');
+                message.success('已评论');
+            }
         },
     }
 }

@@ -15,6 +15,11 @@ public class RoomServiceImpl implements RoomService {
     private RoomMapper roomMapper;
 
     @Override
+    public List<HotelRoom> getAllRoomList(){
+        return roomMapper.getAllRoomList();
+    }
+
+    @Override
     public List<HotelRoom> retrieveHotelRoomInfo(Integer hotelId) {
         return roomMapper.selectRoomsByHotelId(hotelId);
     }
@@ -24,14 +29,10 @@ public class RoomServiceImpl implements RoomService {
         roomMapper.insertRoom(hotelRoom);
     }
 
-    @Override
-    public void updateRoomInfo(Integer hotelId, String roomType, Integer rooms) {
-        roomMapper.updateRoomInfo(hotelId,roomType,rooms);
-    }
 
     @Override
-    public int getRoomCurNum(Integer hotelId, String roomType) {
-        return roomMapper.getRoomCurNum(hotelId,roomType);
+    public int getRoomTotalNum(Integer hotelId, String roomType) {
+        return roomMapper.getRoomTotalNum(hotelId,roomType);
     }
 
 

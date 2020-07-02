@@ -11,7 +11,9 @@
                 <span slot="price" slot-scope="text">
                     <span>￥{{ text }}</span>
                 </span>
-                <span slot="action" slot-scope="text, record">
+
+                <!-- 之前打错了？ -->
+                <span slot="action" slot-scope="record">
                     <a-button type="primary" @click="order(record)">预定</a-button>
                 </span>
             </a-table>

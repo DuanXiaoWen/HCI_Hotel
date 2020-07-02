@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import { VueAxios } from './axios'
 import {notification, message} from 'ant-design-vue'
-import store from '@/store'
+import store from '../store'
 import { getToken } from './auth'
 import router from '../router'
 

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/login.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 const routes = [
   {
     path: '/login',
@@ -17,32 +17,37 @@ const routes = [
     path: '/NJUSE',
     name: 'layout',
     redirect: '/hotel/hotelList',
-    component: ()=> import('@/views/layout'),
+    component: ()=> import('../views/layout'),
     children: [
       {
         path: '/hotel/hotelList',
         name: 'hotelList',
-        component: () => import('@/views/hotel/hotelList')
+        component: () => import('../views/hotel/hotelList')
       },
       {
         path: '/hotel/hotelDetail/:hotelId',
         name: 'hotelDetail',
-        component: () => import('@/views/hotel/hotelDetail')
+        component: () => import('../views/hotel/hotelDetail')
       },
       {
         path: '/user/info/:userId',
         name: 'userInfo',
-        component: () => import('@/views/user/info')
+        component: () => import('../views/user/info')
       },
       {
         path: '/hotelManager/manageHotel',
         name: 'manageHotel',
-        component: () => import('@/views/hotelManager/manageHotel')
+        component: () => import('../views/hotelManager/manageHotel')
       },
       {
         path: '/admin/manageUser',
         name: 'manageUser',
-        component: () => import('@/views/admin/manageUser')
+        component: () => import('../views/admin/manageUser')
+      },
+      {
+        path:'webMarketer/manageWebsiteMarket',
+        name:'manageWebsiteMarket',
+        component: () => import('../views/hotelManager/components/manageWebsiteMarket')
       },
     ]
   },

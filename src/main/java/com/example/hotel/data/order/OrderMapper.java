@@ -22,8 +22,17 @@ public interface OrderMapper {
 
     List<Order> getUserOrders(@Param("userid") int userid);
 
-    int annulOrder(@Param("orderid") int orderid);
+    List<Order> getHotelOrders(@Param("hotelId") int hotelId);
+
+    List<Order> getHotelAbOrders(@Param("hotelId") Integer hotelId);
+
+
+    int updateOrderState(@Param("orderid") int orderid, @Param("orderState") String orderState);
 
     Order getOrderById(@Param("orderid") int orderid);
 
+
+    int updateOutTime(@Param("id") int id,@Param("checkOutDate") String outdate);
+
+    void addComment(@Param("orderid")int orderid,@Param("comment")String comment,@Param("commentScore")int commentScore);
 }

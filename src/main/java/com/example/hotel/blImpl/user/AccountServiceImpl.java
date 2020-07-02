@@ -2,6 +2,7 @@ package com.example.hotel.blImpl.user;
 
 import com.example.hotel.bl.user.AccountService;
 import com.example.hotel.data.user.AccountMapper;
+import com.example.hotel.enums.UserType;
 import com.example.hotel.po.User;
 import com.example.hotel.vo.UserForm;
 import com.example.hotel.vo.ResponseVO;
@@ -32,6 +33,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public ResponseVO deleteUser(int userID) {
+        try{
+            accountMapper.deleteAccount(userID);
+            return ResponseVO.buildSuccess(true);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseVO.buildFailure("删除失败");
+        }
+    }
+
+    @Override
     public User login(UserForm userForm) {
         User user = accountMapper.getAccountByName(userForm.getEmail());
         if (null == user || !user.getPassword().equals(userForm.getPassword())) {
@@ -58,5 +70,32 @@ public class AccountServiceImpl implements AccountService {
             return ResponseVO.buildFailure(UPDATE_ERROR);
         }
         return ResponseVO.buildSuccess(true);
+    }
+
+    @Override
+    public ResponseVO updateCredit(int id, double credit) {
+        try {
+            accountMapper.updateCredit(id, credit);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseVO.buildFailure(UPDATE_ERROR);
+        }
+        return ResponseVO.buildSuccess(true);
+    }
+
+    @Override
+    public ResponseVO updateUserType(int id, UserType userType) {
+        try {
+            accountMapper.updateUserType(id, userType.name());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseVO.buildFailure(UPDATE_ERROR);
+        }
+        return ResponseVO.buildSuccess(true);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return accountMapper.getAccountByName(email);
     }
 }

@@ -11,7 +11,7 @@ public class Order {
     private Integer userId;
     private Integer hotelId;
     private String hotelName;
-    private String checkInDate;
+    private String checkInDate;//checkInDateTime
     private String checkOutDate;
     private String roomType;
     private Integer roomNum;
@@ -19,9 +19,11 @@ public class Order {
     private boolean haveChild;
     private String createDate;
     private Double price;
-    private String clientName;
+    private String tenantName;
     private String phoneNumber;
     private String orderState;
+    private String comment;
+    private Integer commentScore;
 
     public Integer getId() {
         return id;
@@ -119,12 +121,12 @@ public class Order {
         this.hotelName = hotelName;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getTenantName() {
+        return tenantName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 
     public String getPhoneNumber() {
@@ -141,5 +143,21 @@ public class Order {
 
     public void setOrderState(String orderState) {
         this.orderState = orderState;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Integer getCommentScore() {
+        return commentScore;
+    }
+
+    public void setCommentScore(Integer commentScore) {
+        this.commentScore = commentScore;
     }
 }

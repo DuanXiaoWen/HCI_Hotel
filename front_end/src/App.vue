@@ -1,10 +1,15 @@
+<!-- 组件的汇集点 -->
 <template>
   <div id="app" v-title data-title="NJUSE酒店管理系统">
     <transition name="fade-transform" mode="out-in">
       <router-view/>
     </transition>
   </div>
+  <!-- 只能有一个div入口 -->
 </template>
+
+
+
 <script>
 export default {
   components: {
@@ -12,6 +17,8 @@ export default {
   }
 }
 </script>
+
+
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

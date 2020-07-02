@@ -8,16 +8,16 @@
         values (#{roomType},#{price},#{curNum},#{total},#{hotelId})
     </insert>
 
+    <select id="getAllRoomList" resultMap="room">
+        select * from Room
+    </select>
+
     <select id="selectRoomsByHotelId" resultMap="room">
         select * from Room where hotel_id=#{hotelId}
     </select>
 
-    <update id="updateRoomInfo">
-        update Room set curNum=curNum-#{curNum} where hotel_id=#{hotelId} and roomType=#{roomType}
-    </update>
-
-    <select id="getRoomCurNum" resultType="int">
-        select curNum from Room where hotel_id=#{hotelId} and roomType=#{roomType}
+    <select id="getRoomTotalNum" resultType="int">
+        select total from Room where hotel_id=#{hotelId} and roomType=#{roomType}
     </select>
 
 

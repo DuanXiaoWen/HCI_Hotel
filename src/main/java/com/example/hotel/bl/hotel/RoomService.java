@@ -7,6 +7,13 @@ import java.util.List;
 public interface RoomService {
 
     /**
+     * 列表获取所有房间信息
+     * @param
+     * @return
+     */
+    List<HotelRoom> getAllRoomList();
+
+    /**
      * 获取某个酒店的全部房间信息
      * @param hotelId
      * @return
@@ -19,19 +26,12 @@ public interface RoomService {
      */
     void insertRoomInfo(HotelRoom hotelRoom);
 
-    /**
-     * 预订酒店后更新客房房间数量
-     * @param hotelId
-     * @param roomType
-     * @param rooms
-     */
-    void updateRoomInfo(Integer hotelId, String roomType, Integer rooms);
 
     /**
-     * 获取酒店指定房间剩余数量
+     * 获取酒店某种房间的总数量
      * @param hotelId
      * @param roomType
      * @return
      */
-    int getRoomCurNum(Integer hotelId, String roomType);
+    int getRoomTotalNum(Integer hotelId, String roomType);
 }

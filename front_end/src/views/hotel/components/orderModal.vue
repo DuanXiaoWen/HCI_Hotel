@@ -14,7 +14,7 @@
             <a-form-item v-bind="formItemLayout" label="入住人姓名">
                 <a-input
                     v-decorator="[
-                        'clientName',
+                        'tenantName',
                         { rules: [{required: true, message: '请填写入住人姓名', }] }
                     ]"
                 />
@@ -203,7 +203,7 @@ export default {
 
         },
         changeDate(v) {
-            if(this.totalPrice != ''){
+            if(this.totalPrice !== ''){
                 this.totalPrice = this.form.getFieldValue('roomNum') * moment(v[1]).diff(moment(v[0]), 'day') * Number(this.currentOrderRoom.price)
             }
         },
@@ -216,7 +216,13 @@ export default {
         onchange() {
             this.finalPrice = this.totalPrice
             if(this.checkedList.length>0){
-                this.orderMatchCouponList.filter(item => this.checkedList.indexOf(item.id)!=-1).forEach(item => this.finalPrice= this.finalPrice-item.discountMoney)
+                this.orderMatchCouponList.filter(item => this.checkedList.indexOf(item.id)!==-1).forEach(item => {
+                    if(item.discountMoney===0){
+                        this.finalPrice = this.finalPrice*item.discount/10.0
+                    } else {
+                        this.finalPrice = this.finalPrice - item.discountMoney
+                    }
+                })
             }else{
                 
             }
@@ -229,15 +235,17 @@ export default {
                         hotelId: this.currentHotelId,
                         hotelName: this.currentHotelInfo.name,
                         userId: Number(this.userId),
+                        tenantName:this.form.getFieldValue('tenantName'),
                         checkInDate: moment(this.form.getFieldValue('date')[0]).format('YYYY-MM-DD'),
                         checkOutDate: moment(this.form.getFieldValue('date')[1]).format('YYYY-MM-DD'),
-                        roomType: this.currentOrderRoom.roomType == '大床房' ? 'BigBed' : this.currentOrderRoom.roomType == '双床房' ? 'DoubleBed' : 'Family',
+                        roomType: this.currentOrderRoom.roomType === '大床房' ? 'BigBed' : this.currentOrderRoom.roomType === '双床房' ? 'DoubleBed' : 'Family',
                         roomNum: this.form.getFieldValue('roomNum'),
                         peopleNum: this.form.getFieldValue('peopleNum'),
                         haveChild: this.form.getFieldValue('haveChild'),
                         createDate: '',
                         price: this.checkedList.length > 0 ? this.finalPrice: this.totalPrice
                     }
+
                     this.addOrder(data)
                 }
             });

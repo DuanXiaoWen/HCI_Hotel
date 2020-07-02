@@ -2,7 +2,6 @@ package com.example.hotel.controller.coupon;
 
 import com.example.hotel.bl.coupon.CouponService;
 import com.example.hotel.vo.CouponVO;
-import com.example.hotel.vo.HotelTargetMoneyCouponVO;
 import com.example.hotel.vo.OrderVO;
 import com.example.hotel.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,15 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
-    @PostMapping("/hotelTargetMoney")
-    public ResponseVO addHotelTargetMoneyCoupon(@RequestBody HotelTargetMoneyCouponVO hotelTargetMoneyCouponVO) {
-
-        CouponVO couponVO = couponService.addHotelTargetMoneyCoupon(hotelTargetMoneyCouponVO);
-
-        return ResponseVO.buildSuccess(couponVO);
+    @PostMapping("/addCoupon")
+    public ResponseVO addCoupon(@RequestBody CouponVO couponVO) {
+        try {   //虽然这里有try catch, 但如果 HotelTargetMoneyCouponVO 格式不合法(比如价格无法转换成int), 将不会进入这里
+            CouponVO couponVO1 = couponService.addCoupon(couponVO);
+            return ResponseVO.buildSuccess(couponVO1);
+        }
+        catch (Exception e) {
+            return ResponseVO.buildFailure(e.getMessage());
+        }
     }
 
     @GetMapping("/hotelAllCoupons")

@@ -1,0 +1,83 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST http://localhost:8080/api/order/addOrder
+Content-Type: application/json
+# 预期：正常添加订单
+
+{
+  "hotelId": 1,
+  "userId": 3,
+  "hotelName": "酒店名",
+  "checkInDate": "2020-06-29",
+  "checkOutDate": "2020-07-03",
+  "roomType": "BigBed",
+  "roomNum": 1,
+  "peopleNum": 3,
+  "haveChild": true,
+  "price": 67.66
+}
+# 结果：测试通过
+###
+
+GET http://localhost:8080/api/order/getAllOrders
+# 预期结果：成功获取所有订单
+# 结果：测试通过
+###
+
+GET http://localhost:8080/api/order/1/getCommentByOrderId
+# 预期结果：获取此订单（如果数据库有的话
+# 结果：测试通过
+###
+
+
+GET http://localhost:8080/api/order/-1/getCommentByOrderId
+# 预期结果：因为orderList库有这个id,故返回buildFailure.
+# 结果：第一次测试服务器报错，返回500状态码，测试失败；debug后第二次测试通过
+###
+
+GET http://localhost:8080/api/order/3/getUserOrders
+# 预期结果：因为orderList库有这个用户的订单,故返回该用户的订单
+# 结果：测试通过
+###
+
+GET http://localhost:8080/api/order/-1/getUserOrders
+# 预期结果：因为orderList库木有这个用户的订单,故返回空列表
+# 结果：测试通过
+###
+
+GET http://localhost:8080/api/order/0/allOrders
+# 预期结果：因为orderList库木有这个用户的订单,故返回空列表
+# 结果：测试通过
+###
+
+
+POST http://localhost:8080/api/order/addComment
+Content-Type: application/json
+# 预期：正常添加订单
+
+{
+  "id": 14,
+  "hotelId": 4,
+  "comment": "good",
+  "commentScore": 4
+}
+# 结果：测试通过
+###
+
+GET http://localhost:8080/api/order/14/checkIn
+# 预期：成功办理入住
+#  结果：测试通过
+###
+
+
+GET http://localhost:8080/api/order/14/checkOut
+# 预期：成功办理退房
+#  结果：测试通过
+###
+
+

@@ -7,7 +7,8 @@ package com.example.hotel.enums;
 public enum UserType {
     Client("1"),
     HotelManager("2"),
-    Manager("3");
+    Manager("3"),
+    WebMarketer("4");
     private String value;
 
     UserType(String value) {

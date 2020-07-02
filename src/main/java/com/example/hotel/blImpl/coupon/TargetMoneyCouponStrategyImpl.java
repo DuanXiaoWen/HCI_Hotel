@@ -2,12 +2,12 @@ package com.example.hotel.blImpl.coupon;
 
 import com.example.hotel.bl.coupon.CouponMatchStrategy;
 import com.example.hotel.po.Coupon;
-import com.example.hotel.vo.CouponVO;
-import com.example.hotel.vo.HotelTargetMoneyCouponVO;
+import com.example.hotel.util.CouponMatchStrategyService;
 import com.example.hotel.vo.OrderVO;
-import org.springframework.stereotype.Service;
+import org.junit.Assert;
+import org.junit.Test;
 
-@Service
+@CouponMatchStrategyService(CouponMatchStrategyService.TargetMoneyCouponStrategy)
 public class TargetMoneyCouponStrategyImpl implements CouponMatchStrategy {
 
 
@@ -20,10 +20,34 @@ public class TargetMoneyCouponStrategyImpl implements CouponMatchStrategy {
     @Override
     public boolean isMatch(OrderVO orderVO, Coupon coupon) {
 
-        if (coupon.getCouponType() == 3 && orderVO.getPrice() >= coupon.getTargetMoney()) {
-            return true;
-        }
+        return orderVO.getPrice() >= coupon.getTargetMoney();
 
-        return false;
+    }
+
+    @Test
+    public void testTargetMoney01(){
+        OrderVO orderVO = new OrderVO();
+        Coupon coupon = new Coupon();
+        orderVO.setPrice(6.66);
+        coupon.setTargetMoney(6.67);
+        Assert.assertFalse(this.isMatch(orderVO,coupon));
+    }
+
+    @Test
+    public void testTargetMoney02(){
+        OrderVO orderVO = new OrderVO();
+        Coupon coupon = new Coupon();
+        orderVO.setPrice(6.67);
+        coupon.setTargetMoney(6.67);
+        Assert.assertTrue(this.isMatch(orderVO,coupon));
+    }
+
+    @Test
+    public void testTargetMoney03(){
+        OrderVO orderVO = new OrderVO();
+        Coupon coupon = new Coupon();
+        orderVO.setPrice(6.67);
+        coupon.setTargetMoney(6.66);
+        Assert.assertTrue(this.isMatch(orderVO,coupon));
     }
 }

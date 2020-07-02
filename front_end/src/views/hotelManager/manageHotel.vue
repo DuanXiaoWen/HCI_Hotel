@@ -7,7 +7,7 @@
                 </div>
                  <a-table
                     :columns="columns1"
-                    :dataSource="hotelList"
+                    :dataSource="mgrHotelList"
                     bordered
                 >
                     <span slot="action" slot-scope="record">
@@ -15,50 +15,45 @@
                         <a-divider type="vertical"></a-divider>
                         <a-button type="info" size="small" @click="showCoupon(record)">优惠策略</a-button>
                         <a-divider type="vertical"></a-divider>
-                        <a-popconfirm
-                            title="确定想删除该酒店吗？"
-                            @confirm="deleteHotel(record)"
-                            okText="确定"
-                            cancelText="取消"
-                        >
-                            <a-button type="danger" size="small">删除酒店</a-button>
-                        </a-popconfirm>
-                    </span>
-                </a-table>
-            </a-tab-pane>
-            <a-tab-pane tab="订单管理" key="2">
-                <a-table
-                    :columns="columns2"
-                    :dataSource="orderList"
-                    bordered
-                >
-                    <span slot="price" slot-scope="text">
-                        <span>￥{{ text }}</span>
-                    </span>
-                    <span slot="roomType" slot-scope="text">
-                        <span v-if="text == 'BigBed'">大床房</span>
-                        <span v-if="text == 'DoubleBed'">双床房</span>
-                        <span v-if="text == 'Family'">家庭房</span>
-                    </span>
-                    <span slot="action" slot-scope="record">
-                        <a-button type="primary" size="small">订单详情</a-button>
+                        <a-button type="info" size="small" @click="manageOrder(record.id)">订单管理</a-button>
                         <a-divider type="vertical"></a-divider>
-                        <a-popconfirm
-                            title="确定想删除该订单吗？"
-                            @confirm="deleteOrder(record)"
-                            okText="确定"
-                            cancelText="取消"
-                        >
-                            <a-button type="danger" size="small">删除订单</a-button>
-                        </a-popconfirm>
+                        <a-button type="info" size="small" @click="manageHotel(record)">信息修改</a-button>
+                        <a-divider type="vertical"></a-divider>
+                        <a-button type="danger" size="small" @click="giveUpHotel(record)">酒店转让</a-button>
+
+
                     </span>
                 </a-table>
             </a-tab-pane>
+
             
         </a-tabs>
+
+
+        <a-modal
+                :visible="giveUpVisible"
+                title="转让酒店"
+                cancelText="取消"
+                okText="确定"
+                @cancel="giveUpClear"
+                @ok="giveUpSubmit"
+        >
+            <a-form :form="form" style="margin-top: 10px">
+                <a-form-item label="被转让者的邮箱">
+                    <a-input
+                            size="large"
+                            placeholder="请输入ta的邮箱"
+                            v-decorator="['email', { rules: [{ required: true, message: '您还没输入ta的邮箱' }] }]"
+                    />
+                </a-form-item>
+            </a-form>
+        </a-modal>
+
         <AddHotelModal></AddHotelModal>
         <AddRoomModal></AddRoomModal>
         <Coupon></Coupon>
+        <manageOrder :hotelId="id"></manageOrder>
+        <ManageHotelModal :record="clickedRecord"></ManageHotelModal>
     </div>
 </template>
 <script>
@@ -66,9 +61,11 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import AddHotelModal from './components/addHotelModal'
 import AddRoomModal from './components/addRoomModal'
 import Coupon from './components/coupon'
+import manageOrder from "./components/manageOrder";
+import ManageHotelModal from "./components/manageHotelModal";
 const moment = require('moment')
 const columns1 = [
-    {  
+    {
         title: '酒店名',
         dataIndex: 'name',
     },
@@ -98,44 +95,7 @@ const columns1 = [
       scopedSlots: { customRender: 'action' },
     },
   ];
-const columns2 = [
-    {  
-        title: '订单号',
-        dataIndex: 'id',
-    },
-    {  
-        title: '酒店名',
-        dataIndex: 'hotelName',
-    },
-    {
-        title: '房型',
-        dataIndex: 'roomType',
-        scopedSlots: { customRender: 'roomType' }
-    },
-    {
-        title: '入住时间',
-        dataIndex: 'checkInDate',
-        scopedSlots: { customRender: 'checkInDate' }
-    },
-    {
-        title: '离店时间',
-        dataIndex: 'checkOutDate',
-        scopedSlots: { customRender: 'checkOutDate' }
-    },
-    {
-        title: '入住人数',
-        dataIndex: 'peopleNum',
-    },
-    {
-        title: '房价',
-        dataIndex: 'price',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      scopedSlots: { customRender: 'action' },
-    },
-  ];
+
 export default {
     name: 'manageHotel',
     data(){
@@ -143,28 +103,35 @@ export default {
             formLayout: 'horizontal',
             pagination: {},
             columns1,
-            columns2,
             form: this.$form.createForm(this, { name: 'manageHotel' }),
+            clickedRecord:{},
+            giveUpVisible:false
         }
     },
     components: {
         AddHotelModal,
         AddRoomModal,
         Coupon,
+        manageOrder,
+        ManageHotelModal,
     },
     computed: {
         ...mapGetters([
+            'userId',
             'orderList',
             'hotelList',
+            'mgrHotelList',
+            'managedOrders',
             'addHotelModalVisible',
             'addRoomModalVisible',
             'activeHotelId',
             'couponVisible',
+            'orderVisible',
         ]),
     },
     async mounted() {
-        await this.getHotelList()
-        await this.getAllOrders()
+
+        await this.getMgrHotelList(this.userId)
     },
     methods: {
         ...mapMutations([
@@ -172,13 +139,20 @@ export default {
             'set_addRoomModalVisible',
             'set_couponVisible',
             'set_activeHotelId',
+            'set_orderVisible',
+            'set_manageHotelVisible',
         ]),
         ...mapActions([
-            'getHotelList',
+            'getMgrHotelList',
             'getAllOrders',
-            'getHotelCoupon'
+            'getHotelCoupon',
+            'checkIn',
+            'checkOut',
+            'getManagedOrders',
+            'getHotelById',
+            'giveUpHotelFunc'
         ]),
-        addHotel() {
+        addHotel() {//没有改后端的
             this.set_addHotelModalVisible(true)
         },
         addRoom(record) {
@@ -188,7 +162,10 @@ export default {
         showCoupon(record) {
             this.set_activeHotelId(record.id)
             this.set_couponVisible(true)
-            this.getHotelCoupon()
+            this.getHotelCoupon(this);
+        },
+        showOrder(record){
+            alert('不是已经够详细了吗');
         },
         deleteHotel(){
 
@@ -196,6 +173,46 @@ export default {
         deleteOrder(){
 
         },
+        cIn(id){
+            this.checkIn(id)
+        },
+        cOut(id){
+            this.checkOut(id);
+
+        },
+        manageOrder(id) {
+            this.set_activeHotelId(id)
+            this.set_orderVisible(true)
+            this.getManagedOrders()
+        },
+        manageHotel(record) {
+            this.clickedRecord=record;
+            // console.log(record)
+            this.set_activeHotelId(record.id)
+            this.set_manageHotelVisible(true)
+        },
+        giveUpHotel(record){
+            this.set_activeHotelId(record.id)
+            this.giveUpVisible=true
+        },
+        giveUpClear(){
+            this.form.setFieldsValue({'email': ''});
+            this.giveUpVisible = false;
+        },
+        giveUpSubmit(e){
+            e.preventDefault();
+            this.form.validateFieldsAndScroll((err, values) => {
+                if(!err){
+                    const data = {
+                        'email':this.form.getFieldValue('email'),
+                        'hotelId':this.activeHotelId
+                    };
+                    this.giveUpHotelFunc(data);
+                    this.giveUpClear();
+                }
+            });
+
+        }
     }
 }
 </script>

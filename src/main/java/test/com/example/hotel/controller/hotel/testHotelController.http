@@ -1,0 +1,44 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+POST http://localhost:8080/api/hotel/addHotel
+Content-Type: application/json
+# 预期：正常添加酒店
+
+{
+  "name": "67酒店",
+  "address": "67de卧室",
+  "hotelStar": "Five",
+  "bizRegion": "XiDan",
+  "rate": "4.4",
+  "description": "67666",
+  "phoneNum": 10086,
+  "managerId": 6
+}
+# 结果：成功通过
+###
+
+
+POST http://localhost:8080/api/hotel/1/333@qq.com/giveUpHotel
+# 预期：把该酒店设置成申请转让中状态
+# 结果：第一次没更新数据库状态；debug后成功通过
+###
+
+POST http://localhost:8080/api/hotel/1/true/acceptOrRefuse
+# 预期：正常转让酒店
+# 结果：成功通过
+###
+
+GET http://localhost:8080/api/hotel/6/hotelMgr
+# 预期：返回相应酒店列表
+# 结果：通过
+###
+
+GET http://localhost:8080/api/hotel/-1/hotelMgr
+# 预期：空表
+# 结果：通过
+###

@@ -5,20 +5,62 @@
     <select id="getAllOrders" resultMap="Order">
         select * from OrderList
     </select>
+
     <select id="getUserOrders" resultMap="Order">
         select * from OrderList where userId=#{userid}
     </select>
+    <select id="getHotelOrders" resultMap="Order">
+        select * from OrderList where hotelId=#{hotelId}
+    </select>
+
+    <select id="getHotelAbOrders" resultMap="Order">
+        select * from OrderList where hotelId=#{hotelId} and orderState='已预订'
+    </select>
+
     <insert id="addOrder" parameterType="com.example.hotel.po.Order" useGeneratedKeys="true" keyProperty="id">
-        insert into OrderList(userId,hotelId,hotelName,checkInDate,checkOutDate,roomType,roomNum,peopleNum,haveChild,createDate,price,clientName,phoneNumber,orderState)
-        values(#{userId},#{hotelId},#{hotelName},#{checkInDate},#{checkOutDate},#{roomType},#{roomNum},#{peopleNum},#{haveChild},#{createDate},#{price},#{clientName},#{phoneNumber},#{orderState})
+        insert into OrderList(userId,hotelId,hotelName,checkInDate,checkOutDate,roomType,roomNum,peopleNum,haveChild,createDate,price,tenantName,phoneNumber,orderState,comment,commentScore)
+        values(#{userId},#{hotelId},#{hotelName},#{checkInDate},#{checkOutDate},#{roomType},#{roomNum},#{peopleNum},#{haveChild},#{createDate},#{price},#{tenantName},#{phoneNumber},#{orderState},#{comment},#{commentScore})
     </insert>
+
     <select id="getOrderById" resultMap="Order">
         select * from OrderList where id=#{orderid}
     </select>
-   <!--取消订单的数据库操作-->
+
+    <update id="updateOrderState">
+        update Orderlist set orderState=#{orderState} where id=#{orderid}
+    </update>
 
 
+    <update id="updateOutTime">
+        update orderlist set checkOutDate=#{checkOutDate} where id=#{id}
+    </update>
+
+
+    <update id="addComment">
+        update orderlist set
+            commentScore=#{commentScore},
+            comment=#{comment}
+        where id=#{orderid}
+    </update>
+    <!--没考虑信用值-->
 
     <resultMap id="Order" type="com.example.hotel.po.Order">
+        <id column="id" property="id"/>
+        <result column="userId" property="userId"/>
+        <result column="hotelId" property="hotelId"/>
+        <result column="hotelName" property="hotelName"/>
+        <result column="checkInDate" property="checkInDate"/>
+        <result column="checkOutDate" property="checkOutDate"/>
+        <result column="roomType" property="roomType"/>
+        <result column="roomNum" property="roomNum"/>
+        <result column="peopleNum" property="peopleNum"/>
+        <result column="haveChild" property="haveChild"/>
+        <result column="createDate" property="createDate"/>
+        <result column="price" property="price"/>
+        <result column="tenantName" property="tenantName"/>
+        <result column="phoneNumber" property="phoneNumber"/>
+        <result column="orderState" property="orderState"/>
+        <result column="comment" property="comment"/>
+        <result column="commentScore" property="commentScore"/>
     </resultMap>
 </mapper>

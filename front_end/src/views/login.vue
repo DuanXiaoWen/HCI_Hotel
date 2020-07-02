@@ -22,6 +22,7 @@
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick"
       >
+
         <a-tab-pane key="tab1" tab="账号密码登录">
           <a-form-item>
             <a-input
@@ -138,7 +139,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'login',
   components: {
-    
+
   },
   data () {
     return {
@@ -197,8 +198,7 @@ export default {
       callback()
     },
     handlePasswordCheck (rule, value, callback) {
-      const password = this.form.getFieldValue('registerPassword')
-      console.log(password)
+      const password = this.form.getFieldValue('registerPassword');
       if (value === undefined) {
         callback(new Error('请输入密码'))
       }
@@ -227,27 +227,46 @@ export default {
 
     handleRegister() {
       const { form: { validateFields } } = this
+
       const validateFieldsKey = this.customActiveKey === 'tab1' ? ['username', 'password'] : ['registerUsername','registerPhoneNumber','registerUserMail','registerPassword','registerPasswordconfirm']
       validateFields(validateFieldsKey, { force: true }, async (err, values) => {
         if (!err) {
-          this.registerLoading = true
+          this.registerLoading = true;
           const data = {
             email: this.form.getFieldValue('registerUserMail'),
             password: this.form.getFieldValue('registerPassword'),
             phoneNumber: this.form.getFieldValue('registerPhoneNumber'),
-            username: this.form.getFieldValue('registerUsername'),
+            userName: this.form.getFieldValue('registerUsername'),
             credit: 100,
-            userType: 1
-          }
-          await this.register(data).then(() => {
-            this.customActiveKey = 'tab1'
-            this.form.setFieldsValue({
-              'registerUserMail': '',
-              'registerPassword': '',
-              'registerPasswordconfirm': ''
-            })
-          })
-          this.registerLoading = false
+            userType: 0
+          };
+
+          await this.register(data).then((response)=>{
+            if(response===null) {
+              this.customActiveKey = 'tab1';
+              this.form.setFieldsValue({
+                'username': this.form.getFieldValue('registerUserMail'),
+                'password': this.form.getFieldValue('registerPassword'),
+                'registerUserMail': '',
+                'registerUsername': '',
+                'registerPhoneNumber': '',
+                'registerPassword': '',
+                'registerPasswordconfirm': '',
+              });
+            }
+            else {
+              this.form.setFieldsValue({
+                'registerUserMail': '',
+                'registerUsername':'',
+                'registerPhoneNumber':'',
+                'registerPassword': '',
+                'registerPasswordconfirm': '',
+              });
+            }
+          }).catch((error)=>{
+            console.log(error);
+          });
+          this.registerLoading = false;
         }
       });
     }

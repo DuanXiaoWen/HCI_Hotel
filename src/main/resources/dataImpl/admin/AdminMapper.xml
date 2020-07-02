@@ -6,7 +6,7 @@
         values(#{email},#{password},#{userType})
     </insert>
     <select id="getAllManagers" resultMap="User">
-        select * from User where usertype='HotelManager'
+        select * from User where usertype='HotelManager' or usertype='WebMarketer'
     </select>
 
 
