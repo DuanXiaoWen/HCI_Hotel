@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 
-@CouponMatchStrategyService(CouponMatchStrategyService.TimeCouponStrategy)
+@CouponMatchStrategyService(CouponMatchStrategyService.TIME_COUPON_STRATEGY)
 public class TimeCouponStrategyImpl implements CouponMatchStrategy {
     /**
      * 判断某个订单是否满足某种限时优惠策略
@@ -20,7 +20,7 @@ public class TimeCouponStrategyImpl implements CouponMatchStrategy {
     @Override
     public boolean isMatch(OrderVO orderVO, Coupon coupon) {
 
-        String orderDate = orderVO.getCreateDate(); //"yyyy-mm-dd"
+        String orderDate = orderVO.getCreateDate();
         LocalDateTime orderTime = LocalDateTime.of(
                 Integer.valueOf(orderDate.substring(0, 4)),
                 Integer.valueOf(orderDate.substring(5, 7)),

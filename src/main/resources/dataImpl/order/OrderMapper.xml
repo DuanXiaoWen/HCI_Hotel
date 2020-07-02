@@ -13,7 +13,7 @@
         select * from OrderList where hotelId=#{hotelId}
     </select>
 
-    <select id="getHotelAbOrders" resultMap="Order">
+    <select id="getHotelAbnormalOrders" resultMap="Order">
         select * from OrderList where hotelId=#{hotelId} and orderState='已预订'
     </select>
 

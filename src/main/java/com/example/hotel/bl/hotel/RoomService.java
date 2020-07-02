@@ -4,6 +4,9 @@ import com.example.hotel.po.HotelRoom;
 
 import java.util.List;
 
+/**
+ * @author 13524
+ */
 public interface RoomService {
 
     /**

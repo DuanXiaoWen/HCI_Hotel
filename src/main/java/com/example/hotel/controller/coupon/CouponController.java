@@ -17,8 +17,8 @@ public class CouponController {
     @PostMapping("/addCoupon")
     public ResponseVO addCoupon(@RequestBody CouponVO couponVO) {
         try {   //虽然这里有try catch, 但如果 HotelTargetMoneyCouponVO 格式不合法(比如价格无法转换成int), 将不会进入这里
-            CouponVO couponVO1 = couponService.addCoupon(couponVO);
-            return ResponseVO.buildSuccess(couponVO1);
+            CouponVO newCouponVO = couponService.addCoupon(couponVO);
+            return ResponseVO.buildSuccess(newCouponVO);
         }
         catch (Exception e) {
             return ResponseVO.buildFailure(e.getMessage());

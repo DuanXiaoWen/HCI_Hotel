@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+/**
+ * @author hmb
+ */
 @Service
 public class CouponServiceImpl implements CouponService {
 
@@ -57,15 +60,18 @@ public class CouponServiceImpl implements CouponService {
         coupon.setDescription(couponVO.getDescription());
         coupon.setCouponType(couponVO.getType());
         coupon.setHotelId(couponVO.getHotelId());
-        if(couponVO.getTarget()!=null)
+        if(couponVO.getTarget()!=null) {
             coupon.setTargetMoney(couponVO.getTarget());
+        }
         coupon.setDiscount(couponVO.getDiscount());
         coupon.setDiscountMoney(couponVO.getDiscountMoney());
-        if(couponVO.getStartTime()!=null)
+        if(couponVO.getStartTime()!=null) {
             coupon.setStartTime(couponVO.getStartTime());
-        if(couponVO.getEndTime()!=null)
+        }
+        if(couponVO.getEndTime()!=null) {
             coupon.setEndTime(couponVO.getEndTime());
-        coupon.setStatus(1);///???
+        }
+        coupon.setStatus(1);
 
         int result = couponMapper.insertCoupon(coupon);
         couponVO.setId(result);

@@ -75,4 +75,18 @@ public class UserVO {
     public String getBirthday() { return birthday; }
 
     public void setBirthday(String birthday) { this.birthday = birthday; }
+
+    @Override
+    public String toString() {
+        return "UserVO{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userName='" + userName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", credit=" + credit +
+                ", userType=" + userType +
+                ", birthday='" + birthday + '\'' +
+                '}';
+    }
 }

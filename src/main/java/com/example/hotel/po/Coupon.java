@@ -33,12 +33,14 @@ public class Coupon {
 
     /**
      * 折扣
+     * 如果采用折扣，这个一定是正数；否则我是0
      */
-    private double discount;//如果采用折扣，这个一定是正数；否则我是0
+    private double discount;
     /**
      * 优惠券优惠金额==立减
+     * 上面那个是0的时候用我
      */
-    private double discountMoney;//上面那个是0的时候用我
+    private double discountMoney;
     /**
      * 可用时间
      */

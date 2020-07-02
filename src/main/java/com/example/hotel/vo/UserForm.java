@@ -53,4 +53,14 @@ public class UserForm {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "UserForm{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userType=" + userType +
+                ", id=" + id +
+                '}';
+    }
 }

@@ -2,6 +2,9 @@ package com.example.hotel.vo;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author 13524
+ */
 public class CouponVO {
 
     private Integer id;
@@ -10,6 +13,24 @@ public class CouponVO {
     private String name;
     private Integer type;
     private Integer hotelId;
+
+    @Override
+    public String toString() {
+        return "CouponVO{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", hotelId=" + hotelId +
+                ", target=" + target +
+                ", discount=" + discount +
+                ", discountMoney=" + discountMoney +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     private Double target;
     private Double discount;
     private Double discountMoney;

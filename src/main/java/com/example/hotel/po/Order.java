@@ -11,7 +11,7 @@ public class Order {
     private Integer userId;
     private Integer hotelId;
     private String hotelName;
-    private String checkInDate;//checkInDateTime
+    private String checkInDate;
     private String checkOutDate;
     private String roomType;
     private Integer roomNum;

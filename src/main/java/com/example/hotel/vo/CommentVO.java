@@ -1,10 +1,23 @@
 package com.example.hotel.vo;
 
+/**
+ * @author 13524
+ */
 public class CommentVO {
     private String userName;
     private String comment;
     private Integer commentScore;
     private String checkOutTime;
+
+    @Override
+    public String toString() {
+        return "CommentVO{" +
+                "userName='" + userName + '\'' +
+                ", comment='" + comment + '\'' +
+                ", commentScore=" + commentScore +
+                ", checkOutTime='" + checkOutTime + '\'' +
+                '}';
+    }
 
     public String getUserName() {
         return userName;

@@ -7,6 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author 黄孟斌
+ * 这是一个注解，打到优惠券匹配类的前面，value填这种优惠的标志值
+ */
 @Service
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
@@ -14,9 +18,9 @@ import java.lang.annotation.Target;
 public @interface CouponMatchStrategyService {
 
     int
-            BirthdayCouponStrategy=1,
-            TargetRoomCouponStrategy=2,
-            TargetMoneyCouponStrategy=3,
-            TimeCouponStrategy = 4;
+            BIRTHDAY_COUPON_STRATEGY =1,
+            TARGET_ROOM_COUPON_STRATEGY =2,
+            TARGET_MONEY_COUPON_STRATEGY =3,
+            TIME_COUPON_STRATEGY = 4;
     int value();
 }

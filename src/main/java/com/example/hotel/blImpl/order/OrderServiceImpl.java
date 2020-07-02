@@ -29,24 +29,19 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final static String RESERVE_ERROR = "预订失败";
-    private final static String DATE_ERROR_Reserve = "宁怎么能预订今天之前的房间???";
-    private final static String DATE_ERROR_CheckIn = "宁怎么来这么晚？？";
+    private final static String DATE_ERROR_RESERVE = "宁怎么能预订今天之前的房间???";
+    private final static String DATE_ERROR_CHECK_IN = "宁怎么来这么晚？？";
     private final static String CREDIT_LACK = "宁的信用分不够了,赶紧充钱吧";
     private final static String ROOM_NUMBER_LACK = "预订房间数量剩余不足";
-    private final static String ANNUl_ERROR = "删除订单失败";
+    private final static String ANNUL_ERROR = "删除订单失败";
     private final static String UPDATE_ERROR = "修改失败";
 
-    private final static String yu_ding = "已预订" ;
-    private final static String che_xiao = "已撤销" ;
-    private final static String check_in = "已执行" ;
-    private final static String check_out = "已退房" ;
-    private final static String ping_jia = "已评价" ;
-    private final static String yi_chang = "异常" ;
-
-
-
-
-
+    private final static String WAITING = "已预订" ;
+    private final static String ANNUL = "已撤销" ;
+    private final static String CHECK_IN = "已执行" ;
+    private final static String CHECK_OUT = "已退房" ;
+    private final static String COMMENT = "已评价" ;
+    private final static String ERROR = "异常" ;
     //private final static String = "" ;
 
     @Autowired
@@ -63,7 +58,9 @@ public class OrderServiceImpl implements OrderService {
         if(accountService.getUserInfo(orderVO.getUserId()).getCredit()<=0){
             return ResponseVO.buildFailure(CREDIT_LACK);
         }
-        int reserveRoomNum = orderVO.getRoomNum();//需要的数量
+        int reserveRoomNum = orderVO.getRoomNum();
+        //需要的数量
+
         int totalNum = hotelService.getRoomTotalNum(orderVO.getHotelId(),orderVO.getRoomType());//该酒店，这种房间的总数量
         int usedNum = this.getUsedNum(orderVO);
         int validNum = totalNum - usedNum;
@@ -75,10 +72,10 @@ public class OrderServiceImpl implements OrderService {
             Date date = new Date(System.currentTimeMillis());
             String curdate = sf.format(date);
             if(curdate.compareTo(orderVO.getCheckInDate())>0){
-                return ResponseVO.buildFailure(DATE_ERROR_Reserve);
+                return ResponseVO.buildFailure(DATE_ERROR_RESERVE);
             }
             orderVO.setCreateDate(curdate);
-            orderVO.setOrderState(yu_ding);
+            orderVO.setOrderState(WAITING);
             User user = accountService.getUserInfo(orderVO.getUserId());
             //orderVO.setTenantName(orderVO.getTenantName());
             orderVO.setPhoneNumber(user.getPhoneNumber());
@@ -114,9 +111,10 @@ public class OrderServiceImpl implements OrderService {
         // 取消订单逻辑的具体实现（注意可能有和别的业务类之间的交互
         try{
             Order order=orderMapper.getOrderById(orderId);
-            if(order.getOrderState().equals(che_xiao))
-                return ResponseVO.buildFailure(ANNUl_ERROR);
-            orderMapper.updateOrderState(orderId, che_xiao);
+            if(order.getOrderState().equals(ANNUL)) {
+                return ResponseVO.buildFailure(ANNUL_ERROR);
+            }
+            orderMapper.updateOrderState(orderId, ANNUL);
             if(notRevocable(order)){
                 User user = accountService.getUserInfo(order.getUserId());
                 user.setCredit(user.getCredit()-order.getPrice()/2);
@@ -125,20 +123,23 @@ public class OrderServiceImpl implements OrderService {
             //hotelService.updateRoomInfo(order.getHotelId(),order.getRoomType(),-order.getRoomNum());
         }catch(Exception e){
             System.out.println(e.getMessage());
-            return ResponseVO.buildFailure(ANNUl_ERROR);
+            return ResponseVO.buildFailure(ANNUL_ERROR);
         }
         return ResponseVO.buildSuccess(true);
     }
 
 
-
-
-
-    private boolean notRevocable(Order order){  //不可撤销，指要扣分的意思。
+    /**
+     * @param order
+     * @return 不可撤销，指要扣分的意思。
+     */
+    private boolean notRevocable(Order order){
 
         SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date curTime = new Date(System.currentTimeMillis());
-        String latestAnnulTime=order.getCheckInDate()+" 08:00:00";//14:00为订单最晚执行时间
+
+        String latestAnnulTime=order.getCheckInDate()+" 08:00:00";
+        //14:00为订单最晚执行时间
         try{
             int result=curTime.compareTo(sf.parse(latestAnnulTime));
             return result>0;
@@ -152,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = this.getAllOrders().stream()
                 .filter(o -> o.getHotelId().equals(orderVO.getHotelId()))
                 .filter(o -> o.getRoomType().equals(orderVO.getRoomType()))
-                .filter(o -> o.getOrderState().equals(yu_ding) || o.getOrderState().equals(check_in)|| o.getOrderState().equals(yi_chang))
+                .filter(o -> o.getOrderState().equals(WAITING) || o.getOrderState().equals(CHECK_IN)|| o.getOrderState().equals(ERROR))
                 .collect(Collectors.toList());
 
         SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
@@ -181,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseVO addComment(OrderVO orderVO) {
         orderMapper.addComment(orderVO.getId(),orderVO.getComment(),orderVO.getCommentScore());
-        orderMapper.updateOrderState(orderVO.getId(),ping_jia);
+        orderMapper.updateOrderState(orderVO.getId(), COMMENT);
         hotelService.addComment(orderVO.getHotelId(),orderVO.getCommentScore());
         return ResponseVO.buildSuccess(true);
     }
@@ -197,7 +198,7 @@ public class OrderServiceImpl implements OrderService {
     public List<CommentVO> getHotelComment(Integer hotelId) {
         return this.getAllOrders().stream()
                 .filter(order -> order.getHotelId().equals(hotelId))
-                .filter(order -> order.getOrderState().equals(ping_jia))
+                .filter(order -> order.getOrderState().equals(COMMENT))
                 .map(this::orderToComment)
                 .collect(Collectors.toList());
     }
@@ -211,6 +212,7 @@ public class OrderServiceImpl implements OrderService {
         commentVO.setUserName(accountService.getUserInfo(order.getUserId()).getUserName());
         return commentVO;
     }
+    @Override
     public ResponseVO checkIn(int id){
         try{
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
@@ -220,17 +222,18 @@ public class OrderServiceImpl implements OrderService {
             Order order=orderMapper.getOrderById(id);
 
             if(curdate.compareTo(order.getCheckOutDate())>=0){
-                return ResponseVO.buildFailure(DATE_ERROR_CheckIn);
+                return ResponseVO.buildFailure(DATE_ERROR_CHECK_IN);
             }
 
             User user = accountService.getUserInfo(order.getUserId());
             user.setCredit(user.getCredit()+order.getPrice());
-            orderMapper.updateOrderState(id, check_in);
+            orderMapper.updateOrderState(id, CHECK_IN);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
         return ResponseVO.buildSuccess(true);
     }
+    @Override
     public ResponseVO checkOut(int id){
         try{
 
@@ -239,7 +242,7 @@ public class OrderServiceImpl implements OrderService {
             String outdate = sf.format(date);
             orderMapper.updateOutTime(id,outdate);
             Order out=orderMapper.getOrderById(id);
-            orderMapper.updateOrderState(id, check_out);
+            orderMapper.updateOrderState(id, CHECK_OUT);
             //System.out.println(id);
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -248,8 +251,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getHotelAbOrders(Integer hotelId){
-        return orderMapper.getHotelAbOrders(hotelId);
+    public List<Order> getHotelAbnormalOrders(Integer hotelId){
+        return orderMapper.getHotelAbnormalOrders(hotelId);
     }
 
 

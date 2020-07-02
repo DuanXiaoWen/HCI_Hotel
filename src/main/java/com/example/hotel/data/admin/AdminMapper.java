@@ -14,7 +14,15 @@ import java.util.List;
 @Repository
 public interface AdminMapper {
 
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
     int addManager(User user);
 
+    /**
+     * @return 所有的酒店人、网站营销人
+     */
     List<User> getAllManagers();
 }

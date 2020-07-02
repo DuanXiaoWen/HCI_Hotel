@@ -6,10 +6,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 13524
+ */
 @Mapper
 @Repository
 public interface CouponMapper {
+
+    /**
+     * 添加优惠
+     * @param coupon
+     * @return
+     */
     int insertCoupon(Coupon coupon);
 
+    /**
+     * @param hotelId
+     * @return
+     */
     List<Coupon> selectByHotelId(Integer hotelId);
 }

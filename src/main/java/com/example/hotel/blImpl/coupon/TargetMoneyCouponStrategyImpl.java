@@ -7,7 +7,7 @@ import com.example.hotel.vo.OrderVO;
 import org.junit.Assert;
 import org.junit.Test;
 
-@CouponMatchStrategyService(CouponMatchStrategyService.TargetMoneyCouponStrategy)
+@CouponMatchStrategyService(CouponMatchStrategyService.TARGET_MONEY_COUPON_STRATEGY)
 public class TargetMoneyCouponStrategyImpl implements CouponMatchStrategy {
 
 

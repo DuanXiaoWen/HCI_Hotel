@@ -1,7 +1,9 @@
 package com.example.hotel.vo;
 
-import com.example.hotel.enums.RoomType;
 
+/**
+ * @author 13524
+ */
 public class RoomVO {
     private Integer id;
     private String roomType;
@@ -47,5 +49,16 @@ public class RoomVO {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomVO{" +
+                "id=" + id +
+                ", roomType='" + roomType + '\'' +
+                ", price=" + price +
+                ", curNum=" + curNum +
+                ", total=" + total +
+                '}';
     }
 }

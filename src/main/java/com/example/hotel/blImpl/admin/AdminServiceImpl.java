@@ -65,9 +65,10 @@ public class AdminServiceImpl implements AdminService {
         }
 
         if (user.getUserType() == UserType.HotelManager) {
-            int ownNum = hotelService.retrieveMgrHotels(user.getId()).size();
-            if (ownNum > 0)
+            int ownNum = hotelService.retrieveManagerHotels(user.getId()).size();
+            if (ownNum > 0) {
                 return ResponseVO.buildFailure(HAS_OWNED_HOTEL);
+            }
         }
 
         return accountService.updateUserType(userForm.getId(), userForm.getUserType());

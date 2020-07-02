@@ -1,9 +1,7 @@
 package com.example.hotel.bl.hotel;
 
-import com.example.hotel.po.HotelRoom;
 import com.example.hotel.util.ServiceException;
 import com.example.hotel.vo.ResponseVO;
-import com.example.hotel.vo.RoomVO;
 import com.example.hotel.vo.HotelVO;
 
 import java.util.List;
@@ -40,17 +38,42 @@ public interface HotelService {
     int getRoomTotalNum(Integer hotelId, String roomType);
 
 
+    /**
+     * @param hotelId id
+     * @param score 分数
+     *  添加评论
+     */
     void addComment(Integer hotelId, Integer score);
     /**
      * 查看酒店管理人员的所有酒店
-     * @param id
-     * @return
+     * @param id 不解释
+     * @return 列表
      */
-    List<HotelVO> retrieveMgrHotels(int id);
+    List<HotelVO> retrieveManagerHotels(int id);
 
+    /**
+     * @param hotelId
+     * @param name
+     * @param address
+     * @param bizRegion
+     * @param description
+     * @param hotelStar
+     * @param phoneNum
+     * @return 更新以上酒店信息入库
+     */
     ResponseVO updateHotelInfo(Integer hotelId, String name, String address, String bizRegion, String description, String hotelStar, String phoneNum);
 
+    /**
+     * @param hotelId 酒店id
+     * @param email 被转让人的邮件
+     * @return 申请酒店转让
+     */
     ResponseVO giveUpHotel(Integer hotelId, String email);
 
+    /**
+     * @param hotelId id
+     * @param accept true表示接受转让，false表示拒绝
+     * @return 接受或拒绝酒店
+     */
     ResponseVO acceptOrRefuseHotel(Integer hotelId, boolean accept);
 }

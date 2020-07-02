@@ -14,7 +14,7 @@
         select * from Hotel where id=#{id}
     </select>
 
-    <select id="selectMgrHotel" resultMap="Hotel">
+    <select id="selectManagerHotel" resultMap="Hotel">
         select * from Hotel where manager_id=#{id}
     </select>
 

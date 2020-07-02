@@ -2,8 +2,9 @@ package com.example.hotel.vo;
 
 
 /**
- * @Author: chenyizong
- * @Date: 2020-02-29
+ * @author chenyizong
+ * @date 2020-02-29
+ *
  */
 public class OrderVO {
     private Integer id;
@@ -158,5 +159,28 @@ public class OrderVO {
 
     public void setCommentScore(Integer commentScore) {
         this.commentScore = commentScore;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderVO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", hotelId=" + hotelId +
+                ", hotelName='" + hotelName + '\'' +
+                ", checkInDate='" + checkInDate + '\'' +
+                ", checkOutDate='" + checkOutDate + '\'' +
+                ", roomType='" + roomType + '\'' +
+                ", roomNum=" + roomNum +
+                ", peopleNum=" + peopleNum +
+                ", haveChild=" + haveChild +
+                ", createDate='" + createDate + '\'' +
+                ", price=" + price +
+                ", tenantName='" + tenantName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", orderState='" + orderState + '\'' +
+                ", comment='" + comment + '\'' +
+                ", commentScore=" + commentScore +
+                '}';
     }
 }

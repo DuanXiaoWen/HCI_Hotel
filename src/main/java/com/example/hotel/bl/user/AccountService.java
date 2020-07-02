@@ -22,7 +22,7 @@ public interface AccountService {
      *
      * @return
      */
-    ResponseVO deleteUser(int userID);
+    ResponseVO deleteUser(int userId);
 
 
     /**
@@ -69,7 +69,7 @@ public interface AccountService {
     /**
      * 根据邮箱获取用户
      * @param email
-     * @return
+     * @return userPO
      */
     User getUserByEmail(String email);
 

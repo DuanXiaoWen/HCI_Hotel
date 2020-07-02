@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-@CouponMatchStrategyService(CouponMatchStrategyService.BirthdayCouponStrategy)
+@CouponMatchStrategyService(CouponMatchStrategyService.BIRTHDAY_COUPON_STRATEGY)
 public class BirthdayCouponStrategyImpl implements CouponMatchStrategy {
 
     @Autowired
@@ -24,16 +24,21 @@ public class BirthdayCouponStrategyImpl implements CouponMatchStrategy {
 
     @Override
     public boolean isMatch(OrderVO orderVO, Coupon coupon) {
+
+
         User user = accountService.getUserInfo(orderVO.getUserId());
 
-        String orderDate = orderVO.getCreateDate(); //"yyyy-mm-dd"
+        String orderDate = orderVO.getCreateDate();
+        //日期格式为："yyyy-mm-dd"
         String birthday = user.getBirthday();
         LocalDateTime orderTime = LocalDateTime.of(
                 Integer.valueOf(orderDate.substring(0, 4)),
                 Integer.valueOf(orderDate.substring(5, 7)),
                 Integer.valueOf(orderDate.substring(8, 10)),
                 0, 0, 0, 0);
-        LocalDateTime birthDate = LocalDateTime.of(
+
+        LocalDateTime birthDate;
+        birthDate = LocalDateTime.of(
                 Integer.valueOf(orderDate.substring(0, 4)),
                 Integer.valueOf(birthday.substring(5, 7)),
                 Integer.valueOf(birthday.substring(8, 10)),

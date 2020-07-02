@@ -59,24 +59,29 @@ public interface OrderService {
      * @return
      */
 
-    List<Order> getHotelAbOrders(Integer hotelId);
+    List<Order> getHotelAbnormalOrders(Integer hotelId);
 
 
+    /**
+     * 添加订单
+     * @param orderVO 订单信息
+     * @return
+     */
     ResponseVO addComment(OrderVO orderVO);
 
 
 
     /**
-     *
-     * @param orderId
-     * @return
+     * 获取酒店评论，根据
+     * @param orderId 订单id
+     * @return 酒店评论
      */
     ResponseVO getCommentByOrderId(Integer orderId);
 
     /**
      * 列表获取某酒店评论
      * @param hotelId
-     * @return
+     * @return 列表
      */
     List<CommentVO> getHotelComment(Integer hotelId);
 

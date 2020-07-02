@@ -3,6 +3,9 @@ package com.example.hotel.vo;
 
 import java.util.List;
 
+/**
+ * @author 13524
+ */
 public class HotelVO {
     private Integer id;
     private String name;

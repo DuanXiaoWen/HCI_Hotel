@@ -5,7 +5,7 @@ import com.example.hotel.po.Coupon;
 import com.example.hotel.util.CouponMatchStrategyService;
 import com.example.hotel.vo.OrderVO;
 
-@CouponMatchStrategyService(CouponMatchStrategyService.TargetRoomCouponStrategy)
+@CouponMatchStrategyService(CouponMatchStrategyService.TARGET_ROOM_COUPON_STRATEGY)
 public class TargetRoomCouponStrategyImpl implements CouponMatchStrategy {
 
 

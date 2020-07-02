@@ -4,7 +4,6 @@ import com.example.hotel.bl.order.OrderService;
 import com.example.hotel.vo.OrderVO;
 import com.example.hotel.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -73,9 +72,8 @@ public class OrderController {
     public ResponseVO checkOut(@PathVariable int id){return  orderService.checkOut(id);}
 
     @GetMapping("/abnormalOrdersOfTheDay")
-    public ResponseVO getHotelAbOrders(@RequestParam Integer hotelId) {
-        //System.out.println("用户："+orderService.getHotelAbOrders(hotelId).get(0).getCheckOutDate());
-        return ResponseVO.buildSuccess(orderService.getHotelAbOrders(hotelId));
+    public ResponseVO getHotelAbnormalOrders(@RequestParam Integer hotelId) {
+        return ResponseVO.buildSuccess(orderService.getHotelAbnormalOrders(hotelId));
     }
 
 

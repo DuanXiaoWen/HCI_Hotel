@@ -25,6 +25,11 @@ import java.util.stream.Collectors;
 @Service
 public class HotelServiceImpl implements HotelService {
     private final static String UPDATE_ERROR = "修改失败";
+    private final static String MANAGER_NULL = "管理员不存在或者无权限！创建酒店失败！";
+    private final static String EMAIL_ERROR = "email出错，没用找到这个人";
+    private final static String NOT_MANAGER = "这个人不是酒店管理人员";
+    private final static String IN_HOTEL_STATE = "该酒店已经在转让中状态";
+    private final static String NOT_HOTEL_STATE = "该酒店不在转让中状态";
 
     @Autowired
     private HotelMapper hotelMapper;
@@ -39,7 +44,7 @@ public class HotelServiceImpl implements HotelService {
     public void addHotel(HotelVO hotelVO) throws ServiceException {
         User manager = accountService.getUserInfo(hotelVO.getManagerId());
         if(manager == null || !manager.getUserType().equals(UserType.HotelManager)){
-            throw new ServiceException("管理员不存在或者无权限！创建酒店失败！");
+            throw new ServiceException(MANAGER_NULL);
         }
         Hotel hotel = new Hotel();
         hotel.setDescription(hotelVO.getDescription());
@@ -72,7 +77,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelVO retrieveHotelDetails(Integer hotelId) {
         HotelVO hotelVO = hotelMapper.selectById(hotelId);
         List<HotelRoom> rooms = roomService.retrieveHotelRoomInfo(hotelId);
-        List<RoomVO> roomVOS = rooms.stream().map(r -> {
+        List<RoomVO> roomVOList = rooms.stream().map(r -> {
             RoomVO roomVO = new RoomVO();
             roomVO.setId(r.getId());
             roomVO.setPrice(r.getPrice());
@@ -81,7 +86,7 @@ public class HotelServiceImpl implements HotelService {
             roomVO.setTotal(r.getTotal());
             return roomVO;
         }).collect(Collectors.toList());
-        hotelVO.setRooms(roomVOS);
+        hotelVO.setRooms(roomVOList);
 
         return hotelVO;
     }
@@ -92,12 +97,12 @@ public class HotelServiceImpl implements HotelService {
         hotelVO.setTotalCommentScore(hotelVO.getTotalCommentScore()+score);
         hotelVO.setCommentNumber(hotelVO.getCommentNumber()+1);
         hotelVO.setRate(((double)hotelVO.getTotalCommentScore())/((double)hotelVO.getCommentNumber()));
-        Hotel hotel = this.hotelVO_TO_Hotel(hotelVO);
+        Hotel hotel = this.hotelVoToHotel(hotelVO);
         hotelMapper.updateHotel(hotel);
     }
     @Override
-    public  List<HotelVO> retrieveMgrHotels(@RequestParam int id){
-        return hotelMapper.selectMgrHotel(id);
+    public  List<HotelVO> retrieveManagerHotels(@RequestParam int id){
+        return hotelMapper.selectManagerHotel(id);
     };
 
     @Override
@@ -115,16 +120,16 @@ public class HotelServiceImpl implements HotelService {
     public ResponseVO giveUpHotel(Integer hotelId, String email) {
         User user = accountService.getUserByEmail(email);
         if(user == null){
-            return ResponseVO.buildFailure("email出错，没用找到这个人");
+            return ResponseVO.buildFailure(EMAIL_ERROR);
         }
         else if(user.getUserType()!=UserType.HotelManager){
-            return ResponseVO.buildFailure("这个人不是酒店管理人员");
+            return ResponseVO.buildFailure(NOT_MANAGER);
         }
         HotelVO hotelVO = hotelMapper.selectById(hotelId);
         if(hotelVO.getHotelState()>=0){
-            return ResponseVO.buildFailure("该酒店已经在转让中状态");
+            return ResponseVO.buildFailure(IN_HOTEL_STATE);
         }
-        Hotel hotel = hotelVO_TO_Hotel(hotelVO);
+        Hotel hotel = hotelVoToHotel(hotelVO);
         hotel.setHotelState(user.getId());
         hotelMapper.updateHotel(hotel);
         return ResponseVO.buildSuccess(true);
@@ -134,9 +139,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public ResponseVO acceptOrRefuseHotel(Integer hotelId, boolean accept) {
-        Hotel hotel = hotelVO_TO_Hotel(hotelMapper.selectById(hotelId));
+        Hotel hotel = hotelVoToHotel(hotelMapper.selectById(hotelId));
         if(hotel.getHotelState()==-1){
-            return ResponseVO.buildFailure("该酒店不在转让中状态");
+            return ResponseVO.buildFailure(NOT_HOTEL_STATE);
         }
         if(accept){
             hotel.setManagerId(hotel.getHotelState());
@@ -146,7 +151,7 @@ public class HotelServiceImpl implements HotelService {
         return ResponseVO.buildSuccess(true);
     }
 
-    private Hotel hotelVO_TO_Hotel(HotelVO hotelVO){
+    private Hotel hotelVoToHotel(HotelVO hotelVO){
         Hotel hotel = new Hotel();
         BeanUtils.copyProperties(hotelVO,hotel);
         hotel.setBizRegion(BizRegion.valueOf(hotelVO.getBizRegion()));

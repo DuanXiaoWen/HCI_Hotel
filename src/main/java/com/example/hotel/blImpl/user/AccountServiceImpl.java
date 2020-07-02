@@ -33,9 +33,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseVO deleteUser(int userID) {
+    public ResponseVO deleteUser(int userId) {
         try{
-            accountMapper.deleteAccount(userID);
+            accountMapper.deleteAccount(userId);
             return ResponseVO.buildSuccess(true);
         }catch (Exception e){
             System.out.println(e.getMessage());

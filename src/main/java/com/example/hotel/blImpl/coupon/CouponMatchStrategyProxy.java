@@ -9,11 +9,30 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+/**
+ * @author 黄孟斌
+ * @date 2020/05/11
+ * 这个类代理了CouponMatchStrategy接口下的其他所有类，对于各种优惠类型的判断函数都应该由它进行转发
+ */
 @Service
 public class CouponMatchStrategyProxy implements CouponMatchStrategy {
 
+
+    /**
+     * 集中管理所有的优惠判断服务类，key是类承担判断的优惠券类型，value是具体的对象引用
+     */
     private final Map<Integer,CouponMatchStrategy> strategyMap = new HashMap<>();
 
+
+
+    /**
+     * 构造方法：     *
+     * @param applicationContext spring的上下文
+     *
+     * 根据上下文获取spring里面所有的bean容器，筛选出贴有  @CouponMatchStrategyService 标记的对象。
+     *   通过反射获取 该注解内的value值
+     *   将它们其放入{字典}内集中管理
+     */
     @Autowired
     public CouponMatchStrategyProxy(ApplicationContext applicationContext) {
         System.out.println("\033[35;0m优惠策略信息如下\033[0m:");
@@ -30,8 +49,22 @@ public class CouponMatchStrategyProxy implements CouponMatchStrategy {
         });
     }
 
+
+    /**
+     * @param orderVO 订单
+     * @param coupon  优惠券
+     * @return 是否匹配
+     */
     @Override
     public boolean isMatch(OrderVO orderVO, Coupon coupon) {
-        return this.strategyMap.get(coupon.getCouponType()).isMatch(orderVO, coupon);
+        try {
+            return this.strategyMap.get(coupon.getCouponType()).isMatch(orderVO, coupon);
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            System.err.println("出现了后端没见过的优惠类型，前端同学是不是传错值了?");
+            System.err.println(coupon);
+            return false;
+        }
     }
 }
