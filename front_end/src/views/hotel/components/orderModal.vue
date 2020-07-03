@@ -205,6 +205,7 @@ export default {
         changeDate(v) {
             if(this.totalPrice !== ''){
                 this.totalPrice = this.form.getFieldValue('roomNum') * moment(v[1]).diff(moment(v[0]), 'day') * Number(this.currentOrderRoom.price)
+                this.finalPrice = this.totalPrice
             }
         },
         changePeopleNum(v){
@@ -212,6 +213,7 @@ export default {
         },
         changeRoomNum(v) {
             this.totalPrice = Number(v) * Number(this.currentOrderRoom.price) * moment(this.form.getFieldValue('date')[1]).diff(moment(this.form.getFieldValue('date')[0]),'day')
+            this.finalPrice = this.totalPrice
         },
         onchange() {
             this.finalPrice = this.totalPrice

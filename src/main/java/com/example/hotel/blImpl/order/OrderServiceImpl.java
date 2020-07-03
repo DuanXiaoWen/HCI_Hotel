@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseVO addOrder(OrderVO orderVO) {
 
-        if(accountService.getUserInfo(orderVO.getUserId()).getCredit()<=0){
+        if(accountService.getUserInfo(orderVO.getUserId()).getCredit()==null||accountService.getUserInfo(orderVO.getUserId()).getCredit()<=0){
             return ResponseVO.buildFailure(CREDIT_LACK);
         }
         int reserveRoomNum = orderVO.getRoomNum();

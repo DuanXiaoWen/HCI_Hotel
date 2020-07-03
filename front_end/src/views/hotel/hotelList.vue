@@ -165,6 +165,15 @@ export default {
       'allRoomList'
     ]),
       currentHotelList(){
+
+          let getHotelStar = function (value) {
+              if(value==='Three')return 3;
+              if(value==='Four')return 4;
+              if(value==='Five')return 5;
+              return 0;
+          }
+
+
           //hotelList是加载下来所有的酒店，currentHotelList是处理后的，比如排序、筛选；最后才分页（可选
 
         let {hotelList, searchNames} = this;
@@ -277,14 +286,14 @@ export default {
                   return (a.minRoomPrice - b.minRoomPrice);
               });
               console.log("价格",res);
-          } else if (this.sortKey=="comment") {
+          } else if (this.sortKey==="comment") {
               res=res.sort(function (a, b) {
                   return (b.rate - a.rate);
               });
               console.log("评分",res);
-          } else if (this.sortKey=="rank") {
-              res=res.sort(function (a, b) {
-                  return (a.hotelStar <= b.hotelStar);
+          } else if (this.sortKey==="rank") {
+              res=res.sort(function (b, a) {
+                  return (getHotelStar( a.hotelStar ) - getHotelStar(b.hotelStar));
                   //return ((a.hotelStar == 'five')||((a.hotelStar == 'four')&&(b.hotelStar != 'five'))||((a.hotelStar == 'three')&&(b.hotelStar == 'three')));
               });
               console.log("星级",res);
@@ -318,7 +327,8 @@ export default {
     },
     jumpToDetails(id){
       this.$router.push({ name: 'hotelDetail', params: { hotelId: id }})
-    }
+    },
+
   }
 }
 </script>
