@@ -28,9 +28,7 @@
 
                 </a-table>
             </a-tab-pane>
-            <a-tab-pane tab="客户管理" key="2">
 
-            </a-tab-pane>
         </a-tabs>
         <AddManagerModal></AddManagerModal>
         <ChangeUserTypeModal></ChangeUserTypeModal>

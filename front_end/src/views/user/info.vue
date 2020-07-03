@@ -11,8 +11,7 @@
                             <a-button size="small" type="primary" @click="acceptOrRefuse(line,{'accept':true})" >同意</a-button>
                             <a-button size="small" type="danger" @click="acceptOrRefuse(line,{'accept':false})" >拒绝</a-button>
                         </a-list-item>
-                    </a-list>
-                    <a-list>
+
                         <a-list-item :key="index" v-for="(line, index) in applicationList">
                             你申请的将 {{line.hotelName}} 转让给 {{line.userName}} 正在等待回复
                             <a-button size="small" type="danger" @click="acceptOrRefuse(line,{'accept':false})">撤回请求</a-button>

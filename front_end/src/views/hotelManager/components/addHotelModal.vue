@@ -107,7 +107,7 @@ export default {
                         managerId: Number(this.userId)
                     }
                     this.set_addHotelParams(data)
-                    this.addHotel()
+                    this.addHotel(this.userId)
                 }
             });
         },

@@ -101,9 +101,7 @@ const hotelManager = {
     },
     actions: {
         getMgrHotelList: async ({state, commit}, id) => {
-
             const res = await mgrHotelListAPI(id)
-
             if (res) {
                 commit('set_mgrHotelList', res)
             }
@@ -114,10 +112,11 @@ const hotelManager = {
                 commit('set_orderList', res)
             }
         },
-        addHotel: async({ state, dispatch, commit }) => {
+        addHotel: async({ state, dispatch, commit } ,managerId) => {
             const res = await addHotelAPI(state.addHotelParams)
             if(res){
                 dispatch('getHotelList')
+                dispatch('getMgrHotelList',managerId)
                 commit('set_addHotelParams', {
                     name: '',
                     address: '',
@@ -128,6 +127,7 @@ const hotelManager = {
                     phoneNum:'',
                     managerId:'',
                 })
+
                 commit('set_addHotelModalVisible', false)
                 message.success('添加成功')
             }else{
