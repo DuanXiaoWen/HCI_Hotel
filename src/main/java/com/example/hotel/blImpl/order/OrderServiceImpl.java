@@ -79,12 +79,10 @@ public class OrderServiceImpl implements OrderService {
             orderVO.setCreateDate(curdate);
             orderVO.setOrderState(WAITING);
             User user = accountService.getUserInfo(orderVO.getUserId());
-            //orderVO.setTenantName(orderVO.getTenantName());
             orderVO.setPhoneNumber(user.getPhoneNumber());
             Order order = new Order();
             BeanUtils.copyProperties(orderVO,order);
             orderMapper.addOrder(order);
-            //hotelService.updateRoomInfo(orderVO.getHotelId(),orderVO.getRoomType(),orderVO.getRoomNum());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseVO.buildFailure(RESERVE_ERROR);
@@ -189,14 +187,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseVO checkOut(int id){
         try{
-
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
             String outdate = sf.format(date);
             orderMapper.updateOutTime(id,outdate);
-            Order out=orderMapper.getOrderById(id);
             orderMapper.updateOrderState(id, CHECK_OUT);
-            //System.out.println(id);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -210,8 +205,9 @@ public class OrderServiceImpl implements OrderService {
 
 
     /**
+     * 根据业务规则，入住当天 08:00 之后才强行取消，要扣他的分
      * @param order 订单
-     * @return 不可撤销，指要扣分的意思。
+     * @return 是否不可撤销，返回true指要扣分。
      */
     private boolean notRevocable(Order order){
 
@@ -230,7 +226,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 从数据库搞到指定日期内，指定房间的订单信息，统计它们每一天的使用量
+     * 从数据库搞到指定日期内、指定房间的订单信息，统计它们每一天的使用量
      * @param orderVO 尝试新增的订单的所有信息
      * @return 房间使用量，已经数学证明，其等于每一天的使用量的最大值
      */

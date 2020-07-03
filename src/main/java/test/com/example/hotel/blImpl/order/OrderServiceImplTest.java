@@ -2,6 +2,7 @@ package test.com.example.hotel.blImpl.order;
 
 import com.example.hotel.blImpl.order.OrderServiceImpl;
 import com.example.hotel.po.Order;
+import com.example.hotel.vo.OrderVO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before; 
@@ -22,11 +23,16 @@ public class OrderServiceImplTest {
 
     private OrderServiceImpl orderServiceImpl = new OrderServiceImpl();
     private Method notRevocable;
+    private Method getUsedNum;
 
     @Before
     public void before() throws Exception {
         notRevocable = OrderServiceImpl.class.getDeclaredMethod("notRevocable", Order.class);
         notRevocable.setAccessible(true);
+        //强行把某个方法设置成public
+
+        getUsedNum = OrderServiceImpl.class.getDeclaredMethod("getUsedNum", OrderVO.class);
+        getUsedNum.setAccessible(true);
         //强行把某个方法设置成public
     }
 
@@ -53,6 +59,7 @@ public class OrderServiceImplTest {
         order.setCheckInDate("2021-06-27");
         assert (notRevocable.invoke(orderServiceImpl,order).equals(false));
     }
+
 
 
 } 
