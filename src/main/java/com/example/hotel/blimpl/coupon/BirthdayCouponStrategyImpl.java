@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.coupon;
+package com.example.hotel.blimpl.coupon;
 
 import com.example.hotel.bl.coupon.CouponMatchStrategy;
 import com.example.hotel.bl.user.AccountService;
@@ -35,16 +35,16 @@ public class BirthdayCouponStrategyImpl implements CouponMatchStrategy {
         //日期格式为："yyyy-mm-dd"
         String birthday = user.getBirthday();
         LocalDateTime orderTime = LocalDateTime.of(
-                Integer.valueOf(orderDate.substring(0, 4)),
-                Integer.valueOf(orderDate.substring(5, 7)),
-                Integer.valueOf(orderDate.substring(8, 10)),
+                Integer.parseInt(orderDate.substring(0, 4)),
+                Integer.parseInt(orderDate.substring(5, 7)),
+                Integer.parseInt(orderDate.substring(8, 10)),
                 0, 0, 0, 0);
 
         LocalDateTime birthDate;
         birthDate = LocalDateTime.of(
-                Integer.valueOf(orderDate.substring(0, 4)),
-                Integer.valueOf(birthday.substring(5, 7)),
-                Integer.valueOf(birthday.substring(8, 10)),
+                Integer.parseInt(orderDate.substring(0, 4)),
+                Integer.parseInt(birthday.substring(5, 7)),
+                Integer.parseInt(birthday.substring(8, 10)),
                 0, 0, 0, 0);
 
         return orderTime.equals(birthDate);

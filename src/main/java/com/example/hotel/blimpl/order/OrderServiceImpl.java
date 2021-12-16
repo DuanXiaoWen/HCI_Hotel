@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.order;
+package com.example.hotel.blimpl.order;
 
 import com.example.hotel.bl.hotel.HotelService;
 import com.example.hotel.bl.order.OrderService;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @Author: chenyizong
- * @Date: 2020-03-04
+ * @author chenyizong
+ * @date 2020-03-04
  */
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,15 +32,20 @@ public class OrderServiceImpl implements OrderService {
     private final static String CREDIT_LACK = "宁的信用分不够了,赶紧充钱吧";
     private final static String ROOM_NUMBER_LACK = "预订房间数量剩余不足";
     private final static String ANNUL_ERROR = "删除订单失败";
-    private final static String UPDATE_ERROR = "修改失败";
 
     private final static String WAITING = "已预订" ;
     private final static String ANNUL = "已撤销" ;
     private final static String CHECK_IN = "已执行" ;
     private final static String CHECK_OUT = "已退房" ;
     private final static String COMMENT = "已评价" ;
+
+
+    /**
+     * 改名慎重！“异常”这个词在hotel.sql中被某个事务使用过.
+     */
     private final static String ERROR = "异常" ;
-    //private final static String = "" ;
+
+
 
     @Autowired
     OrderMapper orderMapper;

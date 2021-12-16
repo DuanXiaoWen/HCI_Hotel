@@ -1,7 +1,7 @@
 package test.com.example.hotel.blImpl.coupon; 
 
 import com.example.hotel.bl.coupon.CouponMatchStrategy;
-import com.example.hotel.blImpl.coupon.TimeCouponStrategyImpl;
+import com.example.hotel.blimpl.coupon.TimeCouponStrategyImpl;
 import com.example.hotel.po.Coupon;
 import com.example.hotel.vo.OrderVO;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.user;
+package com.example.hotel.blimpl.user;
 
 import com.example.hotel.bl.user.AccountService;
 import com.example.hotel.data.user.AccountMapper;

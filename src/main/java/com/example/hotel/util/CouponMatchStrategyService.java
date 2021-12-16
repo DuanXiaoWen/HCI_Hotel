@@ -18,9 +18,9 @@ import java.lang.annotation.Target;
 public @interface CouponMatchStrategyService {
 
     int
-            BIRTHDAY_COUPON_STRATEGY =1,
-            TARGET_ROOM_COUPON_STRATEGY =2,
-            TARGET_MONEY_COUPON_STRATEGY =3,
+            BIRTHDAY_COUPON_STRATEGY = 1,
+            TARGET_ROOM_COUPON_STRATEGY = 2,
+            TARGET_MONEY_COUPON_STRATEGY = 3,
             TIME_COUPON_STRATEGY = 4;
     int value();
 }

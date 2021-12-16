@@ -1,6 +1,6 @@
 package test.com.example.hotel.blImpl.coupon; 
 
-import com.example.hotel.blImpl.coupon.TargetRoomCouponStrategyImpl;
+import com.example.hotel.blimpl.coupon.TargetRoomCouponStrategyImpl;
 import com.example.hotel.po.Coupon;
 import com.example.hotel.vo.OrderVO;
 import org.junit.Assert;

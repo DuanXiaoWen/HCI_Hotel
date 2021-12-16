@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.hotel;
+package com.example.hotel.blimpl.hotel;
 
 import com.example.hotel.bl.hotel.RoomService;
 import com.example.hotel.data.hotel.RoomMapper;

@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.admin;
+package com.example.hotel.blimpl.admin;
 
 import com.example.hotel.bl.admin.AdminService;
 import com.example.hotel.bl.user.AccountService;

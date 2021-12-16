@@ -1,16 +1,13 @@
 package test.com.example.hotel.blImpl.order; 
 
-import com.example.hotel.blImpl.order.OrderServiceImpl;
+import com.example.hotel.blimpl.order.OrderServiceImpl;
 import com.example.hotel.po.Order;
 import com.example.hotel.vo.OrderVO;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 /** 
 * OrderServiceImpl Tester. 

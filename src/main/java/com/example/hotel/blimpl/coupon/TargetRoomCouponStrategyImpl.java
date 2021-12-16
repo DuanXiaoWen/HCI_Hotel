@@ -1,4 +1,4 @@
-package com.example.hotel.blImpl.coupon;
+package com.example.hotel.blimpl.coupon;
 
 import com.example.hotel.bl.coupon.CouponMatchStrategy;
 import com.example.hotel.po.Coupon;
