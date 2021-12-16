@@ -12,14 +12,17 @@ File Encoding         : 65001
 
 Date: 2020-07-03 19:18:08
 */
+drop database if exists hotel;
+create database hotel;
+use hotel;
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for coupon
 -- ----------------------------
-DROP TABLE IF EXISTS `coupon`;
-CREATE TABLE `coupon` (
+DROP TABLE IF EXISTS `Coupon`;
+CREATE TABLE `Coupon` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `description` varchar(255) DEFAULT NULL,
                         `hotelId` int(11) DEFAULT '-1',
@@ -37,13 +40,13 @@ CREATE TABLE `coupon` (
 -- ----------------------------
 -- Records of coupon
 -- ----------------------------
-INSERT INTO `coupon` VALUES ('2', '满500-100优惠', '2', '3', '满减优惠券', '500', '0', '1', null, null, '100');
+INSERT INTO `Coupon` VALUES ('2', '满500-100优惠', '2', '3', '满减优惠券', '500', '0', '1', null, null, '100');
 
 -- ----------------------------
 -- Table structure for hotel
 -- ----------------------------
-DROP TABLE IF EXISTS `hotel`;
-CREATE TABLE `hotel` (
+DROP TABLE IF EXISTS Hotel;
+CREATE TABLE Hotel (
                        `id` int(11) NOT NULL AUTO_INCREMENT,
                        `hotelName` varchar(255) NOT NULL,
                        `hotelDescription` varchar(255) DEFAULT NULL,
@@ -62,15 +65,15 @@ CREATE TABLE `hotel` (
 -- ----------------------------
 -- Records of hotel
 -- ----------------------------
-INSERT INTO `hotel` VALUES ('1', '汉庭酒店', '欢迎您入住', null, 'XiDan', 'Four', '1829373819', '4.8', '-1', '6', '5', '24');
-INSERT INTO `hotel` VALUES ('2', '儒家酒店', '欢迎您入住', '南京市鼓楼区珠江路268号', 'XiDan', 'Four', '1829373819', '4.8', '-1', '6', '5', '24');
-INSERT INTO `hotel` VALUES ('3', '桂圆酒店', '欢迎您入住', '南京市栖霞区珠江路268号', 'XiDan', 'Four', '1829553719', '4.8', '-1', '6', '5', '24');
+INSERT INTO Hotel VALUES ('1', '汉庭酒店', '欢迎您入住', null, 'XiDan', 'Four', '1829373819', '4.8', '-1', '6', '5', '24');
+INSERT INTO Hotel VALUES ('2', '儒家酒店', '欢迎您入住', '南京市鼓楼区珠江路268号', 'XiDan', 'Four', '1829373819', '4.8', '-1', '6', '5', '24');
+INSERT INTO Hotel VALUES ('3', '桂圆酒店', '欢迎您入住', '南京市栖霞区珠江路268号', 'XiDan', 'Four', '1829553719', '4.8', '-1', '6', '5', '24');
 
 -- ----------------------------
 -- Table structure for orderlist
 -- ----------------------------
-DROP TABLE IF EXISTS `orderlist`;
-CREATE TABLE `orderlist` (
+DROP TABLE IF EXISTS OrderList;
+CREATE TABLE OrderList (
                            `id` int(11) NOT NULL AUTO_INCREMENT,
                            `userId` int(11) DEFAULT NULL,
                            `hotelId` int(11) DEFAULT NULL,
@@ -98,8 +101,8 @@ CREATE TABLE `orderlist` (
 -- ----------------------------
 -- Table structure for room
 -- ----------------------------
-DROP TABLE IF EXISTS `room`;
-CREATE TABLE `room` (
+DROP TABLE IF EXISTS `Room`;
+CREATE TABLE Room(
                       `id` int(11) NOT NULL AUTO_INCREMENT,
                       `price` double DEFAULT NULL,
                       `curNum` int(11) DEFAULT NULL,
@@ -112,16 +115,16 @@ CREATE TABLE `room` (
 -- ----------------------------
 -- Records of room
 -- ----------------------------
-INSERT INTO `room` VALUES ('2', '199', '20', '20', '1', 'BigBed');
-INSERT INTO `room` VALUES ('3', '299', '30', '30', '1', 'DoubleBed');
-INSERT INTO `room` VALUES ('4', '399', '10', '10', '1', 'Family');
-INSERT INTO `room` VALUES ('6', '399', '10', '10', '2', 'Family');
+INSERT INTO Room VALUES ('2', '199', '20', '20', '1', 'BigBed');
+INSERT INTO Room VALUES ('3', '299', '30', '30', '1', 'DoubleBed');
+INSERT INTO Room VALUES ('4', '399', '10', '10', '1', 'Family');
+INSERT INTO Room VALUES ('6', '399', '10', '10', '2', 'Family');
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS User;
+CREATE TABLE User (
                       `id` int(11) NOT NULL AUTO_INCREMENT,
                       `email` varchar(255) DEFAULT NULL,
                       `password` varchar(11) NOT NULL,
@@ -137,11 +140,11 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('3', '2636221659@qq.com', '67is666', '网站管理员', '+86 188...', '100', 'Manager', '1999/05/20');
-INSERT INTO `user` VALUES ('4', '1012681@qq.com', '123456', '用户1', '12345678919', '100', 'Client', '1993/05/20');
-INSERT INTO `user` VALUES ('5', '123@qq.com', '123456', '用户2', '12345678911', '100', 'Client', '1999/09/20');
-INSERT INTO `user` VALUES ('6', '333@qq.com', '123456', 'jd工作人员', null, null, 'HotelManager', '1967/06/07');
-INSERT INTO `user` VALUES ('7', '67666@qq.com', '123456', '网站营销人员', '10086', '1000', 'WebMarketer', '1967/06/07');
+INSERT INTO User VALUES ('3', '2636221659@qq.com', '67is666', '网站管理员', '+86 188...', '100', 'Manager', '1999/05/20');
+INSERT INTO User VALUES ('4', '1012681@qq.com', '123456', '用户1', '12345678919', '100', 'Client', '1993/05/20');
+INSERT INTO User VALUES ('5', '123@qq.com', '123456', '用户2', '12345678911', '100', 'Client', '1999/09/20');
+INSERT INTO User VALUES ('6', '333@qq.com', '123456', 'jd工作人员', null, null, 'HotelManager', '1967/06/07');
+INSERT INTO User VALUES ('7', '67666@qq.com', '123456', '网站营销人员', '10086', '1000', 'WebMarketer', '1967/06/07');
 
 -- ----------------------------
 -- Procedure structure for e_test
