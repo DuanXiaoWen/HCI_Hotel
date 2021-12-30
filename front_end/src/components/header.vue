@@ -43,10 +43,6 @@
                     <a-icon type="home"></a-icon>
                     首页
                 </a-menu-item>
-                <a-menu-item @click="jumpToUserInfo()">
-                    <a-icon type="profile"></a-icon>
-                    我的信息
-                </a-menu-item>
                 <a-menu-item @click="quit()">
                     <a-icon type="poweroff"></a-icon>
                     退出登录

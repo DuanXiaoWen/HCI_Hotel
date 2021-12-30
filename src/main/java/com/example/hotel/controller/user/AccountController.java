@@ -43,9 +43,9 @@ public class AccountController {
         return ResponseVO.buildSuccess(user);
     }
 
-    @PostMapping("/{id}/userInfo/update")
+    @PostMapping("/{id}/userInfo/updateBaseInfo")
     public ResponseVO updateInfo(@RequestBody UserInfoVO userInfoVO,@PathVariable int id){
-        return accountService.updateUserInfo(id,userInfoVO.getPassword(),userInfoVO.getUserName(),userInfoVO.getPhoneNumber());
+        return accountService.updateUserBaseInfo(id,userInfoVO.getUserName(),userInfoVO.getPhoneNumber());
 
     }
 

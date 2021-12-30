@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final static String ACCOUNT_EXIST = "账号已存在";
-    private final static String UPDATE_ERROR = "修改失败";
+    private final static String UPDATE_ERROR = "修改失败～";
     @Autowired
     private AccountMapper accountMapper;
 
@@ -62,9 +62,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ResponseVO updateUserInfo(int id, String password, String username, String phonenumber) {
+    public ResponseVO updateUserBaseInfo(int id,  String username, String phonenumber) {
         try {
-            accountMapper.updateAccount(id, password, username, phonenumber);
+            accountMapper.updateAccountBaseInfo(id, username, phonenumber);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseVO.buildFailure(UPDATE_ERROR);

@@ -15,8 +15,8 @@
         select * from User where id=#{id}
     </select>
 
-    <update id="updateAccount">
-        update User set password=#{password},username=#{userName},phonenumber=#{phoneNumber}
+    <update id="updateAccountBaseInfo">
+        update User set username=#{userName},phonenumber=#{phoneNumber}
         where id=#{id}
     </update>
 

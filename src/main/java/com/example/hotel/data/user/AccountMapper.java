@@ -34,12 +34,11 @@ public interface AccountMapper {
     /**
      * 更新用户信息
      * @param id
-     * @param password
      * @param username
      * @param phonenumber
      * @return
      */
-     int updateAccount(@Param("id") int id, @Param("password") String password,@Param("userName") String username, @Param("phoneNumber") String phonenumber);
+     int updateAccountBaseInfo(@Param("id") int id, @Param("userName") String username, @Param("phoneNumber") String phonenumber);
 
      void deleteAccount(@Param("id")int id);
     /**
