@@ -54,11 +54,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public User getUserInfo(int id) {
-        User user = accountMapper.getAccountById(id);
-        if (user == null) {
-            return null;
-        }
-        return user;
+        return accountMapper.getAccountById(id);
     }
 
     @Override

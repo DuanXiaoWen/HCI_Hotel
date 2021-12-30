@@ -18,14 +18,13 @@ public interface AccountMapper {
     /**
      * 创建一个新的账号
      *
-     * @return
+     * @return int
      */
      int createNewAccount(User user);
 
     /**
      * 根据用户名查找账号
-     * @param email
-     * @return
+     * @return User
      */
      User getAccountByName(@Param("email") String email);
 
@@ -33,27 +32,25 @@ public interface AccountMapper {
 
     /**
      * 更新用户信息
-     * @param id
-     * @param username
-     * @param phonenumber
-     * @return
+     * @param id - int
+     * @param username - String
+     * @param phonenumber - String
+     * @return - int
      */
      int updateAccountBaseInfo(@Param("id") int id, @Param("userName") String username, @Param("phoneNumber") String phonenumber);
 
      void deleteAccount(@Param("id")int id);
     /**
      * 更新用户信用值
-     * @param id
-     * @param credit
-     * @return
+     * @param id - int
+     * @param credit - double
      */
     void updateCredit(@Param("id")int id, @Param("credit")double credit);
 
     /**
      * 更新用户职业
-     * @param id
-     * @param usertype
-     * @return
+     * @param id - int
+     * @param usertype - String
      */
     void updateUserType(@Param("id")int id, @Param("usertype")String usertype);
 }
