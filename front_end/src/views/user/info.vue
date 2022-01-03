@@ -104,6 +104,44 @@
                 </a-table>
             </a-tab-pane>
 
+            <a-tab-pane tab="修改密码" key="4">
+              <a-form-model ref="ruleForm"  :model="changePwdForm" :rules="rules" style="margin-top: 30px" v-bind="layout">
+
+                <a-form-model-item has-feedback label="旧密码"  prop="oldPass">
+                  <a-input
+                      v-model="changePwdForm.oldPass"
+                      type="password"
+                      autocomplete="off"
+
+                  />
+                </a-form-model-item>
+
+
+                <a-form-model-item has-feedback label="新密码" prop="pass">
+                    <a-input
+                        v-model="changePwdForm.pass"
+                        type="password"
+                        autocomplete="off"
+                    />
+                </a-form-model-item>
+
+                <a-form-model-item has-feedback label="确认新密码" prop="checkPass">
+                  <a-input
+                      v-model="changePwdForm.checkPass"
+                      type="password"
+                      autocomplete="off"
+                  />
+                </a-form-model-item>
+
+                <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+                  <a-button type="primary" @click="submitPwdForm()">
+                    确认修改
+                  </a-button>
+                </a-form-model-item>
+              </a-form-model>
+
+             </a-tab-pane>
+
 
 
         </a-tabs>
@@ -160,6 +198,32 @@ const columns = [
 export default {
     name: 'info',
     data(){
+      let checkOldPassword = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入旧密码'));
+        } else {
+          callback();
+        }
+      };
+      let validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入新密码'));
+        } else {
+          if (this.changePwdForm.checkPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      let validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入新密码'));
+        } else if (value !== this.changePwdForm.pass) {
+          callback(new Error("密码输入不一致！"));
+        } else {
+          callback();
+        }
+      };
         return {
             order:{},
             modify: false,
@@ -168,6 +232,20 @@ export default {
             columns,
             data: [],
             form: this.$form.createForm(this, { name: 'coordinated' }),
+            changePwdForm: {
+              pass: '',
+              checkPass: '',
+              oldPass: '',
+            },
+            rules: {
+              pass: [{ validator: validatePass, trigger: 'change' }],
+              checkPass: [{ validator: validatePass2, trigger: 'change' }],
+              oldPass: [{ validator: checkOldPassword, trigger: 'change' }],
+            },
+            layout: {
+              labelCol: { span: 3 },
+              wrapperCol: { span: 8,offset: 1 },
+            },
             replyList:[],
             applicationList:[]
 
@@ -192,8 +270,8 @@ export default {
         if(this.userInfo.userType==='HotelManager'){
             await this.getManagerList();
             await this.getHotelList();
-            console.log(this.managerList);
-            console.log(this.hotelList)
+            // console.log(this.managerList);
+            // console.log(this.hotelList)
             this.hotelList.forEach(aHotel =>{
                 if(this.userId === aHotel.hotelState){//别人申请给你
                     let userName = this.managerList.find(value => value.id===aHotel.managerId).userName;
@@ -211,6 +289,7 @@ export default {
             'getUserInfo',
             'getUserOrders',
             'updateUserInfo',
+            'updateUserPassword',
             'cancelOrder',
             'getManagerList',
             'getHotelList',
@@ -233,6 +312,18 @@ export default {
                     })
                 }
             });
+        },
+        submitPwdForm() {
+
+          this.$refs.ruleForm.validate(valid => {
+            if (valid) {
+              let data=JSON.parse(JSON.stringify(this.changePwdForm))
+              this.updateUserPassword(data)
+            } else {
+              console.log('error submit!!');
+              return false;
+            }
+          });
         },
       modifyInfo() {
             setTimeout(() => {
@@ -267,6 +358,7 @@ export default {
             };
             this.acceptOrRefuseFunc(data)
         }
+
     }
 }
 </script>

@@ -7,6 +7,7 @@ import com.example.hotel.po.User;
 import com.example.hotel.vo.UserForm;
 import com.example.hotel.vo.ResponseVO;
 import com.example.hotel.vo.UserVO;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService {
     private final static String ACCOUNT_EXIST = "账号已存在";
     private final static String UPDATE_ERROR = "修改失败～";
+    private final static String Wrong_Password = "密码错误";
     @Autowired
     private AccountMapper accountMapper;
 
@@ -61,6 +63,22 @@ public class AccountServiceImpl implements AccountService {
     public ResponseVO updateUserBaseInfo(int id,  String username, String phonenumber) {
         try {
             accountMapper.updateAccountBaseInfo(id, username, phonenumber);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseVO.buildFailure(UPDATE_ERROR);
+        }
+        return ResponseVO.buildSuccess(true);
+    }
+
+    @Override
+    public ResponseVO updateUserPwd(int id,  String oldPassword,String newPassword) {
+        try {
+            User user=accountMapper.getAccountById(id);
+            if (null == user || !user.getPassword().equals(oldPassword)) {
+//                System.out.println(oldPassword);
+                return ResponseVO.buildFailure(Wrong_Password);
+            }
+            accountMapper.updateAccountPwd(id,newPassword);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseVO.buildFailure(UPDATE_ERROR);

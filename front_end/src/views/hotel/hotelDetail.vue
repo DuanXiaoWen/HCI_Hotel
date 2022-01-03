@@ -7,7 +7,7 @@
                 </h1>
                 <div class="hotel-info">
                     <a-card style="width: 240px">
-                        <nbsp
+                        <img
                             alt="example"
                             src="@/assets/cover.jpeg"
                             slot="cover"

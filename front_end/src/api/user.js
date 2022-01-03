@@ -23,9 +23,16 @@ export function getUserInfoAPI(id){
         method: 'GET'
     })
 }
-export function updateUserInfoAPI(data) {
+export function updateBaseInfoAPI(data) {
     return axios({
         url: `${api.userPre}/${data.id}/userInfo/updateBaseInfo`,
+        method: 'POST',
+        data
+    })
+}
+export function updatePasswordAPI(data) {
+    return axios({
+        url: `${api.userPre}/${data.id}/userInfo/updatePassword`,
         method: 'POST',
         data
     })

@@ -155,7 +155,7 @@ export default {
             //hotelList是加载下来所有的酒店，currentHotelList是处理后的，比如排序、筛选；最后才分页（可选
             this.currentHotelList=[...response];
             this.currentHotelList.reverse();
-            console.log(this.currentHotelList);//
+            // console.log(this.currentHotelList)；
         })
     },
   computed: {
@@ -186,7 +186,7 @@ export default {
           }//首先，把酒店的列表根据名字筛选一次。
           //接下来，各种高级筛选、排序的东西都写在这里
 
-          console.log("名字",res);
+          // console.log("名字",res);
 
           //筛选评分、星级
           let minRate=0;
@@ -201,13 +201,13 @@ export default {
           if(this.screen.star.length!==0){
               selectedStar=this.screen.star;
           }
-          console.log("selectedStar",selectedStar)
+          // console.log("selectedStar",selectedStar)
 
           res=res.filter(hotel=>{
               if(selectedStar.length===0){
                   return (hotel.rate >= minRate && hotel.rate <= maxRate);
               }else if(selectedStar.indexOf("zero")!==-1){
-                  console.log("selectedStar.indexOf(hotel.hotelStar)",selectedStar.indexOf(hotel.hotelStar))
+                  // console.log("selectedStar.indexOf(hotel.hotelStar)",selectedStar.indexOf(hotel.hotelStar))
                   return (hotel.rate >= minRate && hotel.rate <= maxRate && (selectedStar.indexOf(hotel.hotelStar)!==-1 || hotel.hotelStar.length===0));
               }else{
                   return (hotel.rate >= minRate && hotel.rate <= maxRate && (selectedStar.indexOf(hotel.hotelStar)!==-1));
@@ -215,7 +215,7 @@ export default {
 
           });
 
-          console.log("评分",res);
+          // console.log("评分",res);
 
           //筛选房型、价格
           //因为存在一个“有的酒店没有房间”的问题(即没有roomType和price)，所以弄得稍微复杂了一点 -.-|||
@@ -250,7 +250,7 @@ export default {
               }
            return (room.length!==0);
           });
-          console.log("房型/价格",res);
+          // console.log("房型/价格",res);
 
           let rooms=[...this.allRoomList];
           if(selectedRoom.length>0){
@@ -285,20 +285,20 @@ export default {
               res=res.sort(function (a, b) {
                   return (a.minRoomPrice - b.minRoomPrice);
               });
-              console.log("价格",res);
+              // console.log("价格",res);
           } else if (this.sortKey==="comment") {
               res=res.sort(function (a, b) {
                   return (b.rate - a.rate);
               });
-              console.log("评分",res);
+              // console.log("评分",res);
           } else if (this.sortKey==="rank") {
               res=res.sort(function (b, a) {
                   return (getHotelStar( a.hotelStar ) - getHotelStar(b.hotelStar));
                   //return ((a.hotelStar == 'five')||((a.hotelStar == 'four')&&(b.hotelStar != 'five'))||((a.hotelStar == 'three')&&(b.hotelStar == 'three')));
               });
-              console.log("星级",res);
+              // console.log("星级",res);
           } else {
-              console.log("默认",res);
+              // console.log("默认",res);
           }
 
         return res;
@@ -317,7 +317,7 @@ export default {
 
     pageChange(page, pageSize) {
        alert('居然可以翻页了?');
-       console.log(this);
+       // console.log(this);
       const data = {
         pageNo: page - 1
       };

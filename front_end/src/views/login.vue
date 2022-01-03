@@ -113,7 +113,7 @@
               placeholder="确认密码"
               v-decorator="[
                 'registerPasswordconfirm', 
-                {rules: [{ required: true, message: '请输入密码' }, { validator: this.handlePasswordCheck }], validateTrigger: 'blur'}]">
+                {rules: [{ required: true, message: '请确认密码' }, { validator: this.handlePasswordCheck }], validateTrigger: 'blur'}]">
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input>
           </a-form-item>

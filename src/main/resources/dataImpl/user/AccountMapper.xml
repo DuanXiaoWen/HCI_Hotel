@@ -33,8 +33,9 @@
         update User set usertype=#{usertype}
         where id=#{id}
     </update>
-
-
+    <update id="updateAccountPwd">
+        update User set password=#{newPwd} where  id=#{id}
+    </update>
 
     <resultMap id="User" type="com.example.hotel.po.User">
         <id column="id" property="id"></id>

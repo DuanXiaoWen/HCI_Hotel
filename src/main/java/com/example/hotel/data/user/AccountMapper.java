@@ -39,6 +39,10 @@ public interface AccountMapper {
      */
      int updateAccountBaseInfo(@Param("id") int id, @Param("userName") String username, @Param("phoneNumber") String phonenumber);
 
+
+     int updateAccountPwd(@Param("id") int id, @Param("newPwd") String newPwd);
+
+
      void deleteAccount(@Param("id")int id);
     /**
      * 更新用户信用值
@@ -53,4 +57,6 @@ public interface AccountMapper {
      * @param usertype - String
      */
     void updateUserType(@Param("id")int id, @Param("usertype")String usertype);
+
+
 }

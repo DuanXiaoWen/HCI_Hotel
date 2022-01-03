@@ -7,7 +7,8 @@ import {
     loginAPI,
     registerAPI,
     getUserInfoAPI,
-    updateUserInfoAPI,
+    updateBaseInfoAPI,
+    updatePasswordAPI
 } from '../../api/user'
 
 import {
@@ -105,7 +106,18 @@ const user = {
                 id: state.userId,
                 ...data,
             }
-            const res = await updateUserInfoAPI(params)
+            const res = await updateBaseInfoAPI(params)
+            if(res){
+                message.success('修改成功')
+                dispatch('getUserInfo')
+            }
+        },
+        updateUserPassword:async({ state, dispatch }, data) => {
+            const params = {
+                id: state.userId,
+                ...data,
+            }
+            const res = await updatePasswordAPI(params)
             if(res){
                 message.success('修改成功')
                 dispatch('getUserInfo')

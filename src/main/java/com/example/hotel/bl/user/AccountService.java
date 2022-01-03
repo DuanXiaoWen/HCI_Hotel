@@ -48,6 +48,13 @@ public interface AccountService {
      */
     ResponseVO updateUserBaseInfo(int id, String username, String phonenumber);
 
+    /**
+     * 更新用户密码
+     * @param id - int
+     * @param oldPassword-String
+     * */
+    ResponseVO updateUserPwd(int id,String oldPassword, String newPassword);
+
 
     /**
      * 更新用户信用值

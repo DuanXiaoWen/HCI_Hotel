@@ -2,10 +2,7 @@ package com.example.hotel.controller.user;
 
 import com.example.hotel.bl.user.AccountService;
 import com.example.hotel.po.User;
-import com.example.hotel.vo.UserForm;
-import com.example.hotel.vo.ResponseVO;
-import com.example.hotel.vo.UserInfoVO;
-import com.example.hotel.vo.UserVO;
+import com.example.hotel.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +43,12 @@ public class AccountController {
     @PostMapping("/{id}/userInfo/updateBaseInfo")
     public ResponseVO updateInfo(@RequestBody UserInfoVO userInfoVO,@PathVariable int id){
         return accountService.updateUserBaseInfo(id,userInfoVO.getUserName(),userInfoVO.getPhoneNumber());
+    }
+
+    @PostMapping("/{id}/userInfo/updatePassword")
+    public ResponseVO updatePwd(@RequestBody PasswordVO passwordVO, @PathVariable int id){
+//        System.out.println(passwordVO.getPass());
+        return accountService.updateUserPwd(id,passwordVO.getOldPass(),passwordVO.getPass());
 
     }
 
