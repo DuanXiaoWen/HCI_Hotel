@@ -67,7 +67,7 @@
                     </a-form-item>
                 </a-form>
             </a-tab-pane>
-            <a-tab-pane tab="我的订单" key="2">
+            <a-tab-pane tab="我的订单" key="2" v-if="userInfo.userType==='Client'">
                 <a-table
                     :columns="columns"
                     :dataSource="userOrderList"
