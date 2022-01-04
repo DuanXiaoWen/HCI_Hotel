@@ -11,7 +11,7 @@
                     <a-icon type="home" />首页
                 </router-link>
             </a-menu-item>
-            <a-menu-item key="2" @click="jumpToUserInfo" v-if="userInfo.userType==='Client'">
+            <a-menu-item key="2" @click="jumpToUserInfo" >
                 <a-icon type="user" />个人中心
             </a-menu-item>
             <a-menu-item key="3" @click="selectMenu" v-if="userInfo.userType==='HotelManager'">
