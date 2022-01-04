@@ -16,7 +16,7 @@
                     @change="changePeople"
                     v-decorator="[
                         'tenantName',
-                        { initialValue:'dxw',
+                        { initialValue:userInfo.userName,
                           rules: [{required: true, message: '请填写入住人姓名', }] }
                     ]"
                 />
@@ -26,7 +26,7 @@
                     v-decorator="[
                         'phoneNumber',
 
-                        { initialValue:'123456789',
+                        { initialValue:userInfo.phoneNumber,
                           rules: [{required: true, message: '请填写入住人联系手机', }] }
                     ]"
                 />
@@ -190,7 +190,8 @@ export default {
             'currentHotelId',
             'currentHotelInfo',
             'userId',
-            'orderMatchCouponList'
+            'orderMatchCouponList',
+            'userInfo'
         ]),
         
     },
