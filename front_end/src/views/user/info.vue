@@ -305,7 +305,6 @@ export default {
                     const data = {
                         userName: this.form.getFieldValue('userName'),
                         phoneNumber: this.form.getFieldValue('phoneNumber'),
-                        // password: this.form.getFieldValue('password')
                     };
                     this.updateUserInfo(data).then(()=>{
                         this.modify = false

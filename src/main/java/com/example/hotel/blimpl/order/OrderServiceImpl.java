@@ -177,7 +177,7 @@ public class OrderServiceImpl implements OrderService {
 
             Order order=orderMapper.getOrderById(id);
 
-            if(curdate.compareTo(order.getCheckOutDate())>=0){
+                if(curdate.compareTo(order.getCheckOutDate())>=0){
                 return ResponseVO.buildFailure(DATE_ERROR_CHECK_IN);
             }
 

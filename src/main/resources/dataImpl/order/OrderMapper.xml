@@ -27,17 +27,17 @@
     </select>
 
     <update id="updateOrderState">
-        update Orderlist set orderState=#{orderState} where id=#{orderid}
+        update OrderList set orderState=#{orderState} where id=#{orderid}
     </update>
 
 
     <update id="updateOutTime">
-        update orderlist set checkOutDate=#{checkOutDate} where id=#{id}
+        update OrderList set checkOutDate=#{checkOutDate} where id=#{id}
     </update>
 
 
     <update id="addComment">
-        update orderlist set
+        update OrderList set
             commentScore=#{commentScore},
             comment=#{comment}
         where id=#{orderid}

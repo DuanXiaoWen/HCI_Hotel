@@ -23,25 +23,23 @@
                         <span v-if="text === 'Family'">家庭房</span>
                  </span>
 
-                 <span slot="action" slot-scope="record">
-
-
+                 <span slot="action" slot-scope="recor">
                      <a-popconfirm
                              title="你确定ta来了吗？"
-                             @confirm="cIn(record.id)"
+                             @confirm="cIn(recor.id)"
                              okText="来了"
                              cancelText="再等等"
-                             v-if="record.orderState === '已预订' ||record.orderState ==='异常' "
+                             v-if="recor.orderState === '已预订' ||recor.orderState ==='异常' "
                      >
                             <a-button type="primary" size="small">入住</a-button>
                         </a-popconfirm>
 
                       <a-popconfirm
                               title="你确定ta走了吗？"
-                              @confirm="cOut(record.id)"
+                              @confirm="cOut(recor.id)"
                               okText="走了"
                               cancelText="再等等"
-                              v-if="record.orderState === '已执行'"
+                              v-if="recor.orderState === '已执行'"
                       >
                             <a-button type="primary" size="small">退房</a-button>
                         </a-popconfirm>

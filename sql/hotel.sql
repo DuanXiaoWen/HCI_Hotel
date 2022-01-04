@@ -79,7 +79,7 @@ INSERT INTO Hotel VALUES ('10', '清沐连锁酒店', '欢迎您入住', '南京
 
 
 -- ----------------------------
--- Table structure for orderlist
+-- Table structure for OrderList
 -- ----------------------------
 DROP TABLE IF EXISTS OrderList;
 CREATE TABLE OrderList (
@@ -104,7 +104,7 @@ CREATE TABLE OrderList (
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of orderlist
+-- Records of OrderList
 -- ----------------------------
 
 -- ----------------------------
