@@ -13,9 +13,11 @@
             </a-form-item>
             <a-form-item v-bind="formItemLayout" label="入住人姓名">
                 <a-input
+                    @change="changePeople"
                     v-decorator="[
                         'tenantName',
-                        { rules: [{required: true, message: '请填写入住人姓名', }] }
+                        { initialValue:'dxw',
+                          rules: [{required: true, message: '请填写入住人姓名', }] }
                     ]"
                 />
             </a-form-item>
@@ -23,7 +25,9 @@
                 <a-input
                     v-decorator="[
                         'phoneNumber',
-                        { rules: [{required: true, message: '请填写入住人联系手机', }] }
+
+                        { initialValue:'123456789',
+                          rules: [{required: true, message: '请填写入住人联系手机', }] }
                     ]"
                 />
             </a-form-item>
@@ -45,10 +49,13 @@
                 <a-select
                     v-decorator="[
                         'peopleNum',
-                        { rules: [{ required: true, message: '请选择入住人数' }] },
+
+                        {
+                          initialValue:'1',
+                          rules: [{ required: true, message: '请选择入住人数' }] },
                     ]"
+
                     placeholder="请选择入住人数"
-                    @change="changePeopleNum"
                 >
                     <a-select-option :value="1">
                     1
@@ -68,7 +75,8 @@
                 <a-radio-group
                     v-decorator="[
                         'haveChild',
-                        { rules: [{required: true, message: '请选择有无儿童入住', }] }
+                        { initialValue:0,
+                          rules: [{required: true, message: '请选择有无儿童入住', }] }
                     ]"
                 >
                     <a-radio :value="1">有</a-radio>
@@ -79,7 +87,8 @@
                 <a-select
                     v-decorator="[
                         'roomNum',
-                        { rules: [{ required: true, message: '请选择房间数' }] },
+                        {
+                          rules: [{ required: true, message: '请选择房间数' }] },
                     ]"
                     placeholder="请选择房间数"
                     @change="changeRoomNum"
@@ -187,6 +196,7 @@ export default {
     },
     beforeCreate() {
         this.form = this.$form.createForm(this, { name: 'orderModal' });
+
     },
     methods: {
         ...mapMutations([
@@ -208,7 +218,9 @@ export default {
                 this.finalPrice = this.totalPrice
             }
         },
-        changePeopleNum(v){
+        changePeople(){
+          this.totalPrice = Number(this.form.getFieldValue('roomNum')) * Number(this.currentOrderRoom.price) * moment(this.form.getFieldValue('date')[1]).diff(moment(this.form.getFieldValue('date')[0]),'day')
+          this.finalPrice = this.totalPrice
 
         },
         changeRoomNum(v) {
