@@ -190,7 +190,6 @@
         },
         methods: {
             ...mapMutations([
-                'set_couponVisible',
                 'set_addCouponVisible',
             ]),
             ...mapActions([
@@ -290,7 +289,7 @@
                         this.clear();
 
                         this.set_addCouponVisible(false);//设置成不可见
-                        this.set_couponVisible(true);
+                        //this.set_couponVisible(true);
                     }
                 });
             },

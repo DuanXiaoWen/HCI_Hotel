@@ -15,18 +15,18 @@
                 <a-icon type="user" />个人中心
             </a-menu-item>
             <a-menu-item key="3" @click="selectMenu" v-if="userInfo.userType==='HotelManager'">
-                <router-link :to="{ name: 'manageHotel'}">
-                     <a-icon type="switcher" />酒店管理
+                <router-link :to="{ name: 'manageBase'}">
+                     <a-icon type="switcher" />后台管理
                 </router-link>
             </a-menu-item>
             <a-menu-item key="4" @click="selectMenu" v-if="userInfo.userType==='Manager'">
                 <router-link :to="{ name: 'manageUser'}">
-                     <a-icon type="user" />用户管理
+                     <a-icon type="switcher" />用户管理
                 </router-link>
             </a-menu-item>
             <a-menu-item key="5" @click="selectMenu" v-if="userInfo.userType==='WebMarketer'">
-                <router-link :to="{ name: 'manageWebsiteMarket'}">
-                    <a-icon type="user" />网站营销
+                <router-link :to="{ name: 'manageBase'}">
+                    <a-icon type="switcher" />后台管理
                 </router-link>
             </a-menu-item>
 
@@ -74,10 +74,12 @@ export default {
             this.current = ['1']
         }else if(this.$route.name === 'userInfo') {
             this.current = ['2']
-        }else if(this.$route.name === 'manageHotel') {
+        }else if(this.$route.name === 'manageBase') {
             this.current = ['3']
-        }else {
+        }else if(this.$route.name === 'manageUser') {
             this.current = ['4']
+        } else {
+            this.current = ['1']
         }
     },
     methods: {

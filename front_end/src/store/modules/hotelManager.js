@@ -15,8 +15,11 @@ import {
 import {
     addCouponAPI,
     hotelAllCouponsAPI,
+    allCouponsAPI,
+    deleteCouponAPI,
 } from '../../api/coupon'
 import { message } from 'ant-design-vue'
+import {deleteUserAPI} from "../../api/admin";
 
 const hotelManager = {
     state: {
@@ -158,6 +161,14 @@ const hotelManager = {
                 //commit 又是什么手法法啊，草
             }
         },
+        getAllCoupon: async({ state, commit }) => {
+            const res = await allCouponsAPI();
+            if(res) {
+                // 获取到酒店策略之后的操作（将获取到的数组赋值给couponList）
+                commit('set_couponList',res);
+                //commit 又是什么手法法啊，草
+            }
+        },
         addHotelCoupon: async({ commit, dispatch }, data) => {
 
             console.log("enterAddCouponAPI");
@@ -169,6 +180,13 @@ const hotelManager = {
                 message.success("添加成功");
             }else{
                 message.error("添加失败");
+            }
+        },
+        deleteCoupon: async ({state, commit, dispatch}, data)=> {
+            const res = await deleteCouponAPI(data);
+            if(res){
+                message.success('删除成功');
+                dispatch('getHotelCoupon');
             }
         },
         checkIn: async ({state, dispatch}, id) => {

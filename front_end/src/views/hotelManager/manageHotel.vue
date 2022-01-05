@@ -1,15 +1,13 @@
 <template>
     <div class="manageHotel-wrapper">
-        <a-tabs>
-            <a-tab-pane tab="酒店管理" key="1">
-                <div style="width: 100%; text-align: right; margin:20px 0">
-                    <a-button type="primary" @click="addHotel"><a-icon type="plus" />添加酒店</a-button>
-                </div>
-                 <a-table
-                    :columns="columns1"
-                    :dataSource="mgrHotelList"
-                    bordered
-                >
+        <div style="width: 100%; text-align: right; margin:20px 0">
+            <a-button type="primary" @click="addHotel"><a-icon type="plus" />添加酒店</a-button>
+        </div>
+        <a-table
+                :columns="columns1"
+                :dataSource="mgrHotelList"
+                bordered
+        >
                     <span slot="action" slot-scope="record">
                         <a-button type="primary" size="small" @click="addRoom(record)">录入房间</a-button>
                         <a-divider type="vertical"></a-divider>
@@ -23,12 +21,7 @@
 
 
                     </span>
-                </a-table>
-            </a-tab-pane>
-
-            
-        </a-tabs>
-
+        </a-table>
 
         <a-modal
                 :visible="giveUpVisible"
@@ -146,6 +139,7 @@ export default {
             'getMgrHotelList',
             'getAllOrders',
             'getHotelCoupon',
+            'getHotelCoupon',
             'checkIn',
             'checkOut',
             'getManagedOrders',
@@ -161,8 +155,8 @@ export default {
         },
         showCoupon(record) {
             this.set_activeHotelId(record.id)
-            this.set_couponVisible(true)
             this.getHotelCoupon(this);
+            this.set_couponVisible(true)
         },
         showOrder(record){
             alert('不是已经够详细了吗');

@@ -27,10 +27,13 @@
         >
             <span slot="couponType" slot-scope="record">
                 <!--1生日特惠 2多间特惠 3满减优惠 4限时优惠； 感觉后端应该统一整成枚举量，拿一个数字来记录是什么东西-->
-                <a-button type="danger" size="small" v-if="record===1">生日特惠</a-button>
-                <a-button type="danger" size="small" v-if="record===2">多间特惠</a-button>
-                <a-button type="danger" size="small" v-if="record===3">满减优惠</a-button>
-                <a-button type="danger" size="small" v-if="record===4">限时优惠</a-button>
+                <a-button type="primary" size="small" v-if="record===1">生日特惠</a-button>
+                <a-button type="primary" size="small" v-if="record===2">多间特惠</a-button>
+                <a-button type="primary" size="small" v-if="record===3">满减优惠</a-button>
+                <a-button type="primary" size="small" v-if="record===4">限时优惠</a-button>
+            </span>
+            <span slot="action" slot-scope="record">
+                <a-button type="danger" size="small" @click="removeCoupon(record)">删除优惠</a-button>
             </span>
         </a-table>
 
@@ -62,13 +65,18 @@ const columns = [
         title: '优惠金额',
         dataIndex: 'discountMoney'
     },
+    {
+        title: '操作',
+        dataIndex: 'id',
+        scopedSlots: { customRender: 'action' }
+    },
 ];
 export default {
     name: 'coupon',
     data() {
         return {
             columns,
-            addCouponButtonText:'+ 添加优惠按钮',//怎么设置多个空格啊
+            addCouponButtonText:'+ 添加优惠',//怎么设置多个空格啊
         }
     },
     components: {
@@ -86,7 +94,8 @@ export default {
             'set_couponVisible',
         ]),
         ...mapActions([
-            'getHotelCoupon'
+            'getHotelCoupon',
+            'deleteCoupon'
         ]),
         cancel() {
             this.set_couponVisible(false);
@@ -94,7 +103,10 @@ export default {
         },
         addCoupon() {
             this.set_addCouponVisible(true);
-            this.set_couponVisible(false);
+            //this.set_couponVisible(false);
+        },
+        removeCoupon(record) {
+            this.deleteCoupon(record);
         },
     },
 }
