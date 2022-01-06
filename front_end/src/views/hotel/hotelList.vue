@@ -50,9 +50,74 @@
                     <div class="card-wrapper">
 
 
-                        <HotelCard :hotel="item" v-for="item in currentHotelList" :key="item.index" @click.native="jumpToDetails(item.id)">
+<!--                        <HotelCard :hotel="item" v-for="item in currentHotelList" :key="item.index" @click.native="jumpToDetails(item.id)">-->
 
-                        </HotelCard>
+<!--                        </HotelCard>-->
+                        <a-list
+                                item-layout="vertical"
+                                size="large"
+                                :data-source="currentHotelList"
+                        >111
+                            <div slot="footer">
+                                <b>ant design vue</b> footer part
+                            </div>
+                            <a-list-item slot="renderItem" key="item.name" slot-scope="item" @click.native="jumpToDetails(item.id)">
+                               <div class="box" >
+
+                                   <div class="left">
+                                       <img
+
+                                               slot="extra"
+                                               width="150px"
+                                               height="200px"
+
+                                               alt="logo"
+                                               src="@/assets/cover.jpeg"
+                                       />
+
+                                   </div>
+                                   <div class="right">
+                                       <p style="margin-right:600px "></p>
+                                       <div style="background-color: #fff; padding: 20px;">
+                                           <a-row :gutter="16">
+                                               <a-col :span="7">
+                                                   <a-card title="" :bordered="false">
+                                                       <a-list-item-meta :description="item.description">
+                                                           <a slot="title" :href="item.href">{{ item.name }}</a>
+
+                                                       </a-list-item-meta>
+                                                       <a-text><a-icon type="shop" theme="twoTone" /> 商圈：{{currentHotelInfo.bizRegion}}</a-text>
+                                                   </a-card>
+                                               </a-col>
+                                               <a-col :span="11">
+                                                   <a-card title="" :bordered="false">
+                                                       <p>星级：<a-rate style="font-size: 15px" :default-value="item.rate" disabled allow-half/></p>
+                                                       <p>联系电话：{{item.phoneNum}}</p>
+
+                                                       <a-text><a-icon type="home" theme="twoTone" /> 地址：{{currentHotelInfo.address}}</a-text><br>
+                                                       评分：{{item.rate}}分
+
+                                                   </a-card>
+                                               </a-col>
+                                               <a-col :span="6">
+                                                   <a-card title="价格" :bordered="false">
+                                                       <a-icon type="fire" theme="twoTone" twoToneColor="#FF4500" v-if="minMoney!=='本店没有合适的房间 >_<'"/> {{minMoney}}
+                                                   </a-card>
+                                               </a-col>
+                                           </a-row>
+                                       </div>
+                                       <a-card width = 250px>
+
+                                       </a-card>
+
+                                   </div>
+                               </div>
+
+
+
+
+                            </a-list-item>
+                        </a-list>
 
                             <div v-for="item in emptyBox" :key="item.name" class="emptyBox ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
                         </div>
@@ -191,12 +256,13 @@
 <script>
 import HotelCard from './components/hotelCard'
 import hotelDetail from './hotelDetail'
+
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'home',
   components: {
-    HotelCard,
+    //HotelCard,
 
 
   },
@@ -214,9 +280,26 @@ export default {
             minPrice:'',
             maxPrice:''
         },
+        minMoney:'',
         sortKey: "default",
     }
   },
+    watch:{
+        hotel:{
+            immediate: true,
+            deep:true,
+            handler (newValue) {
+                let money = newValue.minRoomPrice;
+                if(money === Number.MAX_VALUE){
+                    this.minMoney = '本店没有合适的房间 >_<'
+                }
+                else {
+                    this.minMoney = money + '元起！'
+                }
+
+            }
+        }
+    },
     async mounted() {
         this.getAllRoomList();
         this.allRoomList=this.$store.getters.allRoomList;
@@ -231,7 +314,8 @@ export default {
     ...mapGetters([
       'hotelList',
       'hotelListLoading',
-      'allRoomList', 'hotelNumber'
+      'allRoomList', 'hotelNumber',
+        'currentHotelInfo'
 
     ]),
       currentHotelList(){
@@ -418,70 +502,82 @@ export default {
 }
 </script>
 <style scoped lang="less">
-    .hotelList {
-        text-align: center;
-        padding: 50px 0;
-        .emptyBox {
-            height: 0;
-            margin: 10px 10px
+    .box {
+        display: flex;
+        .left {
+
         }
-        .sortButton{
-            border: none;
-            margin: 0 10px;
-            float: left ;
-            padding: 0px  10px
-        }
-        .column {
-            float: left;
-            width: 20%;
-        }
-        .card-wrapper{
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            flex-grow: 3;
-            min-height: 800px
-        }
-        .card-wrapper .card-item {
-            margin: 30px;
-            position: relative;
-            height: 188px;
+        .right {
+            text-align: left;
+            background-repeat: no-repeat;
+            padding-left: 50px;
+
         }
     }
-    .search{
-        left :-50px;
-        width:1600px;
-        z-index: 0;
+.hotelList {
+    text-align: center;
+    padding: 50px 0;
+    .emptyBox {
+        height: 0;
+        margin: 10px 10px
     }
-    .star{
-        left: 5px;
-        width: 175px;
-        z-index: 0;
+    .sortButton{
+        border: none;
+        margin: 0 10px;
+        float: left ;
+        padding: 0px  10px
     }
-    .roomType{
-        left: 5px;
-        width: 175px;
-        z-index: 0;
+    .column {
+        float: left;
+        width: 20%;
     }
-    .rate{
-        left: 5px;
-        width: 350px;
-        z-index: 0;
+    .card-wrapper{
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        flex-grow: 3;
+        min-height: 800px
     }
-    .price{
-        left: 5px;
-        width: 350px;
-        z-index: 0;
+    .card-wrapper .card-item {
+        margin: 30px;
+        position: relative;
+        height: 188px;
     }
-    .sortKey{
-        left: -76px;
-        width: 450px;
-        z-index: 0;
-    }
-    .slider{
-        min-width: 400px ;
-        width: 40%;
-        color: #fff;
-        background: #fff;
-    }
+}
+.search{
+    left :-50px;
+    width:1600px;
+    z-index: 0;
+}
+.star{
+    left: 5px;
+    width: 175px;
+    z-index: 0;
+}
+.roomType{
+    left: 5px;
+    width: 175px;
+    z-index: 0;
+}
+.rate{
+    left: 5px;
+    width: 350px;
+    z-index: 0;
+}
+.price{
+    left: 5px;
+    width: 350px;
+    z-index: 0;
+}
+.sortKey{
+    left: -76px;
+    width: 450px;
+    z-index: 0;
+}
+.slider{
+    min-width: 400px ;
+    width: 40%;
+    color: #fff;
+    background: #fff;
+}
 </style>
