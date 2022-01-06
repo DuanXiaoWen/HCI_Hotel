@@ -9,6 +9,13 @@ export function addCouponAPI(data) {
         data,
     })
 }
+export function deleteCouponAPI(couponId) {
+    return axios({
+        url: `${api.couponPre}/deleteCoupon`,
+        method: 'POST',
+        params: {couponId: couponId},
+    })
+}
 
 
 export function orderMatchCouponsAPI(params) {
@@ -25,5 +32,13 @@ export function hotelAllCouponsAPI(hotelId) {
         url: `${api.couponPre}/hotelAllCoupons`,
         method: 'GET',
         params: {hotelId: hotelId},
+    })
+}
+
+export function allCouponsAPI() {
+    return axios({
+        url: `${api.couponPre}/allCoupons`,
+        method: 'GET',
+        params: {},
     })
 }

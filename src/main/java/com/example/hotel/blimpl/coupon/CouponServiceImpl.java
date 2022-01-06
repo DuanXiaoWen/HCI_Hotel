@@ -49,6 +49,22 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.selectByHotelId(hotelId);
     }
 
+    @Override
+    public List<Coupon> getAllCoupon() {
+        return couponMapper.selectAll();
+    }
+
+    @Override
+    public ResponseVO deleteCoupon(Integer couponId) {
+        try{
+            couponMapper.deleteCoupon(couponId);
+            return ResponseVO.buildSuccess(true);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseVO.buildFailure("删除失败");
+        }
+    }
+
     private List<Coupon> getWebAllCoupon(){
         return couponMapper.selectByHotelId(-1);
     }

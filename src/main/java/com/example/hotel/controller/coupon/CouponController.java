@@ -25,9 +25,19 @@ public class CouponController {
         }
     }
 
+    @PostMapping("/deleteCoupon")
+    public ResponseVO deleteCoupon(@RequestParam Integer couponId) {
+        return couponService.deleteCoupon(couponId);
+    }
+
     @GetMapping("/hotelAllCoupons")
     public ResponseVO getHotelAllCoupons(@RequestParam Integer hotelId) {
         return ResponseVO.buildSuccess(couponService.getHotelAllCoupon(hotelId));
+    }
+
+    @GetMapping("/allCoupons")
+    public ResponseVO getAllCoupons() {
+        return ResponseVO.buildSuccess(couponService.getAllCoupon());
     }
 
     @GetMapping("/orderMatchCoupons")

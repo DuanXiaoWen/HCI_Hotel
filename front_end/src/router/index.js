@@ -35,9 +35,9 @@ const routes = [
         component: () => import('../views/user/info')
       },
       {
-        path: '/hotelManager/manageHotel',
-        name: 'manageHotel',
-        component: () => import('../views/hotelManager/manageHotel')
+        path: '/hotelManager/manageBase',
+        name: 'manageBase',
+        component: () => import('../views/hotelManager/manageBase')
       },
       {
         path: '/admin/manageUser',
@@ -47,7 +47,7 @@ const routes = [
       {
         path:'webMarketer/manageWebsiteMarket',
         name:'manageWebsiteMarket',
-        component: () => import('../views/hotelManager/components/manageWebsiteMarket')
+        component: () => import('../views/hotelManager/manageWebsiteMarket')
       },
     ]
   },
