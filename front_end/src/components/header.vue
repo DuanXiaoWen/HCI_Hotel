@@ -42,16 +42,20 @@
                     <a-icon style="margin-left: 3px; font-size: 16px" type="down"></a-icon>
                 </div>
                 <a-menu slot="overlay">
-                <a-menu-item  @click="jumpToHome()">
-                  <router-link to="/hotel/hotelList">
-                    <a-icon type="home"></a-icon>
-                    首页
-                  </router-link>
-                </a-menu-item>
-                <a-menu-item @click="quit()">
-                    <a-icon type="poweroff"></a-icon>
-                    退出登录
-                </a-menu-item>
+                    <a-menu-item @click="quit()" v-if="userInfo.userType == null">
+                        <a-icon type="poweroff"></a-icon>
+                        登录
+                    </a-menu-item>
+                    <a-menu-item  @click="jumpToHome()">
+                        <router-link to="/hotel/hotelList">
+                            <a-icon type="home"></a-icon>
+                            首页
+                        </router-link>
+                    </a-menu-item>
+                    <a-menu-item @click="quit()" v-if="userInfo.userType != null">
+                        <a-icon type="poweroff"></a-icon>
+                        退出登录
+                    </a-menu-item>
                 </a-menu>
             </a-dropdown>
         </div>
@@ -75,6 +79,7 @@ export default {
         ])
     },
     mounted() {
+        console.info(this.userInfo);
         if (this.$route.name === 'hotelList' || this.$route.name === 'hotelDetail') {
             this.current = ['1']
         }else if(this.$route.name === 'userInfo') {

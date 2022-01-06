@@ -47,7 +47,7 @@ export default {
 </script>
 <style scoped lang="less">
     .manageBase-wrapper {
-        padding: 50px;
+        padding: 50px 50px 0px;
         .chart {
             display: flex;
             align-items: center;

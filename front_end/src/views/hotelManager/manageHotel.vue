@@ -1,11 +1,9 @@
 <template>
     <div class="manageHotel-wrapper">
-        <div style="width: 100%; text-align: right; margin:20px 0">
-            <a-button type="primary" @click="addHotel"><a-icon type="plus" />添加酒店</a-button>
-        </div>
         <a-table
                 :columns="columns1"
                 :dataSource="mgrHotelList"
+                :pagination="{ pageSize: 7 }"
                 bordered
         >
                     <span slot="action" slot-scope="record">
@@ -21,6 +19,11 @@
 
 
                     </span>
+            <template slot="footer">
+                <div style="width: 100%; text-align: right">
+                    <a-button type="primary" @click="addHotel"><a-icon type="plus" />添加酒店</a-button>
+                </div>
+            </template>
         </a-table>
 
         <a-modal
@@ -212,7 +215,7 @@ export default {
 </script>
 <style scoped lang="less">
     .manageHotel-wrapper {
-        padding: 50px;
+        padding: 0px 50px;
         .chart {
             display: flex;
             align-items: center;

@@ -4,6 +4,7 @@
         <a-table
                 :columns="columns"
                 :dataSource="couponList"
+                :pagination="{ pageSize: 7 }"
                 bordered
         >
             <span slot="couponType" slot-scope="record">
@@ -14,15 +15,19 @@
                 <a-button type="primary" size="small" v-if="record===4">限时优惠</a-button>
             </span>
             <span slot="action" slot-scope="record">
+                <a-button type="primary" size="small" @click="addCouponHotel(record)">关联酒店</a-button>
+                <a-divider type="vertical"></a-divider>
                 <a-button type="danger" size="small" @click="removeCoupon(record)">删除优惠</a-button>
             </span>
+            <template slot="footer">
+                <div style="width: 100%; text-align: right">
+                    <a-button type="primary" @click="addCoupon"><a-icon type="plus" />添加优惠</a-button>
+                </div>
+            </template>
         </a-table>
 
-        <div style="width: 100%; text-align: right; margin:20px 0">
-            <a-button type="primary" @click="addCoupon"><a-icon type="plus" />添加优惠</a-button>
-        </div>
         <AddCoupon></AddCoupon>
-
+        <AddCouponHotel></AddCouponHotel>
     </div>
 </template>
 
@@ -31,6 +36,7 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import AddCoupon from './components/addCoupon'
+    import AddCouponHotel from './components/addCouponHotel'
     const columns = [
         // 这里定义列表头
         {
@@ -69,6 +75,7 @@
         },
         components:{
             AddCoupon,
+            AddCouponHotel
         },
         mounted() {
         },
@@ -82,7 +89,9 @@
             ...mapMutations([
                 'set_couponVisible',
                 'set_addCouponVisible',
+                'set_addCouponHotelVisible',
                 'set_activeHotelId',
+                'set_currentCoupon'
             ]),
             ...mapActions([
                 'getHotelCoupon',
@@ -98,10 +107,29 @@
             cancel() {
                 this.getAllCoupon();
             },
+            addCouponHotel(record) {
+                let data = {}
+                //for (let i = 0; i < this.couponList.)
+                this.couponList.forEach(function (element, index, array) {
+                    if (element.id === record) {
+                        data = element;
+                    }
+                })
+                this.set_currentCoupon(data);
+                this.set_addCouponHotelVisible(true);
+            }
         }
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+    .manageWebsiteMarket-wrapper {
+        padding: 0px 50px;
+        .chart {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px
+        }
+    }
 </style>

@@ -23,6 +23,7 @@
         <a-table
                 :columns="columns"
                 :dataSource="couponList"
+                :pagination="{ pageSize: 7 }"
                 bordered
         >
             <span slot="couponType" slot-scope="record">
