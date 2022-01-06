@@ -1,11 +1,14 @@
 <template>
     <div class="header">
         <div class="label">
+          <router-link to="/hotel/hotelList">
             <img src="@/assets/logo.svg" class="logo" alt="logo" @click="jumpToHome">
-            <span class="title">NJUSE 酒店管理系统</span>
+            <span class="title"  @click="jumpToHome">NJUSE 酒店管理系统</span>
+          </router-link>
+
             
         </div>
-        <a-menu v-model="current" mode="horizontal" theme="light">
+        <a-menu v-model="current" mode="horizontal" theme="light" selectedKeys="2">
             <a-menu-item key="1" @click="selectMenu" >
                 <router-link to="/hotel/hotelList">
                     <a-icon type="home" />首页
@@ -40,8 +43,10 @@
                 </div>
                 <a-menu slot="overlay">
                 <a-menu-item  @click="jumpToHome()">
+                  <router-link to="/hotel/hotelList">
                     <a-icon type="home"></a-icon>
                     首页
+                  </router-link>
                 </a-menu-item>
                 <a-menu-item @click="quit()">
                     <a-icon type="poweroff"></a-icon>
@@ -99,7 +104,7 @@ export default {
             this.$router.push({ name: 'userInfo', params: { userId: this.userId } })
         },
         jumpToHome() {
-            //这里不写有个小bug
+          this.current = ['1']
         }
     }
 }
