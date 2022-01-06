@@ -4,6 +4,7 @@
         <a-table
                 :columns="columns"
                 :dataSource="couponList"
+                :pagination="{ pageSize: 7 }"
                 bordered
         >
             <span slot="couponType" slot-scope="record">
@@ -14,15 +15,27 @@
                 <a-button type="primary" size="small" v-if="record===4">限时优惠</a-button>
             </span>
             <span slot="action" slot-scope="record">
-                <a-button type="danger" size="small" @click="removeCoupon(record)">删除优惠</a-button>
+                <a-button type="primary" size="small" @click="addCouponHotel(record)">关联酒店</a-button>
+                <a-divider type="vertical"></a-divider>
+                <a-popconfirm
+                    title="你确定删除这项优惠吗？"
+                    @confirm="removeCoupon(record)"
+                    @cancel="cancelRemove"
+                    okText="确定"
+                    cancelText="取消"
+                >
+                    <a-button type="danger" size="small">删除优惠</a-button>
+                </a-popconfirm>
             </span>
+            <template slot="footer">
+                <div style="width: 100%; text-align: right">
+                    <a-button type="primary" @click="addCoupon"><a-icon type="plus" />添加优惠</a-button>
+                </div>
+            </template>
         </a-table>
 
-        <div style="width: 100%; text-align: right; margin:20px 0">
-            <a-button type="primary" @click="addCoupon"><a-icon type="plus" />添加优惠</a-button>
-        </div>
         <AddCoupon></AddCoupon>
-
+        <AddCouponHotel></AddCouponHotel>
     </div>
 </template>
 
@@ -31,6 +44,7 @@
 <script>
     import { mapGetters, mapMutations, mapActions } from 'vuex'
     import AddCoupon from './components/addCoupon'
+    import AddCouponHotel from './components/addCouponHotel'
     const columns = [
         // 这里定义列表头
         {
@@ -39,12 +53,16 @@
             scopedSlots: { customRender: 'couponType' }
         },
         {
-            title: '折扣',
-            dataIndex: 'discount',
-        },
-        {
             title: '优惠简介',
             dataIndex: 'description',
+        },
+        {
+            title: '条件',
+            dataIndex: 'targetMoney',
+        },
+        {
+            title: '折扣',
+            dataIndex: 'discount',
         },
         {
             title: '优惠金额',
@@ -69,6 +87,7 @@
         },
         components:{
             AddCoupon,
+            AddCouponHotel
         },
         mounted() {
         },
@@ -82,7 +101,9 @@
             ...mapMutations([
                 'set_couponVisible',
                 'set_addCouponVisible',
+                'set_addCouponHotelVisible',
                 'set_activeHotelId',
+                'set_currentCoupon'
             ]),
             ...mapActions([
                 'getHotelCoupon',
@@ -95,13 +116,35 @@
             removeCoupon(record) {
                 this.deleteCoupon(record);
             },
+            cancelRemove() {
+
+            },
             cancel() {
                 this.getAllCoupon();
             },
+            addCouponHotel(record) {
+                let data = {}
+                //for (let i = 0; i < this.couponList.)
+                this.couponList.forEach(function (element, index, array) {
+                    if (element.id === record) {
+                        data = element;
+                    }
+                })
+                this.set_currentCoupon(data);
+                this.set_addCouponHotelVisible(true);
+            }
         }
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+    .manageWebsiteMarket-wrapper {
+        padding: 0px 50px;
+        .chart {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px
+        }
+    }
 </style>

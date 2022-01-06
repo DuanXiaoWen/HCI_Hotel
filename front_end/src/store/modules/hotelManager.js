@@ -47,11 +47,13 @@ const hotelManager = {
         addRoomModalVisible: false,
         couponVisible: false,
         addCouponVisible: false,
+        addCouponHotelVisible: false,
         orderVisible:false,
         manageHotelVisible: false,
         mgrOrderList: [],
         activeHotelId: 0,
         couponList: [],
+        currentCoupon: {}
     },
     mutations: {
         set_orderList: function(state, data) {
@@ -87,6 +89,9 @@ const hotelManager = {
         set_addCouponVisible: function(state, data) {
             state.addCouponVisible =data
         },
+        set_addCouponHotelVisible: function(state, data) {
+            state.addCouponHotelVisible =data
+        },
         set_orderVisible: function (state, data) {
             console.log('ordervisible')
             state.orderVisible = data
@@ -101,6 +106,9 @@ const hotelManager = {
         set_manageHotelVisible: function (state, data) {
             state.manageHotelVisible = data
         },
+        set_currentCoupon: function (state, data) {
+            state.currentCoupon = data
+        }
     },
     actions: {
         getMgrHotelList: async ({state, commit}, id) => {
