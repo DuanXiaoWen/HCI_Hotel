@@ -95,7 +95,7 @@
                                                        <p>联系电话：{{item.phoneNum}}</p>
 
                                                        <a-text><a-icon type="home" theme="twoTone" /> 地址：{{currentHotelInfo.address}}</a-text><br>
-                                                       评分：{{item.rate}}分
+                                                       评分：{{item.rate | numFilter}}分
 
                                                    </a-card>
                                                </a-col>
@@ -498,7 +498,19 @@ export default {
       this.$router.push({ name: 'hotelDetail', params: { hotelId: id }})
     },
 
-  }
+  },
+    filters: {
+        numFilter (value) {
+            let realVal = ''
+            if (!isNaN(value) && value!== '') {
+                // 截取当前数据到小数点后两位
+                realVal = parseFloat(value).toFixed(1)
+            } else {
+                realVal = '-'
+            }
+            return realVal
+        }
+    }
 }
 </script>
 <style scoped lang="less">

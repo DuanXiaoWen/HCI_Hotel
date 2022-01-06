@@ -3,20 +3,39 @@
         <div class="filter">
 
         </div>
-        <div class="list">
-            <a-table
-                :columns="columns"
-                :dataSource="rooms"
+        <div class="order-pad">
+        <div style="width: 360px">
+        <a-card style="padding:15px">
+            <img
+                    alt="example"
+                    src="@/assets/cover.jpeg"
+                    slot="cover"
+                    referrerPolicy="no-referrer"
+                    width="330px"
+                    height="200px"
+            />
+        </a-card>
+        </div>
+        <div class="order-info">
+            <a-radio-group
+                    style="margin-top: 15px"
+                    v-model="currentId"
+                    value="currentId"
+                    @change="handleRoomChange"
             >
-                <span slot="price" slot-scope="text">
-                    <span>￥{{ text }}</span>
-                </span>
-
-                <!-- 之前打错了？ -->
-                <span slot="action" slot-scope="record">
-                    <a-button type="primary" @click="order(record)">预定</a-button>
-                </span>
-            </a-table>
+                <a-radio-button v-for="(item, index) in rooms" v-bind:key="index" :value="index">
+                    {{item.roomType}}
+                </a-radio-button>
+            </a-radio-group>
+            <div style="color:#FF9966">
+                <span style="font-size: 40px">￥</span>
+                <span style="font-size: 60px">{{currentRoom.price}}</span>
+            </div>
+            <div style="margin-bottom: 21px">
+                <span style="font-size: 18px">{{description}}</span>
+            </div>
+            <div><a-button type="primary" @click="orderRoom">预订</a-button></div>
+        </div>
         </div>
         <OrderModal></OrderModal>
     </div>
@@ -67,6 +86,9 @@ export default {
     data() {
         return {
             columns,
+            currentRoom: {},
+            currentId: 0,
+            description: ''
         }
     },
     components: {
@@ -77,8 +99,10 @@ export default {
             'orderModalVisible'
         ])
     },
-    monuted() {
-
+    mounted() {
+        this.currentRoom = this.rooms[0];
+        this.setDescription();
+        console.info(this.currentRoom)
     },
     methods: {
         ...mapMutations([
@@ -88,10 +112,40 @@ export default {
         ...mapActions([
 
         ]),
-        order(record) {
-            this.set_currentOrderRoom(record)
+        orderRoom() {
+            this.set_currentOrderRoom(this.currentRoom)
             this.set_orderModalVisible(true)
+        },
+        setDescription() {
+            if (this.currentRoom.roomType === '大床房') {
+                this.description = '单人床，无早餐'
+            } else if (this.currentRoom.roomType === '双床房') {
+                this.description = '两张单人床，无早餐'
+            } else if (this.currentRoom.roomType === '家庭房') {
+                this.description = '双人床，有早餐'
+            } else {
+                this.description = ''
+            }
+        },
+        handleRoomChange(e) {
+            this.currentId = e.target.value;
+            const te = this.rooms[this.currentId];
+            this.currentRoom = te;
+            this.setDescription();
         }
-    }
+    },
 }
 </script>
+<style scoped lang="less">
+    .order-pad {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 1590px;
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            margin-left: 30px;
+        }
+    }
+</style>

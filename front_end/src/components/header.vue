@@ -46,11 +46,13 @@
                         <a-icon type="poweroff"></a-icon>
                         登录
                     </a-menu-item>
-                    <a-menu-item  @click="jumpToHome()">
-                        <router-link to="/hotel/hotelList">
-                            <a-icon type="home"></a-icon>
-                            首页
-                        </router-link>
+                    <a-menu-item @click="jumpToUserInfo()" v-if="userInfo.userType == 'Client'">
+                        <a-icon type="shopping-cart"></a-icon>
+                        查看订单
+                    </a-menu-item>
+                    <a-menu-item @click="jumpToUserInfo()" v-if="userInfo.userType != null && userInfo.userType != 'Client'">
+                        <a-icon type="switcher"></a-icon>
+                        查看业务
                     </a-menu-item>
                     <a-menu-item @click="quit()" v-if="userInfo.userType != null">
                         <a-icon type="poweroff"></a-icon>

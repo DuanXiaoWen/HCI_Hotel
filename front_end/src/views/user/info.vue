@@ -19,6 +19,42 @@
                     </a-list>
                 </div>
             </a-tab-pane>
+            <a-tab-pane tab="我的订单" key="2" v-if="userInfo.userType==='Client'">
+                <a-table
+                        :columns="columns"
+                        :dataSource="userOrderList"
+                        bordered
+                >
+                    <span slot="price" slot-scope="text">
+                        <span>￥{{ text }}</span>
+                    </span>
+                    <span slot="roomType" slot-scope="text">
+                        <span v-if="text === 'BigBed'">大床房</span>
+                        <span v-if="text === 'DoubleBed'">双床房</span>
+                        <span v-if="text === 'Family'">家庭房</span>
+                    </span>
+                    <a-tag slot="orderState" color="blue" slot-scope="text">
+                        {{ text }}
+                    </a-tag>
+                    <span slot="action" slot-scope="record">
+                        <a-button type="primary" size="small" @click="showOrder(record)">详细查看</a-button>
+                        <a-divider type="vertical"/>
+                         <a-popconfirm
+                                 title="你确定撤销该笔订单吗？"
+                                 @confirm="confirmCancelOrder(record.id)"
+                                 @cancel="cancelCancelOrder"
+                                 okText="确定"
+                                 cancelText="取消"
+                                 v-if="record.orderState === '已预订'"
+                         >
+                            <a-button type="danger" size="small">撤销</a-button>
+                        </a-popconfirm>
+                        <a-button size="small" @click="comment(record)" v-show="record.orderState === '已退房'">评价</a-button>
+
+
+                    </span>
+                </a-table>
+            </a-tab-pane>
 
             <a-tab-pane tab="个人信息" key="1">
                 <a-form :form="form" style="margin-top: 30px">
@@ -66,42 +102,6 @@
                         </a-button>
                     </a-form-item>
                 </a-form>
-            </a-tab-pane>
-            <a-tab-pane tab="我的订单" key="2" v-if="userInfo.userType==='Client'">
-                <a-table
-                    :columns="columns"
-                    :dataSource="userOrderList"
-                    bordered
-                >
-                    <span slot="price" slot-scope="text">
-                        <span>￥{{ text }}</span>
-                    </span>
-                    <span slot="roomType" slot-scope="text">
-                        <span v-if="text === 'BigBed'">大床房</span>
-                        <span v-if="text === 'DoubleBed'">双床房</span>
-                        <span v-if="text === 'Family'">家庭房</span>
-                    </span>
-                    <a-tag slot="orderState" color="blue" slot-scope="text">
-                        {{ text }}
-                    </a-tag>
-                    <span slot="action" slot-scope="record">
-                        <a-button type="primary" size="small" @click="showOrder(record)">详细查看</a-button>
-                        <a-divider type="vertical"/>
-                         <a-popconfirm
-                                 title="你确定撤销该笔订单吗？"
-                                 @confirm="confirmCancelOrder(record.id)"
-                                 @cancel="cancelCancelOrder"
-                                 okText="确定"
-                                 cancelText="取消"
-                                 v-if="record.orderState === '已预订'"
-                         >
-                            <a-button type="danger" size="small">撤销</a-button>
-                        </a-popconfirm>
-                        <a-button size="small" @click="comment(record)" v-show="record.orderState === '已退房'">评价</a-button>
-
-
-                    </span>
-                </a-table>
             </a-tab-pane>
 
             <a-tab-pane tab="修改密码" key="4">

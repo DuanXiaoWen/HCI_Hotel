@@ -6,69 +6,87 @@
                     {{ currentHotelInfo.title }}
                 </h1>
                 <div class="hotel-info">
-                    <a-card style="width: 240px">
+                    <a-card style="width: 360px">
                         <img
                             alt="example"
                             src="@/assets/cover.jpeg"
                             slot="cover"
                             referrerPolicy="no-referrer"
+                            width="360px"
+                            height="324px"
                             />
                     </a-card>
                     <div class="info">
-                        <div class="items" v-if="currentHotelInfo.name">
-                            <span class="label">酒店名称：</span>
-                            <span class="value">{{ currentHotelInfo.name }}</span>
+                        <div class="items" style="font-size:70px; margin-top:10px; height:70px">
+                        <span v-if="currentHotelInfo.name">
+                            {{ currentHotelInfo.name }}
+                        </span></div>
+                        <div class="items"  style="font-size:18px; margin-top:10px; height:18px">
+                        <span v-if="currentHotelInfo.address">
+                            {{ currentHotelInfo.address }}
+                        </span>
                         </div>
-                        <div class="items" v-if="currentHotelInfo.address">
-                            <span class="label">地址</span>
-                            <span class="value">{{ currentHotelInfo.address }}</span>
+                        <div style="height:30px"></div>
+                        <div class="items"  style="font-size:18px; height:30px">
+                            <span v-if="currentHotelInfo.hotelStar">
+                                <span class="label">星级:</span>
+                                <a-rate style="font-size: 20px" :value="calculateStar(currentHotelInfo.hotelStar)" disabled allowHalf/>
+                            </span>
+
+                            <span style="width:50px"></span>
+                            <span style="font-size: 40px; color:#FF9966; padding-bottom: 20px" v-if="currentHotelInfo.rate">
+                                {{ currentHotelInfo.rate | numFilter }}
+                            </span>
+                            <span v-if="currentHotelInfo.rate">
+                                分
+                            </span>
                         </div>
-                        <div class="items" v-if="currentHotelInfo.rate">
-                            <span class="label">评分:</span> 
-                            <span class="value">{{ currentHotelInfo.rate }}</span>
+                        <div class="items" style="font-size:18px; height:18px" v-if="currentHotelInfo.description">
+                            酒店简介：
                         </div>
-                        <div class="items" v-if="currentHotelInfo.hotelStar">
-                            <span class="label">星级:</span> 
-                            <a-rate style="font-size: 15px" :value="calculateStar(currentHotelInfo.hotelStar)" disabled allowHalf/>
+                        <div class="items" style="font-size:18px; margin-bottom:36px; margin-top:5px">
+                            <p style="text-indent: 2em">{{ currentHotelInfo.description }}<p/>
+<!--                            <p style="text-indent: 2em;">简介要很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长<p/>-->
                         </div>
-                        <div class="items" v-if="currentHotelInfo.description">
-                            <span class="label">酒店简介:</span> 
-                            <span class="value">{{ currentHotelInfo.description }}</span>
+                        <div class="items" style="font-size:18px; height:18px" v-if="currentHotelInfo.phoneNum">
+                            联系电话： {{currentHotelInfo.phoneNum}}
                         </div>
                     </div>
                 </div>
-                <a-divider></a-divider>
-                <a-tabs>
-                    <a-tab-pane tab="房间信息" key="1">
-                        <RoomList :rooms="currentHotelInfo.rooms"></RoomList>
-                    </a-tab-pane>
-                    <a-tab-pane tab="酒店评价" key="2">
-                        <div>
-                            <a-list>
-                                <a-list-item :key="index" v-for="(line, index) in hotelCommentsList">
-                                    <div>
-                                        <a-rate style="font-size: 10px;display: block" :value="line.commentScore" disabled allowHalf/>
-                                        <a-avatar size="large" icon="user" style="background: green;display: block;margin: auto"></a-avatar>
-                                    </div>
-                                        <a-comment
-                                            :author="line.userName"
-                                            :content="line.comment"
-                                            :datetime="line.checkOutTime"
-                                    >
-                                    </a-comment>
-                                    <!--{{index+1}}- : {{line.commentScore}}分-->
-                                </a-list-item>
-                            </a-list>
-                        </div>
-                    </a-tab-pane>
-                    <a-tab-pane tab="酒店详情" key="3">
-                        <div>
-                            <a-text><a-icon type="home" theme="twoTone" /> 地址：{{currentHotelInfo.address}}</a-text><br>
-                            <a-text><a-icon type="shop" theme="twoTone" /> 商圈：{{currentHotelInfo.bizRegion}}</a-text><br>
-                            <a-text><a-icon type="phone" theme="twoTone" /> 联系电话：{{currentHotelInfo.phoneNum}}</a-text><br>
-                        </div>
-                    </a-tab-pane>
-                </a-tabs>
+                <div class="block">
+                <RoomList :rooms="currentHotelInfo.rooms"></RoomList>
+                </div>
+                <div class="block">
+                <div style="font-size:30px; height:30px">
+                    住客评论
+                </div>
+                    <a-divider></a-divider>
+                <div>
+                    <a-list>
+                        <a-list-item style="align-items: stretch; justify-content: flex-start;" :key="index" v-for="(line, index) in hotelCommentsList">
+                            <div style="width:82px; padding-top: 15px">
+                                <a-avatar size="large" icon="user" style="background: green;display: block;margin: auto"></a-avatar>
+                                <a-rate style="font-size: 10px; display: block" :value="line.commentScore" disabled allowHalf/>
+                            </div>
+                            <div >
+                            <a-comment
+                                    :author="line.userName"
+                                    :content="line.comment"
+                                    :datetime="line.checkOutTime"
+                            >
+                            </a-comment>
+                            </div>
+                            <!--{{index+1}}- : {{line.commentScore}}分-->
+                        </a-list-item>
+                        <a-list-item style="align-items: stretch; justify-content: flex-start;" v-if="hotelCommentsList.length <= 0">
+                            <div style="height:82px; padding-left:100px; font-size: 28px">
+                                还没有评论哦
+                            </div>
+                        </a-list-item>
+                        <!--{{index+1}}- : {{line.commentScore}}分-->
+                    </a-list>
+                </div>
+                </div>
             </div>
         </a-layout-content>
     </a-layout>
@@ -125,35 +143,56 @@ export default {
             if(hotelStar==='Five')return 5;
             return 0;
         }
+    },
+    filters: {
+        numFilter (value) {
+            let realVal = ''
+            if (!isNaN(value) && value!== '') {
+                // 截取当前数据到小数点后两位
+                realVal = parseFloat(value).toFixed(1)
+            } else {
+                realVal = '-'
+            }
+            return realVal
+        }
     }
 
 }
 </script>
 <style scoped lang="less">
     .hotelDetailCard {
-        padding: 50px 50px;
+        padding: 10px;
+        margin: 50px 250px 50px 80px;
+        //width: 1230px;
     }
     .hotel-info {
+        //border:10px solid #eddec188;
+        border:15px solid #ffffff88;
+        background-color: white;
         display: flex;
         align-items: stretch;
         justify-content: flex-start;
         .info{
-            padding: 10px 0;
+            padding: 0px 0;
             display: flex;
             flex-direction: column;
-            margin-left: 20px;
+            margin-left: 30px;
             .items {
                 display: flex;
                 align-items: center;
                 margin-bottom: 10px;
+                line-height: 0px;
                 .label{
                     margin-right: 10px;
-                    font-size: 18px;
                 }
                 .value {
                     margin-right: 15px
                 }
             }
         }
+    }
+    .block {
+        border:15px solid #ffffff88;
+        background-color: white;
     }
 </style>
