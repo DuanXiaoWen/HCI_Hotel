@@ -14,112 +14,179 @@
                             placeholder="根据酒店名搜索"
                             v-decorator="[
                         {validateTrigger: 'blur'}]">
-                        <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                        <a-icon slot="prefix" type="search"  :style="{ color: 'rgba(0,0,0,.25)' }"/>
                     </a-input>
                 </a-form-item>
 
             </a-form>
         </div>
-        <div>
-            <a-form
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol"
-                    class="form"
-                    layout="inline"
-            >
-                <a-form-item label="星级" prop="star" class="star" >
-                    <a-checkbox-group v-model="screen.star">
-                        <a-checkbox value="zero" name="star">
-                            经济型
-                        </a-checkbox>
-                        <a-checkbox value="Three" name="star">
-                            三星
-                        </a-checkbox>
-                        <a-checkbox value="Four" name="star">
-                            四星
-                        </a-checkbox>
-                        <a-checkbox value="Five" name="star">
-                            五星
-                        </a-checkbox>
-                    </a-checkbox-group>
-                </a-form-item>
-                <a-form-item label="房型" prop="roomType" class="roomType">
-                    <a-checkbox-group v-model="screen.roomType">
-                        <a-checkbox value="BigBed" name="roomType">
-                            大床房
-                        </a-checkbox>
-                        <a-checkbox value="DoubleBed" name="roomType">
-                            双床房
-                        </a-checkbox>
-                        <a-checkbox value="Family" name="roomType">
-                            家庭房
-                        </a-checkbox>
-                    </a-checkbox-group>
-                </a-form-item>
-            </a-form>
-        </div>
-        <div>
-            <a-form
-                    :label-col="labelCol"
-                    :wrapper-col="wrapperCol"
-                    class="form"
-                    layout="inline"
-            >
-                <a-form-item label="评分" class="rate">
-                    <a-input-group compact>
-                        <a-input style=" width: 70px; text-align: center" placeholder="最小值" v-model="screen.minRate"/>
-                        <a-input
-                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
-                                placeholder="~"
-                                disabled
-                        />
-                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="最大值" v-model="screen.maxRate"/>
-                    </a-input-group>
-                </a-form-item>
-                <a-form-item label="价格" class="price">
-                    <a-input-group compact>
-                        <a-input style=" width: 70px; text-align: center" placeholder="最小值" v-model="screen.minPrice"/>
-                        <a-input
-                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
-                                placeholder="~"
-                                disabled
-                        />
-                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="最大值" v-model="screen.maxPrice"/>
-                    </a-input-group>
-                </a-form-item>
-
-                <a-form-item label="排序方式" prop="sortKey" class="sortKey">
-                    <a-select
-                            v-model="sortKey"
-                            v-decorator="[
-                            { rules: [{ required: true, message: '请选择排序关键字' }] },
-                        ]"
-                            placeholder="请选择排序关键字"
-                    >
-                        <a-select-option value='default' :key="sortKey">默认</a-select-option>
-                        <a-select-option value='comment' :key="sortKey">评分</a-select-option>
-                        <a-select-option value='price' :key="sortKey">价格</a-select-option>
-                        <a-select-option value='rank' :key="sortKey">星级</a-select-option>
-                    </a-select>
-                </a-form-item>
-            </a-form>
-        </div>
-        <br>
-        <br>
-        <br>
         <a-layout>
-            <a-layout-content style="min-width: 800px">
+
+
+
+
+            <a-layout-content class="sortNav" style="min-width: 100px ; width: 49%  ;background: #fff;" >
+                <div :style="{ background: '#fff', padding: '26px 16px 16px' }">
+                    <a-button class="sortButton" type="primary"  @click="defaultclick"  ghost>
+                        热门排序
+                    </a-button>
+                    <a-button  class="sortButton" type="primary"  @click="commentclick" ghost>
+                        按照评分降序
+                    </a-button>
+                    <a-button   class="sortButton" type="primary"  @click="priceclick" ghost>
+                        按照价格升序
+                    </a-button>
+                    <a-button class="sortButton" type="primary"  @click="rankclick" ghost>
+                        按照星级降序
+                    </a-button>
+                    <br>
+
+                    <br>
+                </div>
+
+
+
                 <a-spin :spinning="hotelListLoading">
                     <div class="card-wrapper">
-                        <HotelCard :hotel="item" v-for="item in currentHotelList" :key="item.index" @click.native="jumpToDetails(item.id)"></HotelCard>
-                        <div v-for="item in emptyBox" :key="item.name" class="emptyBox ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
+
+
+                        <HotelCard :hotel="item" v-for="item in currentHotelList" :key="item.index" @click.native="jumpToDetails(item.id)">
+
+                        </HotelCard>
+
+                            <div v-for="item in emptyBox" :key="item.name" class="emptyBox ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
                         </div>
+
+
                         <!--<a-pagination showQuickJumper :total="hotelList.totalElements" :defaultCurrent="1" @change="pageChange"></a-pagination>a-pagination-->
                     </div>
                 </a-spin>
+
             </a-layout-content>
+            <a-layout-sider style="min-width: 350px ;background: #fff;" >
+
+                <div>
+                    <a-form
+                            :label-col="labelCol"
+                            :wrapper-col="wrapperCol"
+                            class="form"
+                            layout="inline"
+                    >
+                        <br>
+                        <h2 style="text-align: center">筛选条件</h2>
+                        <a-space direction="vertical" size="middle">
+                        <a-card style="width: 240px;" >
+                            <h3 style="text-align: left">星级筛选</h3>
+                        <a-form-item  prop="star" class="star" >
+                            <a-checkbox-group v-model="screen.star">
+
+                                <a-checkbox  value="Three" name="star">
+                                    三星
+
+                                </a-checkbox>
+                                <br>
+                                <a-checkbox   value="Four" name="star">
+                                    四星
+                                </a-checkbox>
+                                <br>
+                                <a-checkbox value="Five" name="star">
+                                    五星
+                                </a-checkbox>
+                                <br>
+                                <a-checkbox value="zero" name="star">
+                                    实惠
+                                </a-checkbox>
+                                <br>
+                            </a-checkbox-group>
+                        </a-form-item>
+                        </a-card>
+                        <a-card style="width: 240px;">
+                            <h3 style="text-align: left">房型筛选</h3>
+                        <a-form-item  prop="roomType" class="roomType">
+                            <a-checkbox-group v-model="screen.roomType">
+
+                                <a-checkbox value="BigBed" name="roomType">
+                                    大床房
+                                </a-checkbox>
+                                <br>
+                                <a-checkbox value="DoubleBed" name="roomType">
+                                    双床房
+                                </a-checkbox>
+                                <br>
+                                <a-checkbox value="Family" name="roomType">
+                                    家庭房
+                                </a-checkbox>
+                                <br>
+                            </a-checkbox-group>
+                        </a-form-item>
+                        </a-card>
+                        </a-space>
+                    </a-form>
+                </div>
+                <br>
+                <div>
+                    <a-form
+                            :label-col="labelCol"
+                            :wrapper-col="wrapperCol"
+                            class="form"
+                            layout="inline"
+                    >
+                        <a-space direction="vertical" size="middle">
+                            <a-card style="width: 240px;">
+                                <h3 style="text-align: left">价格区间</h3>
+                                <br>
+                                <a-form-item  class="price">
+                                    <a-input-group compact>
+                                        <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minPrice"/>
+                                        <a-input
+                                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
+                                                placeholder="~"
+                                                disabled
+                                        />
+                                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="最大值" v-model="screen.maxPrice"/>
+                                    </a-input-group>
+                                </a-form-item>
+                            </a-card>
+                        <a-card style="width: 240px;">
+                            <h3 style="text-align: left">评分区间</h3>
+                            <br>
+                        <a-form-item  class="rate">
+                            <a-input-group compact>
+                                <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minRate"/>
+                                <a-input
+                                        style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
+                                        placeholder="~"
+                                        disabled
+                                />
+                                <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="5.0" v-model="screen.maxRate"/>
+                            </a-input-group>
+                        </a-form-item>
+                        </a-card>
+
+                        </a-space>
+
+<!--                        <a-form-item label="排序方式" prop="sortKey" class="sortKey">-->
+<!--                            <a-select-->
+<!--                                    v-model="sortKey"-->
+<!--                                    v-decorator="[-->
+<!--                            { rules: [{ required: true, message: '请选择排序关键字' }] },-->
+<!--                        ]"-->
+<!--                                    placeholder="请选择排序关键字"-->
+<!--                            >-->
+<!--                                <a-select-option value='default' :key="sortKey">默认</a-select-option>-->
+<!--                                <a-select-option value='comment' :key="sortKey">评分</a-select-option>-->
+<!--                                <a-select-option value='price' :key="sortKey">价格</a-select-option>-->
+<!--                                <a-select-option value='rank' :key="sortKey">星级</a-select-option>-->
+<!--                            </a-select>-->
+<!--                        </a-form-item>-->
+                    </a-form>
+                </div>
+
+            </a-layout-sider>
+
         </a-layout>
-    </div>
+        </div>
+
 </template>
 <script>
 import HotelCard from './components/hotelCard'
@@ -129,7 +196,9 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'home',
   components: {
-    HotelCard
+    HotelCard,
+
+
   },
   data(){
     return {
@@ -162,7 +231,8 @@ export default {
     ...mapGetters([
       'hotelList',
       'hotelListLoading',
-      'allRoomList'
+      'allRoomList', 'hotelNumber'
+
     ]),
       currentHotelList(){
 
@@ -314,7 +384,22 @@ export default {
       'getHotelList',
       'getAllRoomList'
     ]),
-
+      defaultclick(){
+        console.log("111")
+          this.sortKey ="default"
+      },
+      commentclick(){
+          console.log("111")
+          this.sortKey ="comment"
+      },
+      priceclick(){
+          console.log("111")
+          this.sortKey ="price"
+      },
+      rankclick(){
+          console.log("111")
+          this.sortKey ="rank"
+      },
     pageChange(page, pageSize) {
        alert('居然可以翻页了?');
        // console.log(this);
@@ -340,6 +425,16 @@ export default {
             height: 0;
             margin: 10px 10px
         }
+        .sortButton{
+            border: none;
+            margin: 0 10px;
+            float: left ;
+            padding: 0px  10px
+        }
+        .column {
+            float: left;
+            width: 20%;
+        }
         .card-wrapper{
             display: flex;
             justify-content: space-around;
@@ -359,22 +454,22 @@ export default {
         z-index: 0;
     }
     .star{
-        left: 21px;
-        width: 595px;
+        left: 5px;
+        width: 175px;
         z-index: 0;
     }
     .roomType{
-        left: -125px;
-        width: 500px;
+        left: 5px;
+        width: 175px;
         z-index: 0;
     }
     .rate{
-        left: 97px;
+        left: 5px;
         width: 350px;
         z-index: 0;
     }
     .price{
-        left: -10px;
+        left: 5px;
         width: 350px;
         z-index: 0;
     }
@@ -382,5 +477,11 @@ export default {
         left: -76px;
         width: 450px;
         z-index: 0;
+    }
+    .slider{
+        min-width: 400px ;
+        width: 40%;
+        color: #fff;
+        background: #fff;
     }
 </style>

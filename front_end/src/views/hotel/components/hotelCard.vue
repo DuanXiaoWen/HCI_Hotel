@@ -1,4 +1,5 @@
 <template>
+
   <a-card hoverable class="hotelCard ant-col-xs-7 ant-col-lg-5 ant-col-xxl-3">
     <img
       alt="example"
@@ -6,7 +7,9 @@
       slot="cover"
       referrerPolicy="no-referrer"
     />
+
     <a-tooltip :title="hotel.title" placement="top">
+
       <a-card-meta :title="hotel.name">
         <template slot="description">
           <a-rate style="font-size: 15px" :value="getHotelStar(hotel.hotelStar)" disabled allowHalf/> {{hotel.rate}}分
@@ -16,6 +19,7 @@
       </a-card-meta>
     </a-tooltip>
   </a-card>
+
 </template>
 <script>
 
