@@ -17,7 +17,15 @@
             <span slot="action" slot-scope="record">
                 <a-button type="primary" size="small" @click="addCouponHotel(record)">关联酒店</a-button>
                 <a-divider type="vertical"></a-divider>
-                <a-button type="danger" size="small" @click="removeCoupon(record)">删除优惠</a-button>
+                <a-popconfirm
+                    title="你确定删除这项优惠吗？"
+                    @confirm="removeCoupon(record)"
+                    @cancel="cancelRemove"
+                    okText="确定"
+                    cancelText="取消"
+                >
+                    <a-button type="danger" size="small">删除优惠</a-button>
+                </a-popconfirm>
             </span>
             <template slot="footer">
                 <div style="width: 100%; text-align: right">
@@ -45,12 +53,16 @@
             scopedSlots: { customRender: 'couponType' }
         },
         {
-            title: '折扣',
-            dataIndex: 'discount',
-        },
-        {
             title: '优惠简介',
             dataIndex: 'description',
+        },
+        {
+            title: '条件',
+            dataIndex: 'targetMoney',
+        },
+        {
+            title: '折扣',
+            dataIndex: 'discount',
         },
         {
             title: '优惠金额',
@@ -103,6 +115,9 @@
             },
             removeCoupon(record) {
                 this.deleteCoupon(record);
+            },
+            cancelRemove() {
+
             },
             cancel() {
                 this.getAllCoupon();

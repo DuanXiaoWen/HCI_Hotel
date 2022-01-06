@@ -11,12 +11,6 @@
 
         <!--1.按钮-->
         <a-form-item style="margin-left: 80.67%">
-            <a-button
-                    size="large"
-                    type="primary"
-                    @click="addCoupon"
-                    v-text="addCouponButtonText"
-            ></a-button>
         </a-form-item>
 
         <!--2.表格-->
@@ -34,8 +28,25 @@
                 <a-button type="primary" size="small" v-if="record===4">限时优惠</a-button>
             </span>
             <span slot="action" slot-scope="record">
-                <a-button type="danger" size="small" @click="removeCoupon(record)">删除优惠</a-button>
+                <a-popconfirm
+                        title="你确定删除这项优惠吗？"
+                        @confirm="removeCoupon(record)"
+                        @cancel="cancelRemove"
+                        okText="确定"
+                        cancelText="取消"
+                >
+                    <a-button type="danger" size="small">删除优惠</a-button>
+                </a-popconfirm>
             </span>
+            <template slot="footer">
+                <div style="width: 100%; text-align: right">
+                    <a-button
+                        type="primary"
+                        @click="addCoupon"
+                        v-text="addCouponButtonText"
+                    ></a-button>
+                </div>
+            </template>
         </a-table>
 
 
@@ -55,12 +66,16 @@ const columns = [
         scopedSlots: { customRender: 'couponType' }
     },
     {
-        title: '折扣',
-        dataIndex: 'discount',
-    },
-    {
         title: '优惠简介',
         dataIndex: 'description',
+    },
+    {
+        title: '条件',
+        dataIndex: 'targetMoney',
+    },
+    {
+        title: '折扣',
+        dataIndex: 'discount',
     },
     {
         title: '优惠金额',
