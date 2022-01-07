@@ -121,6 +121,7 @@ export default {
         this.set_currentHotelId(Number(this.$route.params.hotelId))
         this.getHotelById();
         console.log("getHotelById",this);
+        console.log(this.currentHotelInfo);
         this.getHotelCommentsList();
 
     },

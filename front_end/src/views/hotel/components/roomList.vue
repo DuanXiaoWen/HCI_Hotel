@@ -100,9 +100,12 @@ export default {
         ])
     },
     mounted() {
-        this.currentRoom = this.rooms[0];
-        this.setDescription();
-        console.info(this.currentRoom)
+    },
+    watch: {
+        rooms (val) {
+            this.currentRoom = this.rooms[0];
+            this.setDescription();
+        }
     },
     methods: {
         ...mapMutations([

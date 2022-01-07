@@ -56,20 +56,18 @@
                         <a-list
                                 item-layout="vertical"
                                 size="large"
+                                :pagination="{ pageSize: 7 }"
                                 :data-source="currentHotelList"
-                        >111
-                            <div slot="footer">
-                                <b>ant design vue</b> footer part
-                            </div>
+                        >
                             <a-list-item slot="renderItem" key="item.name" slot-scope="item" @click.native="jumpToDetails(item.id)">
-                               <div class="box" >
+                               <div class="box">
 
                                    <div class="left">
                                        <img
 
                                                slot="extra"
                                                width="150px"
-                                               height="200px"
+                                               height=100%
 
                                                alt="logo"
                                                src="@/assets/cover.jpeg"
@@ -81,28 +79,31 @@
                                        <div style="background-color: #fff; padding: 20px;">
                                            <a-row :gutter="16">
                                                <a-col :span="7">
+                                                   <div style="width:154px">
                                                    <a-card title="" :bordered="false">
                                                        <a-list-item-meta :description="item.description">
                                                            <a slot="title" :href="item.href">{{ item.name }}</a>
 
                                                        </a-list-item-meta>
-                                                       <a-text><a-icon type="shop" theme="twoTone" /> 商圈：{{currentHotelInfo.bizRegion}}</a-text>
-                                                   </a-card>
+                                                       <a-text><a-icon type="shop" theme="twoTone" /> 商圈：{{item.bizRegion}}</a-text>
+                                                   </a-card></div>
                                                </a-col>
                                                <a-col :span="11">
+                                                   <div style="width:242px">
                                                    <a-card title="" :bordered="false">
-                                                       <p>星级：<a-rate style="font-size: 15px" :default-value="item.rate" disabled allow-half/></p>
+                                                       <p>星级：<a-rate style="font-size: 15px" :default-value="item.star" disabled allow-half/></p>
                                                        <p>联系电话：{{item.phoneNum}}</p>
 
-                                                       <a-text><a-icon type="home" theme="twoTone" /> 地址：{{currentHotelInfo.address}}</a-text><br>
+                                                       <a-text><a-icon type="home" theme="twoTone" /> 地址：{{item.address}}</a-text><br>
                                                        评分：{{item.rate | numFilter}}分
 
-                                                   </a-card>
+                                                   </a-card></div>
                                                </a-col>
                                                <a-col :span="6">
+                                                   <div style="width:132px">
                                                    <a-card title="价格" :bordered="false">
-                                                       <a-icon type="fire" theme="twoTone" twoToneColor="#FF4500" v-if="minMoney!=='本店没有合适的房间 >_<'"/> {{minMoney}}
-                                                   </a-card>
+                                                       <a-icon type="fire" theme="twoTone" twoToneColor="#FF4500" v-if="item.minMoney!=='本店没有合适的房间 >_<'"/> {{item.minMoney}}
+                                                   </a-card></div>
                                                </a-col>
                                            </a-row>
                                        </div>
@@ -289,14 +290,15 @@ export default {
             immediate: true,
             deep:true,
             handler (newValue) {
-                let money = newValue.minRoomPrice;
-                if(money === Number.MAX_VALUE){
-                    this.minMoney = '本店没有合适的房间 >_<'
-                }
-                else {
-                    this.minMoney = money + '元起！'
-                }
+                if (! newValue)
+                    return
 
+                if ('hotelStar' in newValue)
+                    newValue.star = this.starFilter(newValue.hotelStar)
+
+                if (newValue.minRoomPrice) {
+                    let money = newValue.minRoomPrice;
+                }
             }
         }
     },
@@ -332,7 +334,7 @@ export default {
 
         let {hotelList, searchNames} = this;
         let res = [...hotelList];
-          res.forEach(item => this.$set(item, 'minRoomPrice', Number.MAX_VALUE));
+          res.forEach(item => item.minRoomPrice = Number.MAX_VALUE);
 
           if (searchNames.trim()) {
               res = res.filter(hotel =>
@@ -358,6 +360,7 @@ export default {
           // console.log("selectedStar",selectedStar)
 
           res=res.filter(hotel=>{
+              hotel.star = getHotelStar(hotel.hotelStar)
               if(selectedStar.length===0){
                   return (hotel.rate >= minRate && hotel.rate <= maxRate);
               }else if(selectedStar.indexOf("zero")!==-1){
@@ -412,9 +415,17 @@ export default {
           }
           res.forEach(hotel => {
               rooms.forEach(room => {
-                  if (room.hotelId===hotel.id  &&  room.price < hotel.minRoomPrice)
+                  if (room.hotelId===hotel.id  &&  room.price < hotel.minRoomPrice) {
+                      console.log(room.id, hotel.id)
                       hotel.minRoomPrice = room.price;
+                  }
               });
+              if(hotel.minRoomPrice === Number.MAX_VALUE){
+                  hotel.minMoney = '本店没有合适的房间 >_<'
+              }
+              else {
+                  hotel.minMoney = hotel.minRoomPrice + '元起！'
+              }
           });
 
           if (this.sortKey=="price") {
@@ -497,6 +508,12 @@ export default {
     jumpToDetails(id){
       this.$router.push({ name: 'hotelDetail', params: { hotelId: id }})
     },
+    starFilter(value) {
+        if(value==='Three')return 3;
+        if(value==='Four')return 4;
+        if(value==='Five')return 5;
+        return 0;
+    }
 
   },
     filters: {
@@ -516,8 +533,9 @@ export default {
 <style scoped lang="less">
     .box {
         display: flex;
+        height: 230px;
         .left {
-
+            padding: 15px 0px;
         }
         .right {
             text-align: left;
