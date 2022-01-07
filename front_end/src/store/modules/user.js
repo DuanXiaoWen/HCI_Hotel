@@ -70,13 +70,13 @@ const user = {
     },
 
     actions: {
-        login: async ({ dispatch, commit }, userData) => {
-            const res = await loginAPI(userData);
+        login: async ({ dispatch, commit }, data) => {
+            const res = await loginAPI(data.userData);
             if(res){
                 setToken(res.id);
                 commit('set_userId', res.id);
                 dispatch('getUserInfo');
-                router.push('/hotel/hotelList')
+                router.push(data.back)
             }
         },
         register: async({ commit }, data) => {

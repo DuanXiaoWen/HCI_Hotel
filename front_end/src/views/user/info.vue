@@ -343,7 +343,7 @@ export default {
 
         },
         showOrder(record){
-            alert('不是已经够详细了吗');
+            alert('本功能尚未实现');
         },
         comment(record){
             this.order = record;

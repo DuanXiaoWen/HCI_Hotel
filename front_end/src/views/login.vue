@@ -147,6 +147,8 @@ export default {
       loginLoading: false,
       registerLoading: false,
       form: this.$form.createForm(this),
+      from: '',
+      prms: {}
     }
   },
   computed: {
@@ -155,7 +157,7 @@ export default {
     ])
   },
   mounted() {
-
+    this.from = this.$route.query.from
   },
   watch: {
     $route: {
@@ -219,7 +221,11 @@ export default {
             email: this.form.getFieldValue("username"),
             password: this.form.getFieldValue("password")
           }
-          await this.login(data)
+          if (this.from) {
+            await this.login({userData: data, back: this.from})
+          } else {
+            await this.login({userData: data, back: 'hotel/hotelList'})
+          }
           this.loginLoading = false
         }
       })
@@ -269,7 +275,7 @@ export default {
           this.registerLoading = false;
         }
       });
-    }
+    },
   }
 }
 </script>

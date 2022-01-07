@@ -26,6 +26,7 @@
 
 
             <a-layout-content class="sortNav" style="min-width: 100px ; width: 49%  ;background: #fff;" >
+                <a-affix :offset-top="44">
                 <div :style="{ background: '#fff', padding: '26px 16px 16px' }">
                     <a-button class="sortButton" type="primary"  @click="defaultclick"  ghost>
                         热门排序
@@ -43,6 +44,7 @@
 
                     <br>
                 </div>
+                </a-affix>
 
 
 
@@ -130,7 +132,7 @@
 
             </a-layout-content>
             <a-layout-sider style="min-width: 350px ;background: #fff;" >
-
+                <a-affix :offset-top="44">
                 <div>
                     <a-form
                             :label-col="labelCol"
@@ -140,15 +142,39 @@
                     >
                         <br>
                         <h2 style="text-align: center">筛选条件</h2>
-                        <a-space direction="vertical" size="middle">
-                        <a-card style="width: 240px;" >
-                            <h3 style="text-align: left">星级筛选</h3>
+                        <a-space direction="vertical" size="0">
+                            <a-card title="价格区间" size="small" style="width: 240px;">
+                                <a-form-item  class="price">
+                                    <a-input-group compact>
+                                        <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minPrice"/>
+                                        <a-input
+                                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
+                                                placeholder="~"
+                                                disabled
+                                        />
+                                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="最大值" v-model="screen.maxPrice"/>
+                                    </a-input-group>
+                                </a-form-item>
+                            </a-card>
+                            <a-card title="评分区间" size="small" style="width: 240px;">
+                                <a-form-item  class="rate">
+                                    <a-input-group compact>
+                                        <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minRate"/>
+                                        <a-input
+                                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
+                                                placeholder="~"
+                                                disabled
+                                        />
+                                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="5.0" v-model="screen.maxRate"/>
+                                    </a-input-group>
+                                </a-form-item>
+                            </a-card>
+                        <a-card title="星级筛选" size="small"  style="width: 240px" >
                         <a-form-item  prop="star" class="star" >
                             <a-checkbox-group v-model="screen.star">
 
                                 <a-checkbox  value="Three" name="star">
                                     三星
-
                                 </a-checkbox>
                                 <br>
                                 <a-checkbox   value="Four" name="star">
@@ -162,12 +188,10 @@
                                 <a-checkbox value="zero" name="star">
                                     实惠
                                 </a-checkbox>
-                                <br>
                             </a-checkbox-group>
                         </a-form-item>
                         </a-card>
-                        <a-card style="width: 240px;">
-                            <h3 style="text-align: left">房型筛选</h3>
+                        <a-card title="房型筛选" size="small" style="width: 240px;">
                         <a-form-item  prop="roomType" class="roomType">
                             <a-checkbox-group v-model="screen.roomType">
 
@@ -182,53 +206,19 @@
                                 <a-checkbox value="Family" name="roomType">
                                     家庭房
                                 </a-checkbox>
-                                <br>
                             </a-checkbox-group>
                         </a-form-item>
                         </a-card>
-                        </a-space>
-                    </a-form>
-                </div>
-                <br>
-                <div>
-                    <a-form
-                            :label-col="labelCol"
-                            :wrapper-col="wrapperCol"
-                            class="form"
-                            layout="inline"
-                    >
-                        <a-space direction="vertical" size="middle">
-                            <a-card style="width: 240px;">
-                                <h3 style="text-align: left">价格区间</h3>
-                                <br>
-                                <a-form-item  class="price">
-                                    <a-input-group compact>
-                                        <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minPrice"/>
-                                        <a-input
-                                                style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
-                                                placeholder="~"
-                                                disabled
-                                        />
-                                        <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="最大值" v-model="screen.maxPrice"/>
-                                    </a-input-group>
-                                </a-form-item>
-                            </a-card>
-                        <a-card style="width: 240px;">
-                            <h3 style="text-align: left">评分区间</h3>
-                            <br>
-                        <a-form-item  class="rate">
-                            <a-input-group compact>
-                                <a-input style=" width: 70px; text-align: center" placeholder="0" v-model="screen.minRate"/>
-                                <a-input
-                                        style=" width: 30px; border-left: 0; pointer-events: none; backgroundColor: #fff"
-                                        placeholder="~"
-                                        disabled
-                                />
-                                <a-input style="width: 70px; text-align: center; border-left: 0" placeholder="5.0" v-model="screen.maxRate"/>
-                            </a-input-group>
-                        </a-form-item>
-                        </a-card>
-
+                            <transition :name="fade">
+                                <a-card size="small" style="width: 240px;" v-show="jumpTopVisible">
+                                    <a-botton
+                                            v-if="jumpTopVisible"
+                                            @click="jumpToTop"
+                                    >
+                                        回到顶部
+                                    </a-botton>
+                                </a-card>
+                            </transition>
                         </a-space>
 
 <!--                        <a-form-item label="排序方式" prop="sortKey" class="sortKey">-->
@@ -248,6 +238,7 @@
                     </a-form>
                 </div>
 
+                </a-affix>
             </a-layout-sider>
 
         </a-layout>
@@ -283,8 +274,20 @@ export default {
         },
         minMoney:'',
         sortKey: "default",
+        interval: null,
+        jumpTopVisible: false
     }
   },
+    props: {
+        visibilityHeight: { // 纵向滑动多远距离出现滚动条
+            type: Number,
+            default: 100
+        },
+        backPosition: { // 返回顶部时，滚动到哪里（距离顶部的距离）
+            type: Number,
+            default: 0
+        }
+    },
     watch:{
         hotel:{
             immediate: true,
@@ -311,6 +314,13 @@ export default {
             this.currentHotelList.reverse();
             // console.log(this.currentHotelList)；
         })
+        window.addEventListener('scroll', this.handleScroll)
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll)
+        if(this.interval) {
+            clearInterval(this.interval)
+        }
     },
   computed: {
     ...mapGetters([
@@ -416,7 +426,6 @@ export default {
           res.forEach(hotel => {
               rooms.forEach(room => {
                   if (room.hotelId===hotel.id  &&  room.price < hotel.minRoomPrice) {
-                      console.log(room.id, hotel.id)
                       hotel.minRoomPrice = room.price;
                   }
               });
@@ -513,7 +522,34 @@ export default {
         if(value==='Four')return 4;
         if(value==='Five')return 5;
         return 0;
-    }
+    },
+      handleScroll() {
+          this.jumpTopVisible = window.pageYOffset > this.visibilityHeight
+      },
+      easeInOutQuad(t, b, c, d) {
+        return 0;
+          // 判断当前时间是否总在总时间的一半以内，是的话执行缓入函数，否则的话执行缓出函数
+          // if ((t /= d / 2) < 1) {
+          //     return c / 2 * t * t + b
+          // } else {
+          //     // 将总长度设置为一半，并且时间从当前开始递减，对图像进行垂直向上平移
+          //     return -c / 2 * (--t * (t - 2) - 1) + b
+          // }
+      },
+      jumpToTop() {
+          let distanceY = window.pageYOffset
+          let i = 0
+          this.interval = setInterval(() => {
+              let next = Math.floor(this.easeInOutQuad(10 * i, distanceY, -distanceY, 500))
+              if(next <= this.backPosition) {
+                  window.scrollTo(0, this.backPosition)
+                  clearInterval(this.interval)
+              } else{
+                  window.scrollTo(0, next)
+              }
+              i++
+          }, 17)
+      }
 
   },
     filters: {

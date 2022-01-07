@@ -96,7 +96,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'orderModalVisible'
+            'orderModalVisible',
+            'userInfo'
         ])
     },
     mounted() {
@@ -115,7 +116,14 @@ export default {
         ...mapActions([
 
         ]),
+        async quit() {
+            await this.$store.dispatch('logout')
+            this.$router.push(`/login?from=${this.$route.path}`)
+        },
         orderRoom() {
+            if (this.userInfo.userType == null) {
+                this.quit()
+            }
             this.set_currentOrderRoom(this.currentRoom)
             this.set_orderModalVisible(true)
         },

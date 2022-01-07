@@ -1,4 +1,5 @@
 <template>
+    <a-affix :offset-top="top">
     <div class="header">
         <div class="label">
           <router-link to="/hotel/hotelList">
@@ -14,7 +15,7 @@
                     <a-icon type="home" />首页
                 </router-link>
             </a-menu-item>
-            <a-menu-item key="2" @click="jumpToUserInfo" >
+            <a-menu-item key="2" @click="jumpToUserInfo" v-if="userInfo.userType !== null">
                 <a-icon type="user" />个人中心
             </a-menu-item>
             <a-menu-item key="3" @click="selectMenu" v-if="userInfo.userType==='HotelManager'">
@@ -63,6 +64,7 @@
         </div>
         
     </div>
+    </a-affix>
     
 </template>
 <script>
@@ -105,7 +107,7 @@ export default {
         },
         async quit() {
             await this.$store.dispatch('logout')
-            this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+            this.$router.push(`/login?redirect=${this.$route.path}`)
         },
         jumpToUserInfo() {
             this.$router.push({ name: 'userInfo', params: { userId: this.userId } })
@@ -118,6 +120,7 @@ export default {
 </script>
 <style scoped lang="less">
     .header {
+        background-color: #e7e7ff;
         display: flex;
         line-height: 44px;
         height: 44px;
